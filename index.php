@@ -1,5 +1,6 @@
 <?php
 // 1. Database Connection
+// Ensure config.php contains your PDO connection ($pdo)
 include "config.php";
 
 // 2. Fetch Data
@@ -7,7 +8,7 @@ try {
     $stmt = $pdo->query("SELECT * FROM reviews ORDER BY created_at DESC");
     $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (Exception $e) {
-    $reviews = []; 
+    $reviews = []; // Fallback if database fails
 }
 ?>
 <!DOCTYPE html>
@@ -32,6 +33,7 @@ try {
             background: linear-gradient(135deg, #0f172a, #0b1220);
             color: white;
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
         /* NAVIGATION */
@@ -47,9 +49,9 @@ try {
             z-index: 1000;
         }
 
-        nav h1 { font-size: 22px; letter-spacing: 2px; }
+        nav h1 { font-size: 22px; letter-spacing: 2px; color: #facc15; }
         nav ul { list-style: none; display: flex; gap: 40px; }
-        nav ul li a { text-decoration: none; color: #cbd5e1; transition: .3s; }
+        nav ul li a { text-decoration: none; color: #cbd5e1; transition: .3s; font-weight: 400; }
         nav ul li a:hover { color: #facc15; }
 
         /* HERO SECTION */
@@ -62,9 +64,9 @@ try {
         }
 
         .hero-text { max-width: 550px; }
-        .hero-text h2 { font-size: 60px; line-height: 1.1; }
+        .hero-text h2 { font-size: 60px; line-height: 1.1; margin-bottom: 10px; }
         .hero-text span { color: #facc15; }
-        .hero-text p { margin-top: 20px; color: #94a3b8; }
+        .hero-text p { margin-top: 20px; color: #94a3b8; font-size: 1.1rem; }
 
         .hero-image img {
             width: 400px;
@@ -72,37 +74,50 @@ try {
             border-radius: 50%;
             object-fit: cover;
             border: 8px solid #facc15;
-            box-shadow: 0 0 80px rgba(250, 204, 21, 0.3);
+            box-shadow: 0 0 80px rgba(250, 204, 21, 0.2);
             transition: .4s ease;
         }
-        .hero-image img:hover { transform: scale(1.05); }
+        .hero-image img:hover { transform: scale(1.05); box-shadow: 0 0 100px rgba(250, 204, 21, 0.4); }
 
         /* SECTIONS */
         section { padding: 100px 8%; }
         .section-title { font-size: 36px; margin-bottom: 50px; text-align: center; }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: #facc15;
+            margin: 10px auto;
+            border-radius: 2px;
+        }
 
         /* SERVICES */
         .cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 30px;
         }
 
         .card {
-            background: rgba(30, 41, 59, 0.7);
+            background: rgba(30, 41, 59, 0.5);
             padding: 40px 30px;
             border-radius: 20px;
             transition: .4s;
             border: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center;
         }
+
+        .card i { color: #facc15; margin-bottom: 20px; }
 
         .card:hover {
             transform: translateY(-12px);
             background: #facc15;
             color: #0f172a;
         }
+        .card:hover i { color: #0f172a; }
 
-        /* REVIEW FORM (Updated for PHP) */
+        /* REVIEW SECTION */
         .review-form-container {
             max-width: 650px;
             margin: auto;
@@ -111,6 +126,7 @@ try {
             border-radius: 20px;
             backdrop-filter: blur(10px);
             box-shadow: 0 0 40px rgba(0,0,0,0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .review-form-container input,
@@ -123,7 +139,9 @@ try {
             background: #0f172a;
             color: white;
             font-size: 14px;
+            outline: none;
         }
+        .review-form-container input:focus, .review-form-container textarea:focus { border-color: #facc15; }
 
         .review-form-container button {
             width: 100%;
@@ -135,9 +153,9 @@ try {
             font-weight: bold;
             cursor: pointer;
             transition: .3s;
+            font-size: 16px;
         }
-
-        .review-form-container button:hover { background: #eab308; }
+        .review-form-container button:hover { background: #eab308; transform: translateY(-2px); }
 
         /* REVIEW LIST */
         .review-list {
@@ -157,22 +175,56 @@ try {
             animation: fadeIn .4s ease;
         }
 
-        .review-item h4 { color: #facc15; margin-bottom: 5px; }
-        .review-item .company { color: #94a3b8; font-size: 0.85rem; font-weight: normal; }
-        .review-item .date { display: block; margin-top: 15px; font-size: 0.75rem; color: #64748b; }
+        .review-item h4 { color: #facc15; margin-bottom: 5px; font-size: 1.1rem; }
+        .review-item .company { color: #94a3b8; font-size: 0.9rem; font-weight: normal; }
+        .review-item .content { margin-top: 10px; color: #cbd5e1; font-style: italic; }
+        .review-item .date { display: block; margin-top: 15px; font-size: 0.8rem; color: #64748b; }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        footer { text-align: center; padding: 40px; border-top: 1px solid #1e293b; color: #64748b; }
+        /* CONTACT & SOCIALS */
+        .contact { text-align: center; }
+        .socials {
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+        }
 
+        .socials a {
+            font-size: 28px;
+            color: #cbd5e1;
+            background: rgba(30, 41, 59, 0.7);
+            width: 65px;
+            height: 65px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.4s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            text-decoration: none;
+        }
+
+        .socials a:hover {
+            color: #0f172a;
+            background: #facc15;
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(250, 204, 21, 0.4);
+        }
+
+        footer { text-align: center; padding: 40px; border-top: 1px solid #1e293b; color: #64748b; font-size: 0.9rem; }
+
+        /* RESPONSIVE */
         @media(max-width: 900px) {
-            .hero { flex-direction: column; text-align: center; }
-            .hero-image { margin-top: 40px; }
-            .hero-image img { width: 280px; height: 280px; }
+            .hero { flex-direction: column; text-align: center; padding-top: 40px; }
+            .hero-image { order: -1; margin-bottom: 40px; }
+            .hero-image img { width: 300px; height: 300px; }
             .hero-text h2 { font-size: 40px; }
+            nav ul { display: none; } /* Simplified for mobile */
         }
     </style>
 </head>
@@ -201,17 +253,17 @@ try {
     <h2 class="section-title">What I Do</h2>
     <div class="cards">
         <div class="card">
-            <i class="fas fa-code fa-2x" style="margin-bottom:15px;"></i>
+            <i class="fas fa-laptop-code fa-3x"></i>
             <h3>Web Development</h3>
             <p>Building responsive and scalable websites using modern technologies.</p>
         </div>
         <div class="card">
-            <i class="fas fa-server fa-2x" style="margin-bottom:15px;"></i>
+            <i class="fas fa-database fa-3x"></i>
             <h3>System Development</h3>
             <p>Developing management systems with secure authentication and reporting.</p>
         </div>
         <div class="card">
-            <i class="fas fa-paint-brush fa-2x" style="margin-bottom:15px;"></i>
+            <i class="fas fa-bezier-curve fa-3x"></i>
             <h3>UI/UX Design</h3>
             <p>Designing clean, user-focused interfaces with smooth experience.</p>
         </div>
@@ -238,11 +290,11 @@ try {
                         <?php echo htmlspecialchars($row['name']); ?> 
                         <span class="company">from <?php echo htmlspecialchars($row['company']); ?></span>
                     </h4>
-                    <p style="margin-top:10px; color:#cbd5e1; font-style: italic;">
+                    <div class="content">
                         "<?php echo htmlspecialchars($row['review']); ?>"
-                    </p>
+                    </div>
                     <small class="date">
-                        <i class="far fa-calendar-alt"></i> 
+                        <i class="far fa-calendar-alt" style="margin-right: 5px;"></i> 
                         <?php echo date("F j, Y", strtotime($row['created_at'])); ?>
                     </small>
                 </div>
@@ -256,9 +308,15 @@ try {
 <section id="contact" class="contact">
     <h2 class="section-title">Let's Connect</h2>
     <div class="socials">
-        <a href="https://github.com/Raezaga"><i class="fab fa-github"></i></a>
-        <a href="https://www.facebook.com/Raezaga/"><i class="fab fa-facebook"></i></a>
-        <a href="https://www.linkedin.com/in/renz-loi-okit-13397b393/"><i class="fab fa-linkedin"></i></a>
+        <a href="https://github.com/Raezaga" target="_blank" title="GitHub">
+            <i class="fab fa-github"></i>
+        </a>
+        <a href="https://www.facebook.com/Raezaga/" target="_blank" title="Facebook">
+            <i class="fab fa-facebook"></i>
+        </a>
+        <a href="https://www.linkedin.com/in/renz-loi-okit-13397b393/" target="_blank" title="LinkedIn">
+            <i class="fab fa-linkedin"></i>
+        </a>
     </div>
 </section>
 
