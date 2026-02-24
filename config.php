@@ -1,9 +1,9 @@
 <?php
-$host = "YOUR_SUPABASE_HOST";
+$host = "aws-1-ap-northeast-1.pooler.supabase.com";
 $port = "5432";
 $dbname = "postgres";
-$username = "postgres";
-$password = "YOUR_SUPABASE_PASSWORD";
+$username = "postgres.mwuwjkhvypzvjdrpmtqp";
+$password = "Ohana!1210012";
 
 try {
     $pdo = new PDO(
