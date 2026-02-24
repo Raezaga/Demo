@@ -1,19 +1,33 @@
 <?php
-include "config.php";
 
-$name = $_POST['name'];
-$company = $_POST['company'];
-$review = $_POST['review'];
+$db_url = getenv("DATABASE_URL");
 
-$query = "INSERT INTO reviews (name, company, review)
-          VALUES ($1, $2, $3)";
+if (!$db_url) {
+    die("DATABASE_URL not found.");
+}
 
-$result = pg_query_params($conn, $query, array($name, $company, $review));
+$connection = parse_url($db_url);
 
-if($result){
-    echo "success";
-}else{
-    echo "error";
+$host = $connection["host"];
+$port = $connection["port"] ?? 5432;
+$dbname = ltrim($connection["path"], "/");
+$user = $connection["user"];
+$password = $connection["pass"];
+
+try {
+
+    $pdo = new PDO(
+        "pgsql:host=$host;port=$port;dbname=$dbname",
+        $user,
+        $password,
+        [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        ]
+    );
+
+} catch (PDOException $e) {
+    die("Connection failed: " . $e->getMessage());
 }
 
 ?>
