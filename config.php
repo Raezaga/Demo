@@ -1,23 +1,35 @@
 <?php
 
-$db_url = getenv("DATABASE_URL");
+$databaseUrl = getenv("DATABASE_URL");
 
-if (!$db_url) {
-    die("DATABASE_URL not found in environment variables.");
+if (!$databaseUrl) {
+    die("DATABASE_URL is not set.");
 }
 
-$connection = parse_url($db_url);
+$db = parse_url($databaseUrl);
 
-$host = $connection["host"];
-$user = $connection["user"];
-$password = $connection["pass"];
-$dbname = ltrim($connection["path"], "/");
-$port = $connection["port"] ?? 5432;
+$host = $db["host"];
+$port = $db["port"] ?? "5432";
+$dbname = ltrim($db["path"], "/");
+$username = $db["user"];
+$password = $db["pass"];
 
-$conn = pg_connect("host=$host port=$port dbname=$dbname user=$user password=$password sslmode=require");
+try {
 
-if (!$conn) {
-    die("Database connection failed.");
+    $pdo = new PDO(
+        "pgsql:host=$host;port=$port;dbname=$dbname",
+        $username,
+        $password,
+        [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+        ]
+    );
+
+} catch (PDOException $e) {
+
+    die("Database connection failed: " . $e->getMessage());
+
 }
 
 ?>
