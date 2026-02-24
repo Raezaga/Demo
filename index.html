@@ -1,155 +1,209 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Your Name | Accounting Portfolio</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-body {
-    font-family: 'Inter', sans-serif;
-    margin: 0;
-    padding: 0;
-    background: #fdf2f0; /* soft warm background */
-    color: #333;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Renz Okit | Portfolio</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+            font-family: 'Segoe UI', sans-serif;
+        }
 
-header {
-    text-align: center;
-    padding: 80px 20px 40px;
-}
+        body {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: white;
+        }
 
-header h1 {
-    font-size: 48px;
-    margin-bottom: 10px;
-}
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 10%;
+        }
 
-header p {
-    font-size: 20px;
-    color: #555;
-}
+        nav h1 {
+            font-size: 24px;
+            font-weight: bold;
+        }
 
-section {
-    max-width: 800px;
-    margin: 40px auto;
-    padding: 20px;
-    background: #fff;
-    border-radius: 15px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-    transition: transform 0.3s ease;
-}
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+        }
 
-section:hover {
-    transform: translateY(-5px);
-}
+        nav ul li a {
+            text-decoration: none;
+            color: white;
+            transition: 0.3s;
+        }
 
-h2 {
-    text-align: center;
-    color: #b89b5e;
-    margin-bottom: 15px;
-    font-size: 22px;
-}
+        nav ul li a:hover {
+            color: #38bdf8;
+        }
 
-p, ul {
-    font-size: 16px;
-    line-height: 1.6;
-}
+        section {
+            padding: 80px 10%;
+        }
 
-ul {
-    padding-left: 20px;
-}
+        .hero {
+            text-align: center;
+            padding-top: 120px;
+        }
 
-.button {
-    display: inline-block;
-    padding: 12px 30px;
-    margin: 15px 0;
-    border: none;
-    border-radius: 50px;
-    background: #b89b5e;
-    color: #fff;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-decoration: none;
-}
+        .hero h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
 
-.button:hover {
-    background: #8c6f3d;
-    transform: translateY(-3px);
-}
+        .hero p {
+            color: #cbd5e1;
+            max-width: 600px;
+            margin: auto;
+        }
 
-.social-links {
-    text-align: center;
-}
+        .btn {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            transition: 0.3s;
+        }
 
-.social-links a {
-    margin: 0 15px;
-    color: #b89b5e;
-    text-decoration: none;
-    font-weight: 500;
-    transition: 0.3s ease;
-}
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+        }
 
-.social-links a:hover {
-    color: #8c6f3d;
-}
-</style>
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-outline {
+            border: 1px solid white;
+            color: white;
+            margin-left: 15px;
+        }
+
+        .btn-outline:hover {
+            background: white;
+            color: black;
+        }
+
+        .projects {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: #1e293b;
+            padding: 20px;
+            border-radius: 15px;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+        }
+
+        .card h3 {
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        .socials {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .socials a {
+            color: white;
+            font-size: 24px;
+            margin: 0 15px;
+            transition: 0.3s;
+        }
+
+        .socials a:hover {
+            color: #38bdf8;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            border-top: 1px solid #334155;
+            color: #94a3b8;
+        }
+    </style>
 </head>
 <body>
 
-<header>
-    <h1>Your Name</h1>
-    <p>Accountancy Graduate · Bookkeeper · Accounting Staff</p>
-</header>
+    <nav>
+        <h1>Renz Okit</h1>
+        <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
 
-<section>
-    <h2>About Me</h2>
-    <p>Detail-oriented Accountancy graduate with experience in bookkeeping, financial reporting, and maintaining accurate financial records. Skilled in accounts payable/receivable, bank reconciliation, and supporting financial operations efficiently.</p>
-</section>
+    <section class="hero">
+        <h2>Hi, I'm Renz 👋</h2>
+        <p>I build modern web systems and applications with clean design and smooth user experience.</p>
+        <a href="#projects" class="btn btn-primary">View My Work</a>
+        <a href="#contact" class="btn btn-outline">Contact Me</a>
+    </section>
 
-<section>
-    <h2>Education</h2>
-    <p><strong>Bachelor of Science in Accountancy</strong><br>
-       Your University Name<br>
-       Year Graduated: 20XX</p>
-</section>
+    <section id="about">
+        <h2>About Me</h2>
+        <br>
+        <p style="color:#cbd5e1; max-width:700px;">
+            I'm a passionate developer focused on building efficient and scalable systems. I enjoy solving real-world problems through code and continuously improving my frontend and backend development skills.
+        </p>
+    </section>
 
-<section>
-    <h2>Experience</h2>
-    <p><strong>Bookkeeper / Accounting Staff</strong><br>
-       Company Name</p>
-    <ul>
-        <li>Managed daily financial transactions</li>
-        <li>Prepared financial statements and reports</li>
-        <li>Handled accounts payable & receivable</li>
-        <li>Conducted bank reconciliations</li>
-    </ul>
-</section>
+    <section id="projects">
+        <h2>My Projects</h2>
+        <br>
+        <div class="projects">
+            <div class="card">
+                <h3>Project 1</h3>
+                <p>Short description of your project. Explain what it does and technologies used.</p>
+            </div>
+            <div class="card">
+                <h3>Project 2</h3>
+                <p>Short description of your project. Explain what it does and technologies used.</p>
+            </div>
+            <div class="card">
+                <h3>Project 3</h3>
+                <p>Short description of your project. Explain what it does and technologies used.</p>
+            </div>
+        </div>
+    </section>
 
-<section>
-    <h2>Skills</h2>
-    <ul>
-        <li>Microsoft Excel</li>
-        <li>QuickBooks</li>
-        <li>Financial Reporting</li>
-        <li>Data Analysis</li>
-    </ul>
-</section>
+    <section id="contact">
+        <h2>Let's Connect</h2>
+        <div class="socials">
+            <a href="https://github.com/" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="https://facebook.com/" target="_blank"><i class="fab fa-facebook"></i></a>
+            <a href="https://linkedin.com/" target="_blank"><i class="fab fa-linkedin"></i></a>
+            <a href="mailto:your@email.com"><i class="fas fa-envelope"></i></a>
+        </div>
+    </section>
 
-<section>
-    <h2>Curriculum Vitae</h2>
-    <a href="your-cv.pdf" class="button" download>Download CV</a>
-</section>
-
-<section>
-    <h2>Connect With Me</h2>
-    <div class="social-links">
-        <a href="#">LinkedIn</a>
-        <a href="#">Facebook</a>
-        <a href="#">Instagram</a>
-        <a href="mailto:your@email.com">Email</a>
-    </div>
-</section>
+    <footer>
+        © 2026 Renz Okit. All Rights Reserved.
+    </footer>
 
 </body>
 </html>
