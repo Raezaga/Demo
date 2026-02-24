@@ -1,209 +1,262 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Renz Okit | Portfolio</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            scroll-behavior: smooth;
-            font-family: 'Segoe UI', sans-serif;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Renz Okit | Portfolio</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
-        body {
-            background: linear-gradient(135deg, #0f172a, #1e293b);
-            color: white;
-        }
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: 'Poppins', sans-serif;
+    scroll-behavior:smooth;
+}
 
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 10%;
-        }
+body{
+    background:#0f172a;
+    color:white;
+}
 
-        nav h1 {
-            font-size: 24px;
-            font-weight: bold;
-        }
+/* NAVIGATION */
+nav{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:25px 8%;
+}
 
-        nav ul {
-            list-style: none;
-            display: flex;
-            gap: 30px;
-        }
+nav h1{
+    font-size:22px;
+    letter-spacing:2px;
+}
 
-        nav ul li a {
-            text-decoration: none;
-            color: white;
-            transition: 0.3s;
-        }
+nav ul{
+    list-style:none;
+    display:flex;
+    gap:40px;
+}
 
-        nav ul li a:hover {
-            color: #38bdf8;
-        }
+nav ul li a{
+    text-decoration:none;
+    color:#cbd5e1;
+    transition:.3s;
+}
 
-        section {
-            padding: 80px 10%;
-        }
+nav ul li a:hover{
+    color:#facc15;
+}
 
-        .hero {
-            text-align: center;
-            padding-top: 120px;
-        }
+/* HERO SECTION */
+.hero{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:80px 8%;
+    min-height:90vh;
+}
 
-        .hero h2 {
-            font-size: 48px;
-            margin-bottom: 20px;
-        }
+.hero-text{
+    max-width:550px;
+}
 
-        .hero p {
-            color: #cbd5e1;
-            max-width: 600px;
-            margin: auto;
-        }
+.hero-text h2{
+    font-size:60px;
+    line-height:1.1;
+}
 
-        .btn {
-            display: inline-block;
-            margin-top: 30px;
-            padding: 12px 25px;
-            border-radius: 30px;
-            text-decoration: none;
-            transition: 0.3s;
-        }
+.hero-text span{
+    color:#facc15;
+}
 
-        .btn-primary {
-            background: #2563eb;
-            color: white;
-        }
+.hero-text p{
+    margin-top:20px;
+    color:#94a3b8;
+    line-height:1.6;
+}
 
-        .btn-primary:hover {
-            background: #1d4ed8;
-        }
+.hero-buttons{
+    margin-top:35px;
+}
 
-        .btn-outline {
-            border: 1px solid white;
-            color: white;
-            margin-left: 15px;
-        }
+.btn{
+    padding:12px 28px;
+    border-radius:30px;
+    text-decoration:none;
+    font-size:14px;
+    transition:.3s;
+}
 
-        .btn-outline:hover {
-            background: white;
-            color: black;
-        }
+.btn-primary{
+    background:#facc15;
+    color:#0f172a;
+    margin-right:15px;
+}
 
-        .projects {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-        }
+.btn-primary:hover{
+    background:#eab308;
+}
 
-        .card {
-            background: #1e293b;
-            padding: 20px;
-            border-radius: 15px;
-            transition: 0.3s;
-        }
+.btn-outline{
+    border:1px solid #facc15;
+    color:#facc15;
+}
 
-        .card:hover {
-            transform: translateY(-8px);
-        }
+.btn-outline:hover{
+    background:#facc15;
+    color:#0f172a;
+}
 
-        .card h3 {
-            margin-bottom: 10px;
-        }
+.hero-image img{
+    width:350px;
+    border-radius:20px;
+    filter:brightness(0.9);
+}
 
-        .card p {
-            color: #94a3b8;
-            font-size: 14px;
-        }
+/* SERVICES */
+section{
+    padding:100px 8%;
+}
 
-        .socials {
-            text-align: center;
-            margin-top: 40px;
-        }
+.section-title{
+    font-size:36px;
+    margin-bottom:50px;
+}
 
-        .socials a {
-            color: white;
-            font-size: 24px;
-            margin: 0 15px;
-            transition: 0.3s;
-        }
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:30px;
+}
 
-        .socials a:hover {
-            color: #38bdf8;
-        }
+.card{
+    background:#1e293b;
+    padding:40px 30px;
+    border-radius:20px;
+    transition:.4s;
+    position:relative;
+    overflow:hidden;
+}
 
-        footer {
-            text-align: center;
-            padding: 20px;
-            border-top: 1px solid #334155;
-            color: #94a3b8;
-        }
-    </style>
+.card:hover{
+    transform:translateY(-10px);
+    background:#facc15;
+    color:#0f172a;
+}
+
+.card h3{
+    margin-bottom:15px;
+}
+
+.card p{
+    font-size:14px;
+    color:#94a3b8;
+}
+
+.card:hover p{
+    color:#0f172a;
+}
+
+/* CONTACT */
+.contact{
+    text-align:center;
+}
+
+.socials{
+    margin-top:30px;
+}
+
+.socials a{
+    font-size:22px;
+    margin:0 15px;
+    color:#cbd5e1;
+    transition:.3s;
+}
+
+.socials a:hover{
+    color:#facc15;
+}
+
+/* FOOTER */
+footer{
+    text-align:center;
+    padding:30px;
+    border-top:1px solid #1e293b;
+    color:#64748b;
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+    .hero{
+        flex-direction:column;
+        text-align:center;
+    }
+
+    .hero-image{
+        margin-top:40px;
+    }
+}
+</style>
 </head>
 <body>
 
-    <nav>
-        <h1>Renz Okit</h1>
-        <ul>
-            <li><a href="#about">About</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-    </nav>
+<nav>
+    <h1>RENZ.</h1>
+    <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#contact">Contact</a></li>
+    </ul>
+</nav>
 
-    <section class="hero">
-        <h2>Hi, I'm Renz 👋</h2>
-        <p>I build modern web systems and applications with clean design and smooth user experience.</p>
-        <a href="#projects" class="btn btn-primary">View My Work</a>
-        <a href="#contact" class="btn btn-outline">Contact Me</a>
-    </section>
-
-    <section id="about">
-        <h2>About Me</h2>
-        <br>
-        <p style="color:#cbd5e1; max-width:700px;">
-            I'm a passionate developer focused on building efficient and scalable systems. I enjoy solving real-world problems through code and continuously improving my frontend and backend development skills.
-        </p>
-    </section>
-
-    <section id="projects">
-        <h2>My Projects</h2>
-        <br>
-        <div class="projects">
-            <div class="card">
-                <h3>Project 1</h3>
-                <p>Short description of your project. Explain what it does and technologies used.</p>
-            </div>
-            <div class="card">
-                <h3>Project 2</h3>
-                <p>Short description of your project. Explain what it does and technologies used.</p>
-            </div>
-            <div class="card">
-                <h3>Project 3</h3>
-                <p>Short description of your project. Explain what it does and technologies used.</p>
-            </div>
+<section class="hero">
+    <div class="hero-text">
+        <h2>Hello, I'm <span>Renz Okit</span></h2>
+        <p>Full Stack Developer focused on building modern, efficient, and visually appealing systems. I create clean UI designs and powerful backend solutions.</p>
+        <div class="hero-buttons">
+            <a href="#services" class="btn btn-primary">My Work</a>
+            <a href="#contact" class="btn btn-outline">Contact Me</a>
         </div>
-    </section>
+    </div>
+    <div class="hero-image">
+        <img src="https://via.placeholder.com/350x450" alt="Profile Image">
+    </div>
+</section>
 
-    <section id="contact">
-        <h2>Let's Connect</h2>
-        <div class="socials">
-            <a href="https://github.com/" target="_blank"><i class="fab fa-github"></i></a>
-            <a href="https://facebook.com/" target="_blank"><i class="fab fa-facebook"></i></a>
-            <a href="https://linkedin.com/" target="_blank"><i class="fab fa-linkedin"></i></a>
-            <a href="mailto:your@email.com"><i class="fas fa-envelope"></i></a>
+<section id="services">
+    <h2 class="section-title">What I Do</h2>
+    <div class="cards">
+        <div class="card">
+            <h3>Web Development</h3>
+            <p>Building responsive and scalable websites using modern technologies.</p>
         </div>
-    </section>
+        <div class="card">
+            <h3>System Development</h3>
+            <p>Developing management systems with secure authentication and reporting.</p>
+        </div>
+        <div class="card">
+            <h3>UI/UX Design</h3>
+            <p>Designing clean, user-focused interfaces with smooth experience.</p>
+        </div>
+    </div>
+</section>
 
-    <footer>
-        © 2026 Renz Okit. All Rights Reserved.
-    </footer>
+<section id="contact" class="contact">
+    <h2 class="section-title">Let's Connect</h2>
+    <p style="color:#94a3b8;">Feel free to reach out through my social media platforms.</p>
+    <div class="socials">
+        <a href="#"><i class="fab fa-github"></i></a>
+        <a href="#"><i class="fab fa-facebook"></i></a>
+        <a href="#"><i class="fab fa-linkedin"></i></a>
+        <a href="#"><i class="fas fa-envelope"></i></a>
+    </div>
+</section>
+
+<footer>
+    © 2026 Renz Okit. All Rights Reserved.
+</footer>
 
 </body>
 </html>
