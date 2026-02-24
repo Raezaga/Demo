@@ -24,7 +24,7 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Renz Okit | Creative Developer</title>
+    <title>Renz Loi Okit | Creative Developer</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
@@ -133,7 +133,7 @@ try {
 <div class="mesh-bg"></div>
 
 <nav>
-    <h1>OKIT.</h1>
+    <h1>MY PORTFOLIO.</h1>
     <ul>
         <li><a href="#hero">Intro</a></li>
         <li><a href="#resume">Expertise</a></li>
@@ -146,7 +146,7 @@ try {
 <section id="hero" class="hero">
     <div class="hero-text">
         <h2>Engineering <span>Scalable</span> Web Systems</h2>
-        <p>I am Renz Okit, a Full Stack Developer specializing in high-performance PHP architectures and sophisticated UI/UX design.</p>
+        <p>I am Renz Loi Okit, a Full Stack Developer specializing in high-performance PHP architectures and sophisticated UI/UX design.</p>
         <div style="margin-top: 40px;">
             <a href="My_CV.pdf" download class="btn-premium">
                 <i class="fas fa-download"></i> DOWNLOAD RESUME
@@ -154,7 +154,7 @@ try {
         </div>
     </div>
     <div class="hero-image">
-        <img src="Renz.jpg" alt="Renz Okit">
+        <img src="Renz.jpg" alt="Renz Loi Okit">
     </div>
 </section>
 
@@ -269,7 +269,7 @@ try {
 <section id="contact" style="text-align: center; min-height: 70vh;">
     <h2 style="font-size: 4rem; margin-bottom: 20px;">Let's <span>Connect.</span></h2>
     <div style="background: var(--glass); border: 1px solid var(--glass-border); padding: 50px; border-radius: 40px; max-width: 600px; margin: 40px auto;">
-        <h3 style="font-size: 1.8rem; color: #fff; margin-bottom: 30px;">renzokit.dev@email.com</h3>
+        <h3 style="font-size: 1.8rem; color: #fff; margin-bottom: 30px;">renzokit@email.com</h3>
         <div style="display: flex; justify-content: center; gap: 25px;">
             <a href="https://github.com/Raezaga" target="_blank" style="color:#fff; font-size: 28px; transition: 0.3s;"><i class="fab fa-github"></i></a>
             <a href="https://www.facebook.com/Raezaga/" target="_blank" style="color:#fff; font-size: 28px; transition: 0.3s;"><i class="fab fa-facebook"></i></a>
@@ -292,3 +292,4 @@ try {
 
 </body>
 </html>
+
