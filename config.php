@@ -30,4 +30,7 @@ try {
     die("Connection failed: " . $e->getMessage());
 }
 
+echo "Connected to Supabase Successfully!";
+
 ?>
+
