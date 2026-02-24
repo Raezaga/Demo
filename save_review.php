@@ -1,33 +1,19 @@
 <?php
+include "config.php";
 
-$db_url = getenv("DATABASE_URL");
+$name = $_POST['name'];
+$company = $_POST['company'];
+$review = $_POST['review'];
 
-if (!$db_url) {
-    die("DATABASE_URL not found.");
-}
+$stmt = $pdo->prepare("INSERT INTO reviews (name, company, review)
+                      VALUES (:name, :company, :review)");
 
-$connection = parse_url($db_url);
+$stmt->execute([
+    ':name' => $name,
+    ':company' => $company,
+    ':review' => $review
+]);
 
-$host = $connection["host"];
-$port = $connection["port"] ?? 5432;
-$dbname = ltrim($connection["path"], "/");
-$user = $connection["user"];
-$password = $connection["pass"];
-
-try {
-
-    $pdo = new PDO(
-        "pgsql:host=$host;port=$port;dbname=$dbname",
-        $user,
-        $password,
-        [
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-        ]
-    );
-
-} catch (PDOException $e) {
-    die("Connection failed: " . $e->getMessage());
-}
-
+header("Location: index.php#reviews");
+exit();
 ?>
