@@ -16,7 +16,7 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Renz Okit | Portfolio</title>
+    <title>Renz Loi Okit | Portfolio</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
@@ -231,7 +231,7 @@ try {
 <body>
 
 <nav>
-    <h1>RENZ.</h1>
+    <h1>My Portfolio</h1>
     <ul>
         <li><a href="#services">Services</a></li>
         <li><a href="#reviews">Reviews</a></li>
@@ -241,11 +241,11 @@ try {
 
 <section class="hero">
     <div class="hero-text">
-        <h2>Hello, I'm <span>Renz Okit</span></h2>
+        <h2>Hello, I'm <span>Renz Loi Okit</span></h2>
         <p>Full Stack Developer focused on building modern, efficient, and visually appealing systems.</p>
     </div>
     <div class="hero-image">
-        <img src="Renz.jpg" alt="Renz Okit">
+        <img src="Renz.jpg" alt="Renz Loi Okit">
     </div>
 </section>
 
@@ -321,8 +321,9 @@ try {
 </section>
 
 <footer>
-    &copy; <?php echo date("Y"); ?> Renz Okit. All Rights Reserved.
+    &copy; <?php echo date("Y"); ?> Renz Loi Okit. All Rights Reserved.
 </footer>
 
 </body>
 </html>
+
