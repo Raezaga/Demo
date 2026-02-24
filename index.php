@@ -42,7 +42,6 @@ try {
         body { background: var(--bg-dark); color: #e2e8f0; overflow-x: hidden; }
         h1, h2, h3 { font-family: 'Space Grotesk', sans-serif; }
 
-        /* MESH BACKGROUND */
         .mesh-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at 15% 15%, rgba(250, 204, 21, 0.08) 0%, transparent 45%),
@@ -50,7 +49,6 @@ try {
             z-index: -1;
         }
 
-        /* CURSOR GLOW */
         #cursor-glow {
             position: fixed; width: 500px; height: 500px;
             background: radial-gradient(circle, rgba(250, 204, 21, 0.05) 0%, transparent 70%);
@@ -58,7 +56,6 @@ try {
             transform: translate(-50%, -50%); transition: 0.1s ease;
         }
 
-        /* NAVIGATION */
         nav {
             display: flex; justify-content: space-between; align-items: center; padding: 25px 8%;
             background: rgba(5, 8, 16, 0.8); backdrop-filter: blur(15px);
@@ -76,19 +73,6 @@ try {
         .hero-text h2 { font-size: 5.5rem; line-height: 0.9; margin-bottom: 25px; font-weight: 700; }
         .hero-text span { -webkit-text-stroke: 1.5px var(--primary); color: transparent; }
         
-        .status-badge {
-            display: inline-flex; align-items: center; gap: 10px;
-            background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.2);
-            padding: 10px 20px; border-radius: 30px; color: #4ade80; font-size: 0.75rem;
-            font-weight: 700; margin-bottom: 30px; letter-spacing: 1px;
-        }
-        .pulse { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; animation: pulse-animation 2s infinite; }
-        @keyframes pulse-animation {
-            0% { box-shadow: 0 0 0 0px rgba(74, 222, 128, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(74, 222, 128, 0); }
-            100% { box-shadow: 0 0 0 0px rgba(74, 222, 128, 0); }
-        }
-
         .hero-image img { width: 420px; height: 420px; border-radius: 40px; object-fit: cover; transform: rotate(2deg); transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1); border: 1px solid var(--glass-border); }
         .hero-image:hover img { transform: rotate(0deg) scale(1.02); }
 
@@ -102,41 +86,36 @@ try {
         .skill-card span { color: #fff; font-weight: 500; font-size: 0.9rem; }
         .skill-card:hover { background: rgba(250, 204, 21, 0.1); border-color: var(--primary); transform: translateY(-8px); }
 
-        /* PROJECT SHOWROOM */
-        .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; margin-top: 50px; }
+        /* PROJECT GRID - IMPROVED */
+        .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-top: 50px; }
         .project-card {
             position: relative; overflow: hidden; border-radius: 30px;
             background: var(--glass); border: 1px solid var(--glass-border);
-            height: 400px; transition: 0.5s;
+            height: 350px; transition: 0.5s;
         }
-        .project-img { width: 100%; height: 100%; background: #111827; object-fit: cover; transition: 0.6s; }
+        .project-img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; filter: brightness(0.7); }
         .project-overlay {
-            position: absolute; inset: 0; padding: 40px;
-            background: linear-gradient(to top, rgba(5, 8, 16, 0.9) 20%, transparent);
+            position: absolute; inset: 0; padding: 30px;
+            background: linear-gradient(to top, rgba(5, 8, 16, 0.95) 30%, transparent);
             display: flex; flex-direction: column; justify-content: flex-end;
-            transform: translateY(30px); opacity: 0; transition: 0.4s;
+            transform: translateY(20px); opacity: 0; transition: 0.4s;
         }
         .project-card:hover .project-overlay { transform: translateY(0); opacity: 1; }
-        .project-card:hover .project-img { transform: scale(1.1); filter: grayscale(100%) brightness(30%); }
+        .project-card:hover .project-img { transform: scale(1.05); filter: brightness(0.3); }
 
-        /* REVIEWS */
+        /* REVIEWS & BUTTONS */
         .review-box { background: var(--glass); border: 1px solid var(--glass-border); padding: 40px; border-radius: 30px; margin-bottom: 20px; }
-        .pagination a { color: var(--primary); border: 1px solid var(--glass-border); padding: 12px 20px; border-radius: 12px; text-decoration: none; margin: 0 5px; transition: 0.3s; }
-        .pagination a.active { background: var(--primary); color: #000; font-weight: bold; }
-
-        /* BUTTONS */
         .btn-premium {
             padding: 18px 45px; background: var(--primary); color: #000;
             border-radius: 15px; font-weight: 700; text-decoration: none;
             display: inline-flex; align-items: center; gap: 12px; transition: 0.4s;
-            box-shadow: 0 10px 20px rgba(250, 204, 21, 0.2);
+            box-shadow: 0 10px 20px rgba(250,204,21,0.2);
         }
-        .btn-premium:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(250, 204, 21, 0.4); }
+        .btn-premium:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(250,204,21,0.4); }
 
         @media(max-width: 1000px) {
             .hero { flex-direction: column; text-align: center; }
             .hero-text h2 { font-size: 3.5rem; }
-            .hero-image img { width: 300px; height: 300px; }
             nav ul { display: none; }
         }
     </style>
@@ -159,11 +138,8 @@ try {
 
 <section id="hero" class="hero">
     <div class="hero-text">
-        <div class="status-badge">
-            <div class="pulse"></div> AVAILABLE FOR NEW PROJECTS
-        </div>
-        <h2>Building <span>Robust</span> Web Systems</h2>
-        <p>I am Renz Okit, a Full Stack Developer specializing in high-performance PHP architectures and modern UI/UX design.</p>
+        <h2>Engineering <span>Scalable</span> Web Systems</h2>
+        <p>I am Renz Okit, a Full Stack Developer specializing in high-performance PHP architectures and sophisticated UI/UX design.</p>
         <div style="margin-top: 40px;">
             <a href="My_CV.pdf" download class="btn-premium">
                 <i class="fas fa-download"></i> DOWNLOAD RESUME
@@ -177,8 +153,6 @@ try {
 
 <section id="resume">
     <h2 style="font-size: 3rem; margin-bottom: 20px;">Technical <span>Philosophy</span></h2>
-    <p style="color: #94a3b8; max-width: 600px;">Click each technology to explore how I implement these tools to solve real-world problems.</p>
-    
     <div class="skill-grid">
         <a href="skill_details.php?skill=php" class="skill-card"><span>PHP (PDO)</span></a>
         <a href="skill_details.php?skill=mysql" class="skill-card"><span>MySQL</span></a>
@@ -195,17 +169,33 @@ try {
         <div class="project-card">
             <div class="project-img" style="background: url('project1.jpg') center/cover;"></div>
             <div class="project-overlay">
-                <p style="color: var(--primary); font-weight: bold; letter-spacing: 2px; font-size: 0.7rem;">MANAGEMENT SYSTEM</p>
+                <p style="color: var(--primary); font-weight: bold; font-size: 0.7rem; letter-spacing: 2px;">LOGISTICS</p>
                 <h3>Enterprise Inventory</h3>
-                <p style="color: #94a3b8; margin-top: 10px;">A full-scale PHP/MySQL system for tracking multi-warehouse logistics.</p>
+                <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 10px;">End-to-end warehouse management with real-time stock monitoring.</p>
             </div>
         </div>
         <div class="project-card">
             <div class="project-img" style="background: url('project2.jpg') center/cover;"></div>
             <div class="project-overlay">
-                <p style="color: var(--accent-blue); font-weight: bold; letter-spacing: 2px; font-size: 0.7rem;">API INTEGRATION</p>
-                <h3>Crypto Dashboard</h3>
-                <p style="color: #94a3b8; margin-top: 10px;">Live market tracking using REST APIs and Chart.js visualization.</p>
+                <p style="color: var(--accent-blue); font-weight: bold; font-size: 0.7rem; letter-spacing: 2px;">FINTECH</p>
+                <h3>Crypto Analytics</h3>
+                <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 10px;">Market data visualization platform utilizing secure REST API integrations.</p>
+            </div>
+        </div>
+        <div class="project-card">
+            <div class="project-img" style="background: url('project3.jpg') center/cover;"></div>
+            <div class="project-overlay">
+                <p style="color: #fb7185; font-weight: bold; font-size: 0.7rem; letter-spacing: 2px;">E-COMMERCE</p>
+                <h3>Custom Storefront</h3>
+                <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 10px;">A tailor-made shopping experience with a focus on conversion and speed.</p>
+            </div>
+        </div>
+        <div class="project-card">
+            <div class="project-img" style="background: url('project4.jpg') center/cover;"></div>
+            <div class="project-overlay">
+                <p style="color: #a78bfa; font-weight: bold; font-size: 0.7rem; letter-spacing: 2px;">SAAS</p>
+                <h3>CRM Portal</h3>
+                <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 10px;">A high-performance portal designed for streamlined customer relationship management.</p>
             </div>
         </div>
     </div>
@@ -224,7 +214,6 @@ try {
                 <button type="submit" style="width:100%; padding:18px; background:var(--primary); border:none; border-radius:12px; font-weight:bold; cursor:pointer;">SUBMIT FEEDBACK</button>
             </form>
         </div>
-
         <?php foreach ($reviews as $row): ?>
             <div class="review-box">
                 <h4 style="color: var(--primary); font-size: 1.2rem;"><?php echo htmlspecialchars($row['name']); ?></h4>
@@ -232,19 +221,12 @@ try {
                 <p style="color: #cbd5e1; line-height: 1.6; font-style: italic;">"<?php echo htmlspecialchars($row['review']); ?>"</p>
             </div>
         <?php endforeach; ?>
-
-        <div class="pagination" style="text-align: center; margin-top: 40px;">
-            <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                <a href="?page=<?php echo $i; ?>#reviews" class="<?php echo ($page == $i) ? 'active' : ''; ?>"><?php echo $i; ?></a>
-            <?php endfor; ?>
-        </div>
     </div>
 </section>
 
 <section id="contact" style="text-align: center; min-height: 70vh;">
     <h2 style="font-size: 4rem; margin-bottom: 20px;">Let's <span>Connect.</span></h2>
     <div style="background: var(--glass); border: 1px solid var(--glass-border); padding: 50px; border-radius: 40px; max-width: 600px; margin: 40px auto;">
-        <p style="color: #94a3b8; margin-bottom: 10px;">OFFICIAL EMAIL</p>
         <h3 style="font-size: 1.8rem; color: #fff; margin-bottom: 30px;">renzokit.dev@email.com</h3>
         <div style="display: flex; justify-content: center; gap: 20px;">
             <a href="https://github.com/Raezaga" target="_blank" style="color:#fff; font-size: 24px;"><i class="fab fa-github"></i></a>
@@ -259,7 +241,6 @@ try {
 </footer>
 
 <script>
-    // CURSOR FOLLOW EFFECT
     const glow = document.getElementById('cursor-glow');
     document.addEventListener('mousemove', (e) => {
         glow.style.left = e.clientX + 'px';
