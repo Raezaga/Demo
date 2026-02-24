@@ -24,7 +24,7 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Renz Loi Okit | Creative Developer</title>
+    <title>Renz Loi Okit | Portfolio</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
@@ -37,13 +37,12 @@ try {
             --accent-blue: #38bdf8;
         }
 
-        /* BASE STYLES */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         html { scroll-behavior: smooth; }
         body { background: var(--bg-dark); color: #e2e8f0; overflow-x: hidden; }
         h1, h2, h3 { font-family: 'Space Grotesk', sans-serif; }
 
-        /* BACKGROUND EFFECTS */
+        /* MESH & CURSOR GLOW */
         .mesh-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at 15% 15%, rgba(250, 204, 21, 0.08) 0%, transparent 45%),
@@ -53,7 +52,7 @@ try {
 
         #cursor-glow {
             position: fixed; width: 600px; height: 600px;
-            background: radial-gradient(circle, rgba(250, 204, 21, 0.05) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(250, 204, 21, 0.06) 0%, transparent 70%);
             border-radius: 50%; pointer-events: none; z-index: 0;
             transform: translate(-50%, -50%); transition: 0.1s ease;
         }
@@ -61,76 +60,55 @@ try {
         /* NAVIGATION */
         nav {
             display: flex; justify-content: space-between; align-items: center; padding: 25px 8%;
-            background: rgba(5, 8, 16, 0.85); backdrop-filter: blur(15px);
+            background: rgba(5, 8, 16, 0.85); backdrop-filter: blur(20px);
             position: fixed; top: 0; width: 100%; z-index: 1000; border-bottom: 1px solid var(--glass-border);
         }
         nav h1 { font-size: 24px; font-weight: 700; color: var(--primary); letter-spacing: -1px; }
-        nav ul { list-style: none; display: flex; gap: 35px; }
-        nav ul li a { text-decoration: none; color: #94a3b8; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; transition: 0.3s; }
-        nav ul li a:hover { color: var(--primary); }
+        nav ul { list-style: none; display: flex; gap: 30px; }
+        nav ul a { text-decoration: none; color: #94a3b8; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; transition: 0.3s; }
+        nav ul a:hover { color: var(--primary); }
 
-        /* SECTIONS */
-        section { min-height: 100vh; padding: 140px 8% 100px; position: relative; z-index: 2; }
+        section { padding: 120px 8% 80px; position: relative; z-index: 2; }
 
         /* HERO */
-        .hero { display: flex; align-items: center; gap: 60px; }
-        .hero-text h2 { font-size: 5.5rem; line-height: 0.9; margin-bottom: 25px; font-weight: 700; }
-        .hero-text span { -webkit-text-stroke: 1.5px var(--primary); color: transparent; }
-        
-        .hero-image img { width: 420px; height: 420px; border-radius: 40px; object-fit: cover; transform: rotate(2deg); transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1); border: 1px solid var(--glass-border); }
-        .hero-image:hover img { transform: rotate(0deg) scale(1.02); }
+        .hero { display: flex; align-items: center; gap: 60px; min-height: 90vh; }
+        .hero-text h2 { font-size: 5rem; line-height: 1; margin-bottom: 20px; }
+        .hero-text h2 span { -webkit-text-stroke: 1px var(--primary); color: transparent; }
+        .hero-image img { width: 400px; height: 400px; border-radius: 50px; object-fit: cover; border: 1px solid var(--glass-border); transform: rotate(3deg); transition: 0.5s; }
+        .hero:hover .hero-image img { transform: rotate(0deg); }
 
-        /* WORK GRID (VISIBLE INFO) */
-        .project-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
-            gap: 25px; 
-            margin-top: 50px; 
-        }
+        /* EXPERTISE */
+        .expertise-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 40px; }
+        .skill-card { background: var(--glass); border: 1px solid var(--glass-border); padding: 35px; border-radius: 25px; transition: 0.4s ease; }
+        .skill-card i { font-size: 2rem; color: var(--primary); margin-bottom: 20px; display: block; }
+        .skill-card h3 { margin-bottom: 10px; font-size: 1.4rem; }
+        .skill-card p { font-size: 0.85rem; color: #94a3b8; line-height: 1.6; }
+        .skill-card:hover { background: rgba(250, 204, 21, 0.05); border-color: var(--primary); transform: translateY(-8px); }
 
+        /* PROJECT GRID */
+        .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; margin-top: 50px; }
         .project-card {
-            position: relative; overflow: hidden; border-radius: 24px;
-            background: var(--glass); border: 1px solid var(--glass-border);
-            height: 420px; transition: 0.4s ease; display: flex; flex-direction: column;
+            background: var(--glass); border: 1px solid var(--glass-border); border-radius: 24px;
+            overflow: hidden; height: 420px; display: flex; flex-direction: column;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-
         .project-img { 
-            width: 100%; height: 60%; object-fit: cover; 
-            border-bottom: 1px solid var(--glass-border);
-            box-shadow: inset 0 0 50px rgba(0,0,0,0.5);
+            height: 60%; width: 100%; border-bottom: 1px solid var(--glass-border);
+            background-size: cover; background-position: center; 
+            /* Fallback background if images aren't found */
+            background-color: #1a1a1a; 
         }
+        .project-info { height: 40%; padding: 20px; background: rgba(15, 23, 42, 0.3); display: flex; flex-direction: column; justify-content: center; }
+        .project-tag { font-size: 0.6rem; text-transform: uppercase; font-weight: 800; letter-spacing: 2px; margin-bottom: 8px; padding: 4px 10px; border-radius: 8px; width: fit-content; }
+        .project-card:hover { transform: translateY(-12px); border-color: var(--primary); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
 
-        .project-info {
-            padding: 20px; background: rgba(15, 23, 42, 0.6);
-            height: 40%; display: flex; flex-direction: column; justify-content: center;
-        }
+        .review-box { background: var(--glass); border: 1px solid var(--glass-border); padding: 30px; border-radius: 20px; margin-bottom: 20px; }
+        input, textarea { width: 100%; padding: 15px; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); color: white; border-radius: 12px; margin-bottom: 15px; }
+        .btn-submit { width: 100%; padding: 15px; background: var(--primary); border: none; border-radius: 12px; font-weight: bold; cursor: pointer; transition: 0.3s; }
 
-        .project-tag {
-            font-size: 0.65rem; font-weight: 800; letter-spacing: 1.5px;
-            text-transform: uppercase; margin-bottom: 8px; padding: 3px 10px;
-            border-radius: 6px; width: fit-content;
-        }
-
-        .project-card h3 { font-size: 1.3rem; margin-bottom: 5px; color: #fff; }
-        .project-card p { font-size: 0.85rem; color: #94a3b8; line-height: 1.5; }
-
-        .project-card:hover { border-color: var(--primary); transform: translateY(-10px); }
-
-        /* BUTTONS & FORMS */
-        .btn-premium {
-            padding: 18px 45px; background: var(--primary); color: #000;
-            border-radius: 15px; font-weight: 700; text-decoration: none;
-            display: inline-flex; align-items: center; gap: 12px; transition: 0.4s;
-            box-shadow: 0 10px 20px rgba(250,204,21,0.2);
-        }
-        .btn-premium:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(250,204,21,0.4); }
-
-        .review-box { background: var(--glass); border: 1px solid var(--glass-border); padding: 35px; border-radius: 25px; margin-bottom: 20px; }
-        
-        @media(max-width: 1000px) {
+        @media (max-width: 900px) {
             .hero { flex-direction: column; text-align: center; }
             .hero-text h2 { font-size: 3.5rem; }
-            nav ul { display: none; }
         }
     </style>
 </head>
@@ -143,6 +121,7 @@ try {
     <h1>RENZ LOI.</h1>
     <ul>
         <li><a href="#hero">Intro</a></li>
+        <li><a href="#expertise">Expertise</a></li>
         <li><a href="#projects">Work</a></li>
         <li><a href="#reviews">Clients</a></li>
         <li><a href="#contact">Contact</a></li>
@@ -152,127 +131,130 @@ try {
 <section id="hero" class="hero">
     <div class="hero-text">
         <h2>Engineering <span>Scalable</span> Web Systems</h2>
-        <p>I am <strong>Renz Loi Okit</strong>, a Full Stack Developer specializing in high-performance PHP architectures and sophisticated UI/UX design.</p>
-        <div style="margin-top: 40px;">
-            <a href="My_CV.pdf" download class="btn-premium">
-                <i class="fas fa-download"></i> DOWNLOAD RESUME
-            </a>
+        <p>I am <strong>Renz Loi Okit</strong>, a Full Stack Developer specialized in high-performance PHP architectures and sophisticated UI design.</p>
+        <div style="margin-top: 30px;">
+            <a href="My_CV.pdf" class="btn-submit" style="text-decoration:none; display:inline-block; width:auto; padding: 15px 40px;">GET RESUME</a>
         </div>
     </div>
     <div class="hero-image">
-        <img src="Renz.jpg" alt="Renz Loi Okit Profile">
+        <img src="Renz.jpg" alt="Renz Loi Okit">
+    </div>
+</section>
+
+<section id="expertise">
+    <h2 style="font-size: 3rem; margin-bottom: 10px;">Technical <span>Philosophy</span></h2>
+    <p style="color: #64748b; max-width: 700px;">Architecture over code. I build systems that scale.</p>
+    <div class="expertise-grid">
+        <div class="skill-card"><i class="fas fa-server"></i><h3>Backend</h3><p>PHP (PDO), MySQL, and Secure API design.</p></div>
+        <div class="skill-card"><i class="fas fa-layer-group"></i><h3>Frontend</h3><p>ES6 JavaScript, Modern CSS, and Tailwind.</p></div>
+        <div class="skill-card"><i class="fas fa-microchip"></i><h3>Systems</h3><p>Scalable schemas and database optimization.</p></div>
+        <div class="skill-card"><i class="fas fa-terminal"></i><h3>Workflow</h3><p>Git, Command Line, and CI/CD pipelines.</p></div>
     </div>
 </section>
 
 <section id="projects">
-    <h2 style="font-size: 3rem; margin-bottom: 10px;">Selected <span>Works</span></h2>
-    <p style="color: #64748b; margin-bottom: 40px;">A collection of systems designed for scale, performance, and impact.</p>
-    
+    <h2 style="font-size: 3rem; margin-bottom: 40px;">Selected <span>Works</span></h2>
     <div class="project-grid">
         <div class="project-card">
-            <div class="project-img" style="background: url('p1.jpg') center/cover;"></div>
+            <div class="project-img" style="background-image: url('p1.jpg');"></div>
             <div class="project-info">
-                <span class="project-tag" style="background: rgba(250,204,21,0.1); color: var(--primary);">Logistics</span>
+                <span class="project-tag" style="background: rgba(250,204,21,0.1); color: var(--primary);">LOGISTICS</span>
                 <h3>Enterprise Inventory</h3>
-                <p>Full-stack stock management for large scale warehouses.</p>
+                <p>Full-stack warehouse management system.</p>
             </div>
         </div>
         <div class="project-card">
-            <div class="project-img" style="background: url('p2.jpg') center/cover;"></div>
+            <div class="project-img" style="background-image: url('p2.jpg');"></div>
             <div class="project-info">
-                <span class="project-tag" style="background: rgba(56,189,248,0.1); color: var(--accent-blue);">Fintech</span>
+                <span class="project-tag" style="background: rgba(56,189,248,0.1); color: var(--accent-blue);">FINTECH</span>
                 <h3>Market Analytics</h3>
-                <p>Real-time API tracking with dynamic chart visualizations.</p>
+                <p>Live data visualization for financial markets.</p>
             </div>
         </div>
         <div class="project-card">
-            <div class="project-img" style="background: url('p3.jpg') center/cover;"></div>
+            <div class="project-img" style="background-image: url('p3.jpg');"></div>
             <div class="project-info">
-                <span class="project-tag" style="background: rgba(251,113,133,0.1); color: #fb7185;">Commerce</span>
+                <span class="project-tag" style="background: rgba(251,113,133,0.1); color: #fb7185);">COMMERCE</span>
                 <h3>Modern Storefront</h3>
-                <p>High-conversion e-commerce engine with SEO optimization.</p>
+                <p>High-conversion e-commerce shopping engine.</p>
             </div>
         </div>
         <div class="project-card">
-            <div class="project-img" style="background: url('p4.jpg') center/cover;"></div>
+            <div class="project-img" style="background-image: url('p4.jpg');"></div>
             <div class="project-info">
-                <span class="project-tag" style="background: rgba(167,139,250,0.1); color: #a78bfa;">SaaS</span>
+                <span class="project-tag" style="background: rgba(167,139,250,0.1); color: #a78bfa);">SAAS</span>
                 <h3>Client Portal</h3>
-                <p>Streamlined CRM for managing complex client relations.</p>
+                <p>Sophisticated CRM for client relationship management.</p>
             </div>
         </div>
         <div class="project-card">
-            <div class="project-img" style="background: url('p5.jpg') center/cover;"></div>
+            <div class="project-img" style="background-image: url('p5.jpg');"></div>
             <div class="project-info">
-                <span class="project-tag" style="background: rgba(34,197,94,0.1); color: #4ade80;">Business</span>
+                <span class="project-tag" style="background: rgba(34,197,94,0.1); color: #4ade80);">BUSINESS</span>
                 <h3>Retail POS</h3>
-                <p>Fast-checkout Point of Sale with offline sync capability.</p>
+                <p>Fast Point of Sale with offline sync features.</p>
             </div>
         </div>
         <div class="project-card">
-            <div class="project-img" style="background: url('p6.jpg') center/cover;"></div>
+            <div class="project-img" style="background-image: url('p6.jpg');"></div>
             <div class="project-info">
-                <span class="project-tag" style="background: rgba(244,114,182,0.1); color: #f472b6;">Real Estate</span>
+                <span class="project-tag" style="background: rgba(244,114,182,0.1); color: #f472b6);">REAL ESTATE</span>
                 <h3>Property Finder</h3>
-                <p>Geolocation-based property listing and virtual tour portal.</p>
+                <p>Geolocation portal for virtual property tours.</p>
             </div>
         </div>
         <div class="project-card">
-            <div class="project-img" style="background: url('p7.jpg') center/cover;"></div>
+            <div class="project-img" style="background-image: url('p7.jpg');"></div>
             <div class="project-info">
-                <span class="project-tag" style="background: rgba(45,212,191,0.1); color: #2dd4bf;">Healthcare</span>
+                <span class="project-tag" style="background: rgba(45,212,191,0.1); color: #2dd4bf);">HEALTHCARE</span>
                 <h3>Patient EMR</h3>
-                <p>Secure medical records management with HIPAA focus.</p>
+                <p>Secure Electronic Medical Records management.</p>
             </div>
         </div>
         <div class="project-card">
-            <div class="project-img" style="background: url('p8.jpg') center/cover;"></div>
+            <div class="project-img" style="background-image: url('p8.jpg');"></div>
             <div class="project-info">
-                <span class="project-tag" style="background: rgba(251,146,60,0.1); color: #fb923c;">Education</span>
+                <span class="project-tag" style="background: rgba(251,146,60,0.1); color: #fb923c);">EDUCATION</span>
                 <h3>LMS Platform</h3>
-                <p>Interactive learning system with quiz engines and certificates.</p>
+                <p>Interactive learning and course tracking engine.</p>
             </div>
         </div>
     </div>
 </section>
 
 <section id="reviews">
-    <h2 style="font-size: 3rem; margin-bottom: 40px; text-align: center;">Client <span>Voices</span></h2>
-    <div style="max-width: 850px; margin: 0 auto;">
+    <h2 style="font-size: 3rem; margin-bottom: 40px; text-align:center;">Client <span>Voices</span></h2>
+    <div style="max-width: 800px; margin: 0 auto;">
         <div class="review-box" style="border-color: var(--primary);">
             <form action="save_review.php" method="POST">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
-                    <input type="text" name="name" placeholder="Full Name" required style="width:100%; padding:15px; background:rgba(255,255,255,0.05); border:1px solid var(--glass-border); color:white; border-radius:12px;">
-                    <input type="text" name="company" placeholder="Company/Business" required style="width:100%; padding:15px; background:rgba(255,255,255,0.05); border:1px solid var(--glass-border); color:white; border-radius:12px;">
-                </div>
-                <textarea name="review" rows="3" placeholder="Share your experience working with me..." required style="width:100%; padding:15px; background:rgba(255,255,255,0.05); border:1px solid var(--glass-border); color:white; border-radius:12px; margin-bottom: 20px;"></textarea>
-                <button type="submit" style="width:100%; padding:18px; background:var(--primary); border:none; border-radius:12px; font-weight:bold; cursor:pointer;">SUBMIT FEEDBACK</button>
+                <input type="text" name="name" placeholder="Full Name" required>
+                <input type="text" name="company" placeholder="Company Name" required>
+                <textarea name="review" rows="3" placeholder="Share your experience..." required></textarea>
+                <button type="submit" class="btn-submit">POST REVIEW</button>
             </form>
         </div>
-        
         <?php foreach ($reviews as $row): ?>
             <div class="review-box">
-                <h4 style="color: var(--primary); font-size: 1.2rem;"><?php echo htmlspecialchars($row['name']); ?></h4>
-                <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 15px;"><?php echo htmlspecialchars($row['company']); ?></p>
-                <p style="color: #cbd5e1; line-height: 1.6; font-style: italic;">"<?php echo htmlspecialchars($row['review']); ?>"</p>
+                <h4 style="color:var(--primary);"><?php echo htmlspecialchars($row['name']); ?></h4>
+                <p style="font-size:0.7rem; color:#64748b;"><?php echo htmlspecialchars($row['company']); ?></p>
+                <p style="margin-top:10px; color:#cbd5e1;">"<?php echo htmlspecialchars($row['review']); ?>"</p>
             </div>
         <?php endforeach; ?>
     </div>
 </section>
 
-<section id="contact" style="text-align: center; min-height: 70vh;">
-    <h2 style="font-size: 4rem; margin-bottom: 20px;">Let's <span>Connect.</span></h2>
-    <div style="background: var(--glass); border: 1px solid var(--glass-border); padding: 50px; border-radius: 40px; max-width: 600px; margin: 40px auto;">
-        <h3 style="font-size: 1.8rem; color: #fff; margin-bottom: 30px;">renzloiokit.dev@email.com</h3>
-        <div style="display: flex; justify-content: center; gap: 25px;">
-            <a href="https://github.com/Raezaga" target="_blank" style="color:#fff; font-size: 28px;"><i class="fab fa-github"></i></a>
-            <a href="https://www.linkedin.com/in/renz-loi-okit-13397b393/" target="_blank" style="color:#fff; font-size: 28px;"><i class="fab fa-linkedin"></i></a>
-            <a href="https://www.facebook.com/Raezaga/" target="_blank" style="color:#fff; font-size: 28px;"><i class="fab fa-facebook"></i></a>
+<section id="contact" style="text-align: center;">
+    <h2 style="font-size: 3rem; margin-bottom: 20px;">Let's <span>Connect.</span></h2>
+    <div style="background: var(--glass); padding: 40px; border-radius: 30px; border: 1px solid var(--glass-border); max-width: 500px; margin: 0 auto;">
+        <h3>renzloiokit.dev@email.com</h3>
+        <div style="margin-top: 20px; font-size: 24px; display: flex; justify-content: center; gap: 20px;">
+            <a href="https://github.com/Raezaga" style="color:white;"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/renz-loi-okit-13397b393/" style="color:white;"><i class="fab fa-linkedin"></i></a>
         </div>
     </div>
 </section>
 
-<footer style="text-align: center; padding: 50px; color: #475569; font-size: 0.8rem; border-top: 1px solid var(--glass-border);">
+<footer style="text-align: center; padding: 50px; color: #475569; font-size: 0.8rem;">
     &copy; <?php echo date("Y"); ?> RENZ LOI OKIT. ALL RIGHTS RESERVED.
 </footer>
 
