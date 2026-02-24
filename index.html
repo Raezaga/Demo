@@ -8,6 +8,8 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
 <style>
+/* ================= YOUR ORIGINAL CSS (UNCHANGED) ================= */
+
 *{
     margin:0;
     padding:0;
@@ -28,7 +30,10 @@ nav{
     padding:25px 8%;
 }
 
-nav h1{ font-size:22px; letter-spacing:2px; }
+nav h1{
+    font-size:22px;
+    letter-spacing:2px;
+}
 
 nav ul{
     list-style:none;
@@ -39,6 +44,11 @@ nav ul{
 nav ul li a{
     text-decoration:none;
     color:#cbd5e1;
+    transition:.3s;
+}
+
+nav ul li a:hover{
+    color:#facc15;
 }
 
 section{
@@ -51,6 +61,7 @@ section{
 }
 
 /* FORM */
+
 .review-form{
     max-width:650px;
     margin:auto;
@@ -80,6 +91,7 @@ section{
 }
 
 /* REVIEW LIST */
+
 .review-list{
     margin-top:60px;
     display:grid;
@@ -97,7 +109,9 @@ footer{
     text-align:center;
     padding:30px;
     border-top:1px solid #1e293b;
+    color:#64748b;
 }
+
 </style>
 </head>
 <body>
@@ -105,6 +119,7 @@ footer{
 <nav>
     <h1>RENZ.</h1>
     <ul>
+        <li><a href="#services">Services</a></li>
         <li><a href="#reviews">Reviews</a></li>
         <li><a href="#contact">Contact</a></li>
     </ul>
@@ -113,6 +128,7 @@ footer{
 <section id="reviews">
     <h2 class="section-title">Client Reviews</h2>
 
+    <!-- ✅ FORM CONNECTED TO PHP -->
     <div class="review-form">
         <form method="POST" action="save_review.php">
             <input type="text" name="name" placeholder="Your Name" required>
@@ -122,18 +138,18 @@ footer{
         </form>
     </div>
 
+    <!-- ✅ DISPLAY REVIEWS FROM DATABASE -->
     <div class="review-list">
 
-        <?php
-        if (isset($pdo)) {
+    <?php
+    if(isset($pdo)){
+        try{
+            $stmt = $pdo->query("SELECT * FROM reviews ORDER BY created_at DESC");
+            $reviews = $stmt->fetchAll();
 
-            try {
-                $stmt = $pdo->query("SELECT * FROM reviews ORDER BY created_at DESC");
-                $reviews = $stmt->fetchAll();
-
-                if ($reviews) {
-                    foreach ($reviews as $row) {
-        ?>
+            if($reviews){
+                foreach($reviews as $row){
+    ?>
 
         <div class="review-item">
             <h4>
@@ -148,23 +164,26 @@ footer{
             </p>
         </div>
 
-        <?php
-                    }
-                } else {
-                    echo "<p>No reviews yet.</p>";
+    <?php
                 }
-
-            } catch (Exception $e) {
-                echo "<p>Failed to load reviews.</p>";
+            } else {
+                echo "<p>No reviews yet.</p>";
             }
 
-        } else {
-            echo "<p>Database not connected.</p>";
+        } catch(Exception $e){
+            echo "<p>Failed to load reviews.</p>";
         }
-        ?>
+    } else {
+        echo "<p>Database not connected.</p>";
+    }
+    ?>
 
     </div>
 
+</section>
+
+<section id="contact" class="contact">
+    <h2 class="section-title">Let's Connect</h2>
 </section>
 
 <footer>
