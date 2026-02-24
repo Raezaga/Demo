@@ -1,7 +1,7 @@
 <?php
 include "config.php";
 
-// --- PAGINATION LOGIC ---
+// Pagination logic remains for the Clients tab
 $limit = 3; 
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $offset = ($page - 1) * $limit;
@@ -37,35 +37,59 @@ try {
         
         .mesh-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 15% 15%, rgba(250, 204, 21, 0.08) 0%, transparent 45%), radial-gradient(circle at 85% 85%, rgba(56, 189, 248, 0.08) 0%, transparent 45%); z-index: -1; }
 
-        nav { display: flex; justify-content: space-between; align-items: center; padding: 25px 8%; background: rgba(5, 8, 16, 0.95); backdrop-filter: blur(20px); position: fixed; top: 0; width: 100%; z-index: 1000; border-bottom: 1px solid var(--glass-border); }
-        nav h1 { font-size: 22px; color: var(--primary); font-weight: 700; }
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 8%; background: rgba(5, 8, 16, 0.95); backdrop-filter: blur(20px); position: fixed; top: 0; width: 100%; z-index: 1000; border-bottom: 1px solid var(--glass-border); }
+        nav h1 { font-size: 20px; color: var(--primary); font-weight: 700; }
         nav ul { list-style: none; display: flex; gap: 25px; }
-        nav ul li a { text-decoration: none; color: #94a3b8; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
-        nav ul li a.active { color: var(--primary); border-bottom: 2px solid var(--primary); padding-bottom: 5px; }
+        nav ul li a { text-decoration: none; color: #94a3b8; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
+        nav ul li a.active { color: var(--primary); }
 
-        .main-container { margin-top: 130px; width: 100%; padding: 0 8% 100px; }
-        .tab-panel { display: none; animation: fadeIn 0.5s ease-out; }
+        .main-container { margin-top: 110px; width: 100%; padding: 0 8% 50px; }
+        .tab-panel { display: none; animation: fadeIn 0.4s ease-out; }
         .tab-panel.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Project Grid Styles */
-        .work-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; margin-top: 40px; }
-        .project-card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 24px; overflow: hidden; height: 420px; transition: 0.4s; }
-        .project-card:hover { transform: translateY(-10px); border-color: var(--primary); }
-        .project-img { height: 250px; width: 100%; background-size: cover; background-position: center; image-rendering: high-quality; border-bottom: 1px solid var(--glass-border); }
-        .project-info { padding: 25px; }
+        /* GRID FIX: Smaller, 4-column layout to fit perfectly */
+        .work-grid { 
+            display: grid; 
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 15px; 
+            margin-top: 20px; 
+        }
+        .project-card { 
+            background: var(--glass); 
+            border: 1px solid var(--glass-border); 
+            border-radius: 15px; 
+            overflow: hidden; 
+            height: 300px; /* Reduced height */
+            transition: 0.3s; 
+        }
+        .project-card:hover { border-color: var(--primary); transform: scale(1.02); }
+        .project-img { height: 180px; width: 100%; background-size: cover; background-position: center; image-rendering: high-quality; }
+        .project-info { padding: 15px; }
+        .project-info span { font-size: 0.6rem; color: var(--primary); font-weight: 700; }
+        .project-info h3 { font-size: 1rem; margin-top: 5px; }
 
-        /* Review Styles */
-        .review-card { background: var(--glass); padding: 30px; border-radius: 20px; border: 1px solid var(--glass-border); margin-bottom: 20px; }
-        .pagination { display: flex; justify-content: center; gap: 10px; margin-top: 40px; }
-        .page-link { padding: 12px 20px; background: var(--glass); color: white; text-decoration: none; border-radius: 10px; border: 1px solid var(--glass-border); }
-        .page-link.active { background: var(--primary); color: #000; font-weight: 700; }
+        /* RESUME BUTTON FIX: Text is now black, no blue links */
+        .btn-resume { 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 8px; 
+            padding: 12px 25px; 
+            background: var(--primary); 
+            color: #000 !important; /* Forces black text */
+            text-decoration: none !important; 
+            border-radius: 8px; 
+            font-weight: 700; 
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+        .btn-resume:hover { background: #fff; color: #000 !important; }
 
-        /* Form */
-        .form-box { background: var(--glass); padding: 40px; border-radius: 25px; border: 1px solid var(--primary); margin-bottom: 50px; }
-        input, textarea { width: 100%; padding: 15px; margin-bottom: 15px; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); color: white; border-radius: 10px; outline: none; }
-        .btn-submit { width: 100%; padding: 15px; background: var(--primary); border: none; border-radius: 10px; font-weight: 700; cursor: pointer; transition: 0.3s; }
-        .btn-submit:hover { background: #fff; }
+        .review-card { background: var(--glass); padding: 20px; border-radius: 15px; border: 1px solid var(--glass-border); margin-bottom: 15px; }
+        
+        @media (max-width: 1100px) { .work-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 600px) { .work-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -75,118 +99,67 @@ try {
 <nav>
     <h1>RENZ LOI.</h1>
     <ul>
-        <li><a onclick="showTab(event, 'intro')" class="nav-link <?= (!isset($_GET['page'])) ? 'active' : '' ?>">Intro</a></li>
+        <li><a onclick="showTab(event, 'intro')" class="nav-link active">Intro</a></li>
         <li><a onclick="showTab(event, 'expertise')" class="nav-link">Expertise</a></li>
         <li><a onclick="showTab(event, 'work')" class="nav-link">Work</a></li>
-        <li><a onclick="showTab(event, 'clients')" class="nav-link <?= (isset($_GET['page'])) ? 'active' : '' ?>">Clients</a></li>
+        <li><a onclick="showTab(event, 'clients')" class="nav-link">Clients</a></li>
         <li><a onclick="showTab(event, 'contact')" class="nav-link">Contact</a></li>
     </ul>
 </nav>
 
 <main class="main-container">
     
-    <div id="intro" class="tab-panel <?= (!isset($_GET['page'])) ? 'active' : '' ?>">
-        <section style="display: flex; align-items: center; gap: 60px; min-height: 70vh;">
+    <div id="intro" class="tab-panel active">
+        <section style="display: flex; align-items: center; gap: 40px; min-height: 60vh;">
             <div class="hero-text">
-                <h2 style="font-size: 5rem; font-family: 'Space Grotesk';">Engineering <span>Scalable</span> Systems</h2>
-                <p style="font-size: 1.2rem; color: #94a3b8; margin-top: 20px; max-width: 600px;">
-                    I am <b>Renz Loi Okit</b>, a Full Stack Developer specialized in building efficient, logic-driven PHP applications.
-                </p>
-                <a href="My_CV.pdf" download class="btn-submit" style="display:inline-block; width:auto; padding: 18px 40px; text-decoration:none; margin-top:30px;">
+                <h2 style="font-size: 4rem; font-family: 'Space Grotesk';">Engineering <span>Scalable</span> Systems</h2>
+                <p style="color: #94a3b8; margin: 15px 0 25px;">I am Renz Loi Okit, Full Stack Developer.</p>
+                <a href="My_CV.pdf" download class="btn-resume">
                     <i class="fas fa-file-download"></i> DOWNLOAD RESUME
                 </a>
             </div>
-            <img src="Renz.jpg" style="width: 400px; height: 400px; border-radius: 50px; object-fit: cover; border: 1px solid var(--glass-border); transform: rotate(3deg);">
+            <img src="Renz.jpg" style="width: 320px; height: 320px; border-radius: 30px; object-fit: cover;">
         </section>
     </div>
 
     <div id="expertise" class="tab-panel">
-        <h2 style="font-size: 3rem; margin-bottom: 40px; font-family: 'Space Grotesk';">Technical <span>Philosophy</span></h2>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px;">
-            <div class="review-card"><i class="fas fa-server" style="color:var(--primary); font-size:2rem;"></i><h3 style="margin-top:15px;">Backend Arch</h3><p style="color:#94a3b8; font-size:0.9rem;">PHP (PDO), MySQL optimization, and secure API design.</p></div>
-            <div class="review-card"><i class="fas fa-layer-group" style="color:var(--primary); font-size:2rem;"></i><h3 style="margin-top:15px;">Frontend Logic</h3><p style="color:#94a3b8; font-size:0.9rem;">JS (ES6+), Modern CSS Architectures, and UI state management.</p></div>
-            <div class="review-card"><i class="fas fa-microchip" style="color:var(--primary); font-size:2rem;"></i><h3 style="margin-top:15px;">System Design</h3><p style="color:#94a3b8; font-size:0.9rem;">Database normalization and server-side performance tuning.</p></div>
-            <div class="review-card"><i class="fas fa-terminal" style="color:var(--primary); font-size:2rem;"></i><h3 style="margin-top:15px;">Workflow</h3><p style="color:#94a3b8; font-size:0.9rem;">Git, CI/CD pipelines, and Linux environment proficiency.</p></div>
+        <h2 style="font-size: 2.5rem; margin-bottom: 30px;">Expertise</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+            <div class="review-card"><h3>Backend</h3><p>PHP & MySQL</p></div>
+            <div class="review-card"><h3>Frontend</h3><p>JS & CSS</p></div>
+            <div class="review-card"><h3>Systems</h3><p>Architecture</p></div>
         </div>
     </div>
 
     <div id="work" class="tab-panel">
-        <h2 style="font-size: 3rem; margin-bottom: 40px; font-family: 'Space Grotesk';">Selected <span>Works</span></h2>
+        <h2 style="font-size: 2.5rem; margin-bottom: 25px;">Selected Works</h2>
         <div class="work-grid">
-            <div class="project-card">
-                <div class="project-img" style="background-image: url('p1.jpg');"></div>
-                <div class="project-info"><span>LOGISTICS</span><h3>Enterprise Inventory</h3></div>
-            </div>
-            <div class="project-card">
-                <div class="project-img" style="background-image: url('p2.jpg');"></div>
-                <div class="project-info"><span>FINTECH</span><h3>Market Analytics</h3></div>
-            </div>
-            <div class="project-card">
-                <div class="project-img" style="background-image: url('p3.jpg');"></div>
-                <div class="project-info"><span>COMMERCE</span><h3>Modern Storefront</h3></div>
-            </div>
-            <div class="project-card">
-                <div class="project-img" style="background-image: url('p4.jpg');"></div>
-                <div class="project-info"><span>SAAS</span><h3>Client Portal</h3></div>
-            </div>
-            <div class="project-card">
-                <div class="project-img" style="background-image: url('p5.jpg');"></div>
-                <div class="project-info"><span>RETAIL</span><h3>Retail POS System</h3></div>
-            </div>
-            <div class="project-card">
-                <div class="project-img" style="background-image: url('p6.jpg');"></div>
-                <div class="project-info"><span>ESTATE</span><h3>Property Finder</h3></div>
-            </div>
-            <div class="project-card">
-                <div class="project-img" style="background-image: url('p7.jpg');"></div>
-                <div class="project-info"><span>HEALTH</span><h3>Patient EMR</h3></div>
-            </div>
-            <div class="project-card">
-                <div class="project-img" style="background-image: url('p8.jpg');"></div>
-                <div class="project-info"><span>EDU</span><h3>LMS Platform</h3></div>
-            </div>
+            <div class="project-card"><div class="project-img" style="background-image: url('p1.jpg');"></div><div class="project-info"><span>LOGISTICS</span><h3>Inventory</h3></div></div>
+            <div class="project-card"><div class="project-img" style="background-image: url('p2.jpg');"></div><div class="project-info"><span>FINTECH</span><h3>Analytics</h3></div></div>
+            <div class="project-card"><div class="project-img" style="background-image: url('p3.jpg');"></div><div class="project-info"><span>COMMERCE</span><h3>Storefront</h3></div></div>
+            <div class="project-card"><div class="project-img" style="background-image: url('p4.jpg');"></div><div class="project-info"><span>SAAS</span><h3>Portal</h3></div></div>
+            <div class="project-card"><div class="project-img" style="background-image: url('p5.jpg');"></div><div class="project-info"><span>RETAIL</span><h3>POS</h3></div></div>
+            <div class="project-card"><div class="project-img" style="background-image: url('p6.jpg');"></div><div class="project-info"><span>ESTATE</span><h3>Finder</h3></div></div>
+            <div class="project-card"><div class="project-img" style="background-image: url('p7.jpg');"></div><div class="project-info"><span>HEALTH</span><h3>EMR</h3></div></div>
+            <div class="project-card"><div class="project-img" style="background-image: url('p8.jpg');"></div><div class="project-info"><span>EDU</span><h3>LMS</h3></div></div>
         </div>
     </div>
 
-    <div id="clients" class="tab-panel <?= (isset($_GET['page'])) ? 'active' : '' ?>">
-        <h2 style="font-size: 3.5rem; text-align: center; margin-bottom: 40px; font-family: 'Space Grotesk';">Client <span>Voices</span></h2>
-        
-        <div style="max-width: 800px; margin: 0 auto;">
-            <div class="form-box">
-                <h3 style="margin-bottom: 20px;">Submit Feedback</h3>
-                <form action="save_review.php" method="POST">
-                    <input type="text" name="name" placeholder="Full Name" required>
-                    <textarea name="review" rows="4" placeholder="Describe your experience..." required></textarea>
-                    <button type="submit" class="btn-submit">POST REVIEW</button>
-                </form>
-            </div>
-
+    <div id="clients" class="tab-panel">
+        <h2 style="font-size: 2.5rem; margin-bottom: 25px;">Reviews</h2>
+        <div style="max-width: 700px;">
             <?php foreach ($reviews as $row): ?>
                 <div class="review-card">
-                    <h4 style="color:var(--primary); font-size: 1.2rem;"><?= htmlspecialchars($row['name']) ?></h4>
-                    <p style="margin-top: 10px; font-style: italic; color: #cbd5e1;">"<?= htmlspecialchars($row['review']) ?>"</p>
+                    <h4 style="color:var(--primary);"><?= htmlspecialchars($row['name']) ?></h4>
+                    <p style="font-size: 0.9rem;">"<?= htmlspecialchars($row['review']) ?>"</p>
                 </div>
             <?php endforeach; ?>
-
-            <div class="pagination">
-                <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                    <a href="?page=<?= $i ?>" class="page-link <?= ($i == $page) ? 'active' : '' ?>"><?= $i ?></a>
-                <?php endfor; ?>
-            </div>
         </div>
     </div>
 
     <div id="contact" class="tab-panel">
-        <div style="text-align: center; padding-top: 50px;">
-            <h2 style="font-size: 4rem; font-family: 'Space Grotesk';">Let's <span>Connect.</span></h2>
-            <div style="margin-top: 40px; background: var(--glass); padding: 60px; border-radius: 40px; display: inline-block; border: 1px solid var(--glass-border);">
-                <h3 style="font-size: 1.8rem; margin-bottom: 25px;">renzloiokit.dev@email.com</h3>
-                <div style="display: flex; justify-content: center; gap: 40px; font-size: 3rem;">
-                    <a href="https://github.com/Raezaga" style="color:white;"><i class="fab fa-github"></i></a>
-                    <a href="https://www.linkedin.com/in/renz-loi-okit-13397b393/" style="color:white;"><i class="fab fa-linkedin"></i></a>
-                </div>
-            </div>
-        </div>
+        <h2 style="font-size: 3rem; text-align: center;">Contact</h2>
+        <p style="text-align: center; margin-top: 20px;">renzloiokit.dev@email.com</p>
     </div>
 
 </main>
@@ -195,13 +168,11 @@ try {
     function showTab(event, tabId) {
         const panels = document.querySelectorAll('.tab-panel');
         panels.forEach(p => p.classList.remove('active'));
-        
         const links = document.querySelectorAll('.nav-link');
         links.forEach(l => l.classList.remove('active'));
 
         document.getElementById(tabId).classList.add('active');
         if(event) event.currentTarget.classList.add('active');
-
         window.scrollTo(0, 0);
     }
 </script>
