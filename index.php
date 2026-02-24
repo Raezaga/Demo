@@ -1,8 +1,7 @@
 <?php
-// 1. Database Connection
 include "config.php";
 
-// 2. Pagination Logic for Reviews
+// Pagination Logic
 $limit = 5; 
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 if ($page < 1) $page = 1;
@@ -18,131 +17,133 @@ try {
     $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
     $stmt->execute();
     $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (Exception $e) {
-    $reviews = [];
-    $total_pages = 0;
-}
+} catch (Exception $e) { $reviews = []; $total_pages = 0; }
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Renz Okit | Portfolio</title>
+    <title>Renz Okit | Creative Developer</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
     <style>
-        /* BASE STYLES */
+        :root {
+            --primary: #facc15;
+            --bg-dark: #050810;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --accent-blue: #38bdf8;
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         html { scroll-behavior: smooth; }
-        body { background: #0b1220; color: white; overflow-x: hidden; line-height: 1.6; }
+        body { background: var(--bg-dark); color: #e2e8f0; overflow-x: hidden; }
+        h1, h2, h3, .hero-text h2 { font-family: 'Space Grotesk', sans-serif; }
 
-        /* NAVIGATION */
+        /* MESH GRADIENT BACKGROUND */
+        .mesh-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 10% 20%, rgba(250, 204, 21, 0.05) 0%, transparent 40%),
+                        radial-gradient(circle at 90% 80%, rgba(56, 189, 248, 0.05) 0%, transparent 40%);
+            z-index: -1;
+        }
+
+        /* NAVBAR */
         nav {
             display: flex; justify-content: space-between; align-items: center; padding: 20px 8%;
-            background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px);
-            position: fixed; top: 0; width: 100%; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.05);
+            background: rgba(5, 8, 16, 0.8); backdrop-filter: blur(15px);
+            position: fixed; top: 0; width: 100%; z-index: 1000; border-bottom: 1px solid var(--glass-border);
         }
-        nav h1 { font-size: 22px; letter-spacing: 2px; color: #facc15; }
+        nav h1 { font-size: 24px; font-weight: 700; color: var(--primary); letter-spacing: -1px; }
         nav ul { list-style: none; display: flex; gap: 30px; }
-        nav ul li a { text-decoration: none; color: #cbd5e1; transition: .3s; font-weight: 500; }
-        nav ul li a:hover { color: #facc15; }
+        nav ul li a { text-decoration: none; color: #94a3b8; font-size: 0.9rem; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
+        nav ul li a:hover { color: var(--primary); }
 
-        /* SECTION ARCHITECTURE */
-        section { min-height: 100vh; padding: 120px 8% 80px; display: flex; flex-direction: column; justify-content: center; }
-        section:nth-child(even) { background: #0f172a; }
-        section:nth-child(odd) { background: #0b1220; }
+        section { min-height: 100vh; padding: 120px 8% 80px; position: relative; }
 
-        .section-title { font-size: 3rem; margin-bottom: 50px; text-align: center; color: #facc15; }
-        .section-title::after { content: ''; display: block; width: 50px; height: 4px; background: #facc15; margin: 10px auto; border-radius: 2px; }
+        /* HERO */
+        .hero { display: flex; align-items: center; gap: 60px; }
+        .hero-text h2 { font-size: 5rem; line-height: 1; margin-bottom: 20px; }
+        .hero-text span { -webkit-text-stroke: 1px var(--primary); color: transparent; }
+        .hero-text p { font-size: 1.2rem; color: #94a3b8; max-width: 500px; }
+        .hero-image { position: relative; }
+        .hero-image img { width: 400px; height: 400px; border-radius: 30px; object-fit: cover; transform: rotate(3deg); transition: 0.5s; }
+        .hero-image::after { content: ''; position: absolute; inset: 0; border: 2px solid var(--primary); border-radius: 30px; transform: rotate(-6deg); z-index: -1; transition: 0.5s; }
+        .hero-image:hover img, .hero-image:hover::after { transform: rotate(0deg); }
 
-        /* HERO SECTION */
-        .hero { display: flex; flex-direction: row; align-items: center; justify-content: space-between; gap: 40px; }
-        .hero-text h2 { font-size: 4rem; line-height: 1.1; }
-        .hero-text span { color: #facc15; }
-        .hero-text p { font-size: 1.2rem; color: #94a3b8; margin-top: 20px; }
-        .hero-image img { width: 380px; height: 380px; border-radius: 50%; object-fit: cover; border: 8px solid #facc15; box-shadow: 0 0 50px rgba(250,204,21,0.2); }
-
-        /* RESUME & CV SECTION */
-        .resume-container { display: flex; gap: 50px; align-items: center; max-width: 1000px; margin: 0 auto; }
-        .resume-text { flex: 1; }
-        .skill-tags { display: flex; flex-wrap: wrap; gap: 10px; margin: 25px 0 35px; }
-        .skill-tags span { background: rgba(250, 204, 21, 0.1); color: #facc15; padding: 8px 18px; border-radius: 25px; font-size: 0.85rem; border: 1px solid rgba(250, 204, 21, 0.2); }
-        
-        .btn-download {
-            display: inline-flex; align-items: center; gap: 12px;
-            background: #facc15; color: #0f172a; padding: 18px 40px;
-            border-radius: 50px; text-decoration: none; font-weight: bold;
-            transition: 0.3s; box-shadow: 0 10px 20px rgba(250,204,21,0.15);
+        /* SKILL TAGS (The Highlight) */
+        .skill-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-top: 40px; }
+        .skill-card {
+            background: var(--glass); border: 1px solid var(--glass-border);
+            padding: 20px; border-radius: 15px; text-decoration: none;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center; display: block;
         }
-        .btn-download:hover { transform: translateY(-5px); background: #eab308; box-shadow: 0 15px 30px rgba(250,204,21,0.3); }
-
-        /* SERVICES SECTION */
-        .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
-        .card { background: rgba(30, 41, 59, 0.4); padding: 50px 30px; border-radius: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.03); transition: 0.4s; }
-        .card:hover { transform: translateY(-10px); border-color: #facc15; background: rgba(30, 41, 59, 0.6); }
-        .card i { color: #facc15; font-size: 3rem; margin-bottom: 25px; }
-
-        /* REVIEWS SECTION */
-        .review-wrapper { max-width: 800px; margin: 0 auto; width: 100%; }
-        .review-form-box { background: rgba(30, 41, 59, 0.3); padding: 35px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 50px; }
-        .review-form-box input, .review-form-box textarea { 
-            width: 100%; padding: 15px; margin-bottom: 15px; background: #0b1220; 
-            border: 1px solid #334155; color: white; border-radius: 10px; outline: none; 
+        .skill-card span { color: #cbd5e1; font-weight: 500; font-size: 0.9rem; }
+        .skill-card:hover { 
+            background: rgba(250, 204, 21, 0.1); border-color: var(--primary); 
+            transform: translateY(-10px); 
         }
-        .review-form-box input:focus, .review-form-box textarea:focus { border-color: #facc15; }
-        .review-form-box button { width: 100%; padding: 16px; background: #facc15; border: none; font-weight: bold; border-radius: 30px; cursor: pointer; transition: 0.3s; }
-        .review-form-box button:hover { background: #eab308; }
 
-        .review-item { background: rgba(30, 41, 59, 0.5); padding: 25px; border-radius: 15px; border-left: 5px solid #facc15; margin-bottom: 20px; }
-        .review-item h4 { color: #facc15; margin-bottom: 5px; }
-        .review-item p { color: #cbd5e1; font-style: italic; }
-        
-        .pagination { display: flex; justify-content: center; gap: 10px; margin-top: 35px; }
-        .pagination a { padding: 10px 20px; background: #1e293b; color: white; text-decoration: none; border-radius: 8px; transition: 0.3s; }
-        .pagination a.active { background: #facc15; color: #0f172a; font-weight: bold; }
-
-        /* CONTACT SECTION */
-        .contact-content { text-align: center; max-width: 600px; margin: 0 auto; }
-        .socials { display: flex; justify-content: center; gap: 25px; margin-top: 40px; }
-        .socials a { 
-            font-size: 30px; color: #cbd5e1; background: #1e293b; width: 75px; height: 75px; 
-            display: flex; align-items: center; justify-content: center; border-radius: 50%; 
-            transition: 0.4s; border: 1px solid rgba(255,255,255,0.05); 
+        /* RESUME SECTION */
+        .resume-box { 
+            background: var(--glass); border: 1px solid var(--glass-border); 
+            padding: 60px; border-radius: 40px; display: flex; align-items: center; gap: 40px; 
         }
-        .socials a:hover { background: #facc15; color: #0f172a; transform: translateY(-10px); box-shadow: 0 10px 20px rgba(250,204,21,0.2); }
+        .btn-cv {
+            padding: 15px 40px; background: var(--primary); color: #000;
+            border-radius: 12px; font-weight: 700; text-decoration: none;
+            display: inline-flex; align-items: center; gap: 10px; transition: 0.3s;
+        }
+        .btn-cv:hover { box-shadow: 0 0 30px rgba(250, 204, 21, 0.4); transform: translateY(-3px); }
 
-        /* FOOTER */
-        footer { text-align: center; padding: 40px; border-top: 1px solid #1e293b; color: #64748b; font-size: 0.9rem; }
+        /* REVIEWS */
+        .review-card {
+            background: var(--glass); border: 1px solid var(--glass-border);
+            padding: 30px; border-radius: 20px; margin-bottom: 20px;
+            backdrop-filter: blur(5px);
+        }
+        .pagination a { color: var(--primary); border: 1px solid var(--glass-border); padding: 10px 18px; border-radius: 10px; text-decoration: none; margin: 0 5px; }
+        .pagination a.active { background: var(--primary); color: #000; }
 
-        /* RESPONSIVE DESIGN */
+        /* FOOTER & SOCIALS */
+        .social-link {
+            width: 60px; height: 60px; background: var(--glass);
+            border: 1px solid var(--glass-border); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 20px; text-decoration: none; transition: 0.3s;
+        }
+        .social-link:hover { border-color: var(--primary); color: var(--primary); transform: scale(1.1); }
+
         @media(max-width: 900px) {
-            .hero, .resume-container { flex-direction: column; text-align: center; }
+            .hero, .resume-box { flex-direction: column; text-align: center; }
+            .hero-text h2 { font-size: 3.5rem; }
             .hero-image img { width: 300px; height: 300px; }
-            .hero-text h2 { font-size: 3rem; }
-            .resume-icon { display: none; }
-            nav ul { display: none; } /* Mobile users usually use the logo or scroll */
+            nav ul { display: none; }
         }
     </style>
 </head>
 <body>
 
+<div class="mesh-bg"></div>
+
 <nav>
-    <h1>RENZ.</h1>
+    <h1>OKIT.</h1>
     <ul>
-        <li><a href="#hero">Home</a></li>
-        <li><a href="#resume">Resume</a></li>
-        <li><a href="#services">Services</a></li>
-        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="#hero">Intro</a></li>
+        <li><a href="#resume">Stack</a></li>
+        <li><a href="#reviews">Feedback</a></li>
         <li><a href="#contact">Contact</a></li>
     </ul>
 </nav>
 
 <section id="hero" class="hero">
     <div class="hero-text">
-        <h2>Hello, I'm <span>Renz Okit</span></h2>
-        <p>Full Stack Developer focused on building modern, efficient, and visually appealing systems.</p>
+        <p style="color: var(--primary); letter-spacing: 3px; font-weight: bold;">AVAILABLE FOR HIRE</p>
+        <h2>I Build <span>Digital</span> Experiences</h2>
+        <p>A Full Stack Developer crafting seamless code and futuristic interfaces from the Philippines.</p>
     </div>
     <div class="hero-image">
         <img src="Renz.jpg" alt="Renz Okit">
@@ -150,113 +151,73 @@ try {
 </section>
 
 <section id="resume">
-    <h2 class="section-title">Resume & Skills</h2>
-    <div class="resume-container">
-        <div class="resume-text">
-            <h3>My Expertise</h3>
-            <p style="margin-top: 15px; color: #94a3b8;">
-                I am a dedicated developer with a passion for clean code and user-centric design. 
-                I specialize in both front-end aesthetics and back-end logic.
-            </p>
+    <div class="resume-box">
+        <div style="flex: 1;">
+            <h2 style="font-size: 2.5rem; margin-bottom: 20px;">My Tech <span>Stack</span></h2>
+            <p style="color: #94a3b8; margin-bottom: 30px;">I don't just use tools; I master them. Click a technology to see my technical philosophy behind it.</p>
             
-            <div class="skill-tags">
-                <span>PHP (PDO)</span>
-                <span>MySQL</span>
-                <span>JavaScript</span>
-                <span>Tailwind CSS</span>
-                <span>Responsive Design</span>
-                <span>REST APIs</span>
+            <div class="skill-grid">
+                <a href="skill_details.php?skill=php" class="skill-card"><span>PHP / PDO</span></a>
+                <a href="skill_details.php?skill=mysql" class="skill-card"><span>MySQL</span></a>
+                <a href="skill_details.php?skill=js" class="skill-card"><span>JavaScript</span></a>
+                <a href="skill_details.php?skill=tailwind" class="skill-card"><span>Tailwind</span></a>
+                <a href="skill_details.php?skill=responsive" class="skill-card"><span>Responsive</span></a>
+                <a href="skill_details.php?skill=rest" class="skill-card"><span>REST APIs</span></a>
             </div>
 
-            <a href="My_CV.pdf" download class="btn-download">
-                <i class="fas fa-cloud-download-alt"></i> Download CV
-            </a>
-        </div>
-        <div class="resume-icon" style="font-size: 180px; color: rgba(250, 204, 21, 0.05);">
-            <i class="fas fa-file-code"></i>
-        </div>
-    </div>
-</section>
-
-<section id="services">
-    <h2 class="section-title">What I Do</h2>
-    <div class="cards">
-        <div class="card">
-            <i class="fas fa-laptop-code"></i>
-            <h3>Web Apps</h3>
-            <p>Custom-built web applications tailored to your business needs.</p>
-        </div>
-        <div class="card">
-            <i class="fas fa-server"></i>
-            <h3>Backend Logic</h3>
-            <p>Secure database architecture and high-performance server logic.</p>
-        </div>
-        <div class="card">
-            <i class="fas fa-vial"></i>
-            <h3>System Testing</h3>
-            <p>Ensuring your systems are bug-free and optimized for speed.</p>
+            <div style="margin-top: 50px;">
+                <a href="My_CV.pdf" download class="btn-cv">
+                    <i class="fas fa-file-download"></i> Get Resume
+                </a>
+            </div>
         </div>
     </div>
 </section>
 
 <section id="reviews">
-    <h2 class="section-title">Client Feedback</h2>
-    <div class="review-wrapper">
-        <div class="review-form-box">
+    <h2 style="text-align: center; margin-bottom: 50px;">Client <span>Voice</span></h2>
+    <div style="max-width: 800px; margin: 0 auto;">
+        <div class="review-card" style="background: rgba(250, 204, 21, 0.05); border-color: var(--primary);">
             <form action="save_review.php" method="POST">
-                <input type="text" name="name" placeholder="Your Name" required>
-                <input type="text" name="company" placeholder="Company Name" required>
-                <textarea name="review" rows="3" placeholder="How was your experience working with me?" required></textarea>
-                <button type="submit">Submit Feedback</button>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <input type="text" name="name" placeholder="Name" required style="padding: 12px; background: transparent; border: 1px solid var(--glass-border); color: white; border-radius: 8px;">
+                    <input type="text" name="company" placeholder="Company" required style="padding: 12px; background: transparent; border: 1px solid var(--glass-border); color: white; border-radius: 8px;">
+                </div>
+                <textarea name="review" rows="3" placeholder="Leave a review..." required style="width: 100%; margin: 15px 0; padding: 12px; background: transparent; border: 1px solid var(--glass-border); color: white; border-radius: 8px;"></textarea>
+                <button type="submit" style="width: 100%; padding: 12px; background: var(--primary); border: none; font-weight: bold; border-radius: 8px; cursor: pointer;">Post Feedback</button>
             </form>
         </div>
 
-        <div class="review-list">
-            <?php if (!empty($reviews)): ?>
-                <?php foreach ($reviews as $row): ?>
-                    <div class="review-item">
-                        <h4><?php echo htmlspecialchars($row['name']); ?> 
-                            <small style="color:#94a3b8; font-weight:normal;">from <?php echo htmlspecialchars($row['company']); ?></small>
-                        </h4>
-                        <p>"<?php echo htmlspecialchars($row['review']); ?>"</p>
-                    </div>
-                <?php endforeach; ?>
+        <?php foreach ($reviews as $row): ?>
+            <div class="review-card">
+                <h4 style="color: var(--primary);"><?php echo htmlspecialchars($row['name']); ?></h4>
+                <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 10px;"><?php echo htmlspecialchars($row['company']); ?></p>
+                <p style="color: #cbd5e1; font-style: italic;">"<?php echo htmlspecialchars($row['review']); ?>"</p>
+            </div>
+        <?php endforeach; ?>
 
-                <div class="pagination">
-                    <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                        <a href="?page=<?php echo $i; ?>#reviews" class="<?php echo ($page == $i) ? 'active' : ''; ?>"><?php echo $i; ?></a>
-                    <?php endfor; ?>
-                </div>
-            <?php else: ?>
-                <p style="text-align:center; color:#64748b;">No reviews yet. Be the first to post!</p>
-            <?php endif; ?>
+        <div class="pagination" style="text-align: center; margin-top: 40px;">
+            <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                <a href="?page=<?php echo $i; ?>#reviews" class="<?php echo ($page == $i) ? 'active' : ''; ?>"><?php echo $i; ?></a>
+            <?php endfor; ?>
         </div>
     </div>
 </section>
 
-<section id="contact">
-    <div class="contact-content">
-        <h2 class="section-title">Let's Connect</h2>
-        <p style="color: #94a3b8;">I'm currently open to freelance projects and full-time opportunities. Reach out via any of the platforms below!</p>
-        
-        <div class="socials">
-            <a href="https://github.com/Raezaga" target="_blank" title="GitHub">
-                <i class="fab fa-github"></i>
-            </a>
-            <a href="https://www.facebook.com/Raezaga/" target="_blank" title="Facebook">
-                <i class="fab fa-facebook"></i>
-            </a>
-            <a href="https://www.linkedin.com/in/renz-loi-okit-13397b393/" target="_blank" title="LinkedIn">
-                <i class="fab fa-linkedin"></i>
-            </a>
-        </div>
+<section id="contact" style="text-align: center; min-height: 60vh;">
+    <h2 style="font-size: 3rem; margin-bottom: 20px;">Ready to <span>Build?</span></h2>
+    <p style="color: #94a3b8; margin-bottom: 40px;">Currently taking on new projects. Let's make something iconic.</p>
+    
+    <div style="display: flex; justify-content: center; gap: 20px;">
+        <a href="https://github.com/Raezaga" class="social-link"><i class="fab fa-github"></i></a>
+        <a href="https://www.facebook.com/Raezaga/" class="social-link"><i class="fab fa-facebook"></i></a>
+        <a href="https://www.linkedin.com/in/renz-loi-okit-13397b393/" class="social-link"><i class="fab fa-linkedin"></i></a>
     </div>
 </section>
 
 <footer>
-    &copy; <?php echo date("Y"); ?> Renz Okit. All Rights Reserved. Built with PHP & Passion.
+    <p>&copy; <?php echo date("Y"); ?> Renz Okit. Built with Precision.</p>
 </footer>
 
 </body>
 </html>
-
