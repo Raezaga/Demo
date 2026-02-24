@@ -5,8 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Your Name | Accounting Portfolio</title>
 
+<!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
+<!-- Styles -->
 <style>
 * {
     margin: 0;
@@ -29,7 +31,7 @@ body {
 
 h1 {
     font-family: 'Playfair Display', serif;
-    font-size: 42px;
+    font-size: 48px;
     font-weight: 500;
 }
 
@@ -38,7 +40,7 @@ h2 {
     letter-spacing: 2px;
     text-transform: uppercase;
     margin-bottom: 20px;
-    color: #b89b5e;
+    color: #b89b5e; /* Elegant gold */
 }
 
 .section {
@@ -46,10 +48,11 @@ h2 {
 }
 
 .divider {
-    width: 50px;
-    height: 2px;
+    width: 60px;
+    height: 3px;
     background: #b89b5e;
     margin: 15px 0 40px 0;
+    border-radius: 2px;
 }
 
 .hero p {
@@ -67,26 +70,35 @@ ul {
 }
 
 ul li {
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 }
 
 a {
     text-decoration: none;
     color: #b89b5e;
     font-weight: 500;
+    transition: 0.3s ease;
+}
+
+a:hover {
+    color: #8c6f3d;
 }
 
 .button {
     display: inline-block;
-    padding: 10px 20px;
-    border: 1px solid #b89b5e;
+    padding: 12px 28px;
+    border: 2px solid #b89b5e;
+    border-radius: 8px;
+    font-weight: 500;
+    color: #b89b5e;
     margin-top: 20px;
-    transition: 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .button:hover {
     background: #b89b5e;
-    color: white;
+    color: #fff;
+    transform: translateY(-2px);
 }
 
 .footer {
@@ -95,6 +107,16 @@ a {
     font-size: 14px;
     color: #777;
 }
+
+.social-links a {
+    margin-right: 20px;
+    font-weight: 500;
+    transition: 0.3s ease;
+}
+
+.social-links a:hover {
+    color: #8c6f3d;
+}
 </style>
 </head>
 
@@ -102,22 +124,24 @@ a {
 
 <div class="container">
 
-    <div class="hero">
+    <!-- Hero Section -->
+    <div class="hero" style="text-align:center;">
         <h1>Your Name</h1>
         <p>Accountancy Graduate · Bookkeeper · Accounting Staff</p>
     </div>
 
+    <!-- About -->
     <div class="section">
         <h2>About</h2>
         <div class="divider"></div>
         <p>
-            Detail-oriented Accountancy graduate with experience in bookkeeping, 
-            financial reporting, and maintaining accurate financial records. 
-            Skilled in managing accounts payable/receivable, bank reconciliation, 
-            and supporting financial operations efficiently.
+            Detail-oriented Accountancy graduate with experience in bookkeeping, financial reporting,
+            and maintaining accurate financial records. Skilled in managing accounts payable/receivable,
+            bank reconciliation, and supporting financial operations efficiently.
         </p>
     </div>
 
+    <!-- Education -->
     <div class="section">
         <h2>Education</h2>
         <div class="divider"></div>
@@ -126,6 +150,7 @@ a {
         <p>Year Graduated: 20XX</p>
     </div>
 
+    <!-- Experience -->
     <div class="section">
         <h2>Experience</h2>
         <div class="divider"></div>
@@ -139,6 +164,7 @@ a {
         </ul>
     </div>
 
+    <!-- Skills -->
     <div class="section">
         <h2>Skills</h2>
         <div class="divider"></div>
@@ -150,23 +176,26 @@ a {
         </ul>
     </div>
 
+    <!-- CV -->
     <div class="section">
         <h2>Curriculum Vitae</h2>
         <div class="divider"></div>
         <a href="your-cv.pdf" download class="button">Download CV</a>
     </div>
 
+    <!-- Connect / Social Links -->
     <div class="section">
         <h2>Connect</h2>
         <div class="divider"></div>
-        <p>
-            <a href="#">LinkedIn</a> ·
-            <a href="#">Facebook</a> ·
-            <a href="#">Instagram</a> ·
+        <p class="social-links">
+            <a href="#">LinkedIn</a>
+            <a href="#">Facebook</a>
+            <a href="#">Instagram</a>
             <a href="mailto:your@email.com">Email</a>
         </p>
     </div>
 
+    <!-- Footer -->
     <div class="footer">
         © 2026 Your Name. All rights reserved.
     </div>
