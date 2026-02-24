@@ -1,35 +1,36 @@
 <?php
 
-$databaseUrl = getenv("DATABASE_URL");
+// Get DATABASE_URL from Render environment variables
+$db_url = getenv("DATABASE_URL");
 
-if (!$databaseUrl) {
-    die("DATABASE_URL is not set.");
+if (!$db_url) {
+    die("DATABASE_URL not set. Please add it in Render environment variables.");
 }
 
-$db = parse_url($databaseUrl);
+// Parse the connection string
+$connection = parse_url($db_url);
 
-$host = $db["host"];
-$port = $db["port"] ?? "5432";
-$dbname = ltrim($db["path"], "/");
-$username = $db["user"];
-$password = $db["pass"];
+$host = $connection["host"] ?? null;
+$port = $connection["port"] ?? 5432;
+$dbname = ltrim($connection["path"], "/");
+$user = $connection["user"] ?? null;
+$password = $connection["pass"] ?? null;
 
-try {
-
-    $pdo = new PDO(
-        "pgsql:host=$host;port=$port;dbname=$dbname",
-        $username,
-        $password,
-        [
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-        ]
-    );
-
-} catch (PDOException $e) {
-
-    die("Database connection failed: " . $e->getMessage());
-
+// Ensure values exist
+if (!$host || !$user || !$dbname) {
+    die("Invalid DATABASE_URL format.");
 }
+
+// Connect to PostgreSQL
+$conn_string = "host=$host port=$port dbname=$dbname user=$user password=$password sslmode=require";
+
+$conn = pg_connect($conn_string);
+
+if (!$conn) {
+    die("Database connection failed: " . pg_last_error());
+}
+
+// Optional: Uncomment to test connection
+// echo "Database connected successfully!";
 
 ?>
