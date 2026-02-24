@@ -3,7 +3,7 @@
 $db_url = getenv("DATABASE_URL");
 
 if (!$db_url) {
-    die("DATABASE_URL not found.");
+    die("Database URL not found.");
 }
 
 $connection = parse_url($db_url);
@@ -22,7 +22,7 @@ try {
         $password,
         [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
         ]
     );
 
