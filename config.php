@@ -1,43 +1,20 @@
 <?php
-
-// Get database URL from Render environment variables
-$db_url = getenv("DATABASE_URL");
-
-if (!$db_url) {
-    die("DATABASE_URL not found in environment variables.");
-}
-
-// Parse the connection string
-$connection = parse_url($db_url);
-
-$host = $connection["host"] ?? null;
-$port = $connection["port"] ?? 5432;
-$dbname = ltrim($connection["path"], "/");
-$user = $connection["user"] ?? null;
-$password = $connection["pass"] ?? null;
-
-// Validate values
-if (!$host || !$user || !$dbname) {
-    die("Invalid DATABASE_URL format.");
-}
+$host = "YOUR_SUPABASE_HOST";
+$port = "5432";
+$dbname = "postgres";
+$username = "postgres";
+$password = "YOUR_SUPABASE_PASSWORD";
 
 try {
-
-    // Create PostgreSQL connection using PDO
     $pdo = new PDO(
-        "pgsql:host=$host;port=$port;dbname=$dbname",
-        $user,
-        $password,
-        [
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-        ]
+        "pgsql:host=$host;port=$port;dbname=$dbname;sslmode=require",
+        $username,
+        $password
     );
 
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
 } catch (PDOException $e) {
-
-    die("Database connection failed: " . $e->getMessage());
-
+    die("Connection failed: " . $e->getMessage());
 }
-
 ?>
