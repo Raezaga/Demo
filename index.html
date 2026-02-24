@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Renz Okit | Portfolio</title>
+<title>Renz Loi Okit | Portfolio</title>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
 <style>
@@ -109,10 +109,26 @@ nav ul li a:hover{
     color:#0f172a;
 }
 
+/* HERO IMAGE PREMIUM STYLE */
+.hero-image{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
 .hero-image img{
-    width:350px;
-    border-radius:20px;
-    filter:brightness(0.9);
+    width:480px;
+    height:480px;
+    border-radius:50%;
+    object-fit:cover;
+    border:8px solid #facc15;
+    box-shadow:0 0 70px rgba(250, 204, 21, 0.5);
+    transition:0.4s ease-in-out;
+}
+
+.hero-image img:hover{
+    transform:scale(1.07);
+    box-shadow:0 0 100px rgba(250, 204, 21, 0.7);
 }
 
 /* SERVICES */
@@ -197,6 +213,15 @@ footer{
     .hero-image{
         margin-top:40px;
     }
+
+    .hero-image img{
+        width:320px;
+        height:320px;
+    }
+
+    .hero-text h2{
+        font-size:40px;
+    }
 }
 </style>
 </head>
@@ -205,7 +230,6 @@ footer{
 <nav>
     <h1>RENZ.</h1>
     <ul>
-        <li><a href="#about">About</a></li>
         <li><a href="#services">Services</a></li>
         <li><a href="#contact">Contact</a></li>
     </ul>
@@ -221,7 +245,7 @@ footer{
         </div>
     </div>
     <div class="hero-image">
-        <img src="Renz.jpg" alt="Profile Image">
+        <img src="Renz.jpg" alt="Renz Loi Okit">
     </div>
 </section>
 
@@ -250,7 +274,7 @@ footer{
         <a href="https://github.com/Raezaga"><i class="fab fa-github"></i></a>
         <a href="https://www.facebook.com/Raezaga/"><i class="fab fa-facebook"></i></a>
         <a href="https://www.linkedin.com/in/renz-loi-okit-13397b393/"><i class="fab fa-linkedin"></i></a>
-        <a href="https://www.facebook.com/Raezaga/"><i class="fas fa-envelope"></i></a>
+        <a href="mailto:your@email.com"><i class="fas fa-envelope"></i></a>
     </div>
 </section>
 
@@ -260,6 +284,3 @@ footer{
 
 </body>
 </html>
-
-
-
