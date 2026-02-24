@@ -1,3 +1,4 @@
+<?php include "config.php"; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,7 +21,6 @@ body{
     color:white;
 }
 
-/* NAVIGATION */
 nav{
     display:flex;
     justify-content:space-between;
@@ -28,10 +28,7 @@ nav{
     padding:25px 8%;
 }
 
-nav h1{
-    font-size:22px;
-    letter-spacing:2px;
-}
+nav h1{ font-size:22px; letter-spacing:2px; }
 
 nav ul{
     list-style:none;
@@ -42,96 +39,8 @@ nav ul{
 nav ul li a{
     text-decoration:none;
     color:#cbd5e1;
-    transition:.3s;
 }
 
-nav ul li a:hover{
-    color:#facc15;
-}
-
-/* HERO SECTION */
-.hero{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:80px 8%;
-    min-height:90vh;
-}
-
-.hero-text{
-    max-width:550px;
-}
-
-.hero-text h2{
-    font-size:60px;
-    line-height:1.1;
-}
-
-.hero-text span{
-    color:#facc15;
-}
-
-.hero-text p{
-    margin-top:20px;
-    color:#94a3b8;
-    line-height:1.6;
-}
-
-.hero-buttons{
-    margin-top:35px;
-}
-
-.btn{
-    padding:12px 28px;
-    border-radius:30px;
-    text-decoration:none;
-    font-size:14px;
-    transition:.3s;
-}
-
-.btn-primary{
-    background:#facc15;
-    color:#0f172a;
-    margin-right:15px;
-}
-
-.btn-primary:hover{
-    background:#eab308;
-}
-
-.btn-outline{
-    border:1px solid #facc15;
-    color:#facc15;
-}
-
-.btn-outline:hover{
-    background:#facc15;
-    color:#0f172a;
-}
-
-/* PREMIUM HERO IMAGE */
-.hero-image{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-}
-
-.hero-image img{
-    width:480px;
-    height:480px;
-    border-radius:50%;
-    object-fit:cover;
-    border:8px solid #facc15;
-    box-shadow:0 0 80px rgba(250,204,21,0.5);
-    transition:.4s ease;
-}
-
-.hero-image img:hover{
-    transform:scale(1.07);
-    box-shadow:0 0 120px rgba(250,204,21,0.8);
-}
-
-/* SECTIONS */
 section{
     padding:100px 8%;
 }
@@ -141,36 +50,13 @@ section{
     margin-bottom:50px;
 }
 
-/* SERVICES */
-.cards{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-    gap:30px;
-}
-
-.card{
-    background:rgba(30,41,59,0.7);
-    backdrop-filter:blur(10px);
-    padding:40px 30px;
-    border-radius:20px;
-    transition:.4s;
-}
-
-.card:hover{
-    transform:translateY(-12px);
-    background:#facc15;
-    color:#0f172a;
-}
-
-/* REVIEW SECTION */
+/* FORM */
 .review-form{
     max-width:650px;
     margin:auto;
     background:rgba(30,41,59,0.7);
     padding:40px;
     border-radius:20px;
-    backdrop-filter:blur(10px);
-    box-shadow:0 0 40px rgba(0,0,0,0.4);
 }
 
 .review-form input,
@@ -182,11 +68,6 @@ section{
     border-radius:12px;
     background:#0f172a;
     color:white;
-    font-size:14px;
-}
-
-.review-form textarea{
-    resize:none;
 }
 
 .review-form button{
@@ -195,17 +76,10 @@ section{
     border:none;
     border-radius:30px;
     background:#facc15;
-    color:#0f172a;
-    font-weight:bold;
     cursor:pointer;
-    transition:.3s;
 }
 
-.review-form button:hover{
-    background:#eab308;
-}
-
-/* REVIEW DISPLAY */
+/* REVIEW LIST */
 .review-list{
     margin-top:60px;
     display:grid;
@@ -217,61 +91,12 @@ section{
     padding:25px;
     border-radius:15px;
     border-left:5px solid #facc15;
-    animation:fadeIn .4s ease;
 }
 
-@keyframes fadeIn{
-    from{opacity:0; transform:translateY(10px);}
-    to{opacity:1; transform:translateY(0);}
-}
-
-/* CONTACT */
-.contact{
-    text-align:center;
-}
-
-.socials{
-    margin-top:30px;
-}
-
-.socials a{
-    font-size:22px;
-    margin:0 15px;
-    color:#cbd5e1;
-    transition:.3s;
-}
-
-.socials a:hover{
-    color:#facc15;
-}
-
-/* FOOTER */
 footer{
     text-align:center;
     padding:30px;
     border-top:1px solid #1e293b;
-    color:#64748b;
-}
-
-/* RESPONSIVE */
-@media(max-width:900px){
-    .hero{
-        flex-direction:column;
-        text-align:center;
-    }
-
-    .hero-image{
-        margin-top:40px;
-    }
-
-    .hero-image img{
-        width:320px;
-        height:320px;
-    }
-
-    .hero-text h2{
-        font-size:40px;
-    }
 }
 </style>
 </head>
@@ -280,92 +105,57 @@ footer{
 <nav>
     <h1>RENZ.</h1>
     <ul>
-        <li><a href="#services">Services</a></li>
         <li><a href="#reviews">Reviews</a></li>
         <li><a href="#contact">Contact</a></li>
     </ul>
 </nav>
 
-<section class="hero">
-    <div class="hero-text">
-        <h2>Hello, I'm <span>Renz Okit</span></h2>
-        <p>Full Stack Developer focused on building modern, efficient, and visually appealing systems.</p>
-    </div>
-    <div class="hero-image">
-        <img src="Renz.jpg" alt="Renz Okit">
-    </div>
-</section>
-
-<section id="services">
-    <h2 class="section-title">What I Do</h2>
-    <div class="cards">
-        <div class="card">
-            <h3>Web Development</h3>
-            <p>Building responsive and scalable websites using modern technologies.</p>
-        </div>
-        <div class="card">
-            <h3>System Development</h3>
-            <p>Developing management systems with secure authentication and reporting.</p>
-        </div>
-        <div class="card">
-            <h3>UI/UX Design</h3>
-            <p>Designing clean, user-focused interfaces with smooth experience.</p>
-        </div>
-    </div>
-</section>
-
 <section id="reviews">
     <h2 class="section-title">Client Reviews</h2>
 
     <div class="review-form">
-        <input type="text" id="name" placeholder="Your Name">
-        <input type="text" id="company" placeholder="Company Name">
-        <textarea id="review" rows="4" placeholder="Write your review..."></textarea>
-        <button onclick="addReview()">Submit Review</button>
+        <form method="POST" action="save_review.php">
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="text" name="company" placeholder="Company Name" required>
+            <textarea name="review" rows="4" placeholder="Write your review..." required></textarea>
+            <button type="submit">Submit Review</button>
+        </form>
     </div>
 
-    <div class="review-list" id="reviewList"></div>
-</section>
+    <div class="review-list">
+        <?php
+        // Fetch reviews from Supabase
+        try {
+            $stmt = $pdo->query("SELECT * FROM reviews ORDER BY created_at DESC");
+            $reviews = $stmt->fetchAll();
 
-<section id="contact" class="contact">
-    <h2 class="section-title">Let's Connect</h2>
-    <div class="socials">
-        <a href="https://github.com/Raezaga"><i class="fab fa-github"></i></a>
-        <a href="https://www.facebook.com/Raezaga/"><i class="fab fa-facebook"></i></a>
-        <a href="https://www.linkedin.com/in/renz-loi-okit-13397b393/"><i class="fab fa-linkedin"></i></a>
+            foreach ($reviews as $row) {
+        ?>
+                <div class="review-item">
+                    <h4>
+                        <?php echo htmlspecialchars($row['name']); ?>
+                        <span style="color:#facc15;">
+                            (<?php echo htmlspecialchars($row['company']); ?>)
+                        </span>
+                    </h4>
+
+                    <p style="margin-top:10px;">
+                        "<?php echo htmlspecialchars($row['review']); ?>"
+                    </p>
+                </div>
+        <?php
+            }
+        } catch (Exception $e) {
+            echo "<p>Error loading reviews.</p>";
+        }
+        ?>
     </div>
+
 </section>
 
 <footer>
     © 2026 Renz Okit. All Rights Reserved.
 </footer>
-
-<script>
-function addReview(){
-    const name = document.getElementById("name").value;
-    const company = document.getElementById("company").value;
-    const review = document.getElementById("review").value;
-
-    if(name === "" || company === "" || review === ""){
-        alert("Please fill all fields.");
-        return;
-    }
-
-    const reviewItem = document.createElement("div");
-    reviewItem.classList.add("review-item");
-
-    reviewItem.innerHTML = `
-        <h4>${name} <span style="color:#facc15;">(${company})</span></h4>
-        <p style="margin-top:10px;color:#cbd5e1;">"${review}"</p>
-    `;
-
-    document.getElementById("reviewList").prepend(reviewItem);
-
-    document.getElementById("name").value = "";
-    document.getElementById("company").value = "";
-    document.getElementById("review").value = "";
-}
-</script>
 
 </body>
 </html>
