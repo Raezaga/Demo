@@ -209,7 +209,6 @@ try {
             ['tag' => 'Logistics', 'title' => 'Enterprise Inventory', 'desc' => 'Warehouse management system.', 'img' => 'p1.jpg'],
             ['tag' => 'Fintech', 'title' => 'Market Analytics', 'desc' => 'Live data visualization engine.', 'img' => 'p2.jpg'],
             ['tag' => 'Commerce', 'title' => 'Modern Storefront', 'desc' => 'High-conversion e-commerce.', 'img' => 'p3.jpg'],
-            ['tag' => 'SaaS', 'title' => 'Client Portal', 'desc' => 'Secure CRM data management.', 'img' => 'p4.jpg']
         ];
         foreach($project_list as $p): ?>
         <div class="project-card">
@@ -330,3 +329,4 @@ try {
 
 </body>
 </html>
+
