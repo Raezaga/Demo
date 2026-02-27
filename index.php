@@ -1,17 +1,13 @@
 <?php
 include "config.php";
-
-// 1. Pagination Logic (Calculations)
+// Pagination Logic remains the same
 $limit = 5; 
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-if ($page < 1) $page = 1;
 $offset = ($page - 1) * $limit;
-
 try {
     $total_stmt = $pdo->query("SELECT COUNT(*) FROM reviews");
     $total_reviews = $total_stmt->fetchColumn();
     $total_pages = ceil($total_reviews / $limit);
-
     $stmt = $pdo->prepare("SELECT * FROM reviews ORDER BY created_at DESC LIMIT :limit OFFSET :offset");
     $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
     $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
@@ -24,305 +20,209 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Renz Loi Okit | Full Stack Engineer</title>
-    
+    <title>Renz Loi | Software Architect</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;500;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
     <style>
         :root {
             --primary: #facc15;
-            --bg-dark: #050810;
-            --glass: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --accent-blue: #38bdf8;
+            --bg: #030408;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.08);
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
         }
 
-        /* RESET & BASE */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        html { scroll-behavior: smooth; }
-        
-        /* 80% ZOOM INTEGRATION */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
-            background: var(--bg-dark); 
-            color: #e2e8f0; 
+            background-color: var(--bg); 
+            color: var(--text-main); 
+            font-family: 'Inter', sans-serif; 
+            line-height: 1.6;
             overflow-x: hidden;
-            
-            /* The "80% Zoom" magic */
-            zoom: 0.8; /* Chrome, Edge, Safari */
-            -moz-transform: scale(0.8); /* Firefox */
-            -moz-transform-origin: top center; /* Anchor scaling to the top */
-            width: 125%; /* Compensates for the scale reduction (1 / 0.8 = 1.25) */
         }
 
-        h1, h2, h3 { font-family: 'Space Grotesk', sans-serif; }
-
-        /* BACKGROUND EFFECTS */
-        #cursor-glow {
-            position: fixed; width: 600px; height: 600px;
-            background: radial-gradient(circle, rgba(250, 204, 21, 0.07) 0%, transparent 70%);
-            border-radius: 50%; pointer-events: none; z-index: 0;
-            transform: translate(-50%, -50%); transition: 0.1s ease;
-        }
-
-        .mesh-bg {
+        /* PREMIUM GRADIENT BACKGROUND */
+        .bg-glow {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 15% 15%, rgba(250, 204, 21, 0.08) 0%, transparent 45%),
-                        radial-gradient(circle at 85% 85%, rgba(56, 189, 248, 0.08) 0%, transparent 45%);
+            background: 
+                radial-gradient(circle at 80% 20%, rgba(250, 204, 21, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 20% 80%, rgba(56, 189, 248, 0.05) 0%, transparent 40%);
             z-index: -1;
         }
 
-        /* NAVIGATION */
+        /* ULTRA SLEEK NAV */
         nav {
-            display: flex; justify-content: space-between; align-items: center; padding: 25px 8%;
-            background: rgba(5, 8, 16, 0.85); backdrop-filter: blur(20px);
-            position: fixed; top: 0; width: 100%; z-index: 1000; border-bottom: 1px solid var(--glass-border);
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 1200px; padding: 15px 30px;
+            background: rgba(10, 10, 15, 0.7); backdrop-filter: blur(12px);
+            border: 1px solid var(--border); border-radius: 100px;
+            display: flex; justify-content: space-between; align-items: center; z-index: 1000;
         }
-        nav h1 { font-size: 24px; font-weight: 700; color: var(--primary); letter-spacing: -1px; }
-        nav ul { list-style: none; display: flex; gap: 30px; }
-        nav ul a { text-decoration: none; color: #94a3b8; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; transition: 0.3s; }
-        nav ul a:hover { color: var(--primary); }
+        nav h1 { font-family: 'Plus Jakarta Sans'; font-size: 1.2rem; font-weight: 800; letter-spacing: -1px; }
+        nav ul { display: flex; gap: 25px; list-style: none; }
+        nav a { text-decoration: none; color: var(--text-dim); font-size: 0.85rem; font-weight: 500; transition: 0.3s; }
+        nav a:hover { color: var(--primary); }
 
-        section { padding: 140px 8% 80px; position: relative; z-index: 2; }
+        section { max-width: 1300px; margin: 0 auto; padding: 120px 5%; }
 
-        /* HERO SECTION */
-        .hero { display: flex; align-items: center; gap: 60px; min-height: 85vh; }
-        .hero-text h2 { font-size: 5rem; line-height: 1; margin-bottom: 25px; }
-        .hero-text h2 span { -webkit-text-stroke: 1.5px var(--primary); color: transparent; }
-        
-        .btn-premium {
-            padding: 18px 45px; background: var(--primary); color: #000;
-            border-radius: 15px; font-weight: 700; text-decoration: none;
-            display: inline-flex; align-items: center; gap: 12px; transition: 0.4s;
-            box-shadow: 0 10px 20px rgba(250,204,21,0.2);
+        /* HERO SECTION - Agency Style */
+        .hero { text-align: center; padding-top: 180px; }
+        .hero h2 { 
+            font-family: 'Plus Jakarta Sans'; font-size: clamp(2.5rem, 8vw, 5.5rem); 
+            font-weight: 800; line-height: 0.95; letter-spacing: -3px; margin-bottom: 30px;
         }
-        .btn-premium:hover { transform: translateY(-5px); background: #fff; box-shadow: 0 15px 30px rgba(250,204,21,0.4); }
+        .hero h2 span { color: var(--primary); }
+        .hero p { max-width: 600px; margin: 0 auto 40px; color: var(--text-dim); font-size: 1.1rem; }
 
-        .hero-image img { 
-            width: 400px; height: 400px; border-radius: 50px; 
-            object-fit: cover; border: 1px solid var(--glass-border); 
-            transform: rotate(3deg); transition: 0.5s ease-out; 
+        .btn-main {
+            background: var(--text-main); color: var(--bg); padding: 16px 35px;
+            border-radius: 100px; font-weight: 700; text-decoration: none;
+            display: inline-flex; align-items: center; gap: 10px; transition: 0.3s cubic-bezier(0.23, 1, 0.32, 1);
         }
-        .hero:hover .hero-image img { transform: rotate(0deg) scale(1.02); }
+        .btn-main:hover { transform: scale(1.05); background: var(--primary); }
 
-        /* EXPERTISE GRID */
-        .expertise-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 40px; }
-        .skill-card { background: var(--glass); border: 1px solid var(--glass-border); padding: 35px; border-radius: 25px; transition: 0.4s; }
-        .skill-card i { font-size: 2.2rem; color: var(--primary); margin-bottom: 20px; display: block; }
-        .skill-card h3 { margin-bottom: 10px; font-size: 1.4rem; }
-        .skill-card p { font-size: 0.85rem; color: #94a3b8; line-height: 1.6; }
-        .skill-card:hover { border-color: var(--primary); transform: translateY(-10px); background: rgba(250, 204, 21, 0.05); }
+        /* BENTO GRID EXPERTISE */
+        .bento-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(2, 200px);
+            gap: 20px; margin-top: 60px;
+        }
+        .bento-item { 
+            background: var(--card-bg); border: 1px solid var(--border); 
+            border-radius: 30px; padding: 30px; transition: 0.4s;
+            display: flex; flex-direction: column; justify-content: flex-end;
+        }
+        .bento-item:nth-child(1) { grid-column: span 2; grid-row: span 2; background: linear-gradient(45deg, rgba(250,204,21,0.05), transparent); }
+        .bento-item:nth-child(2) { grid-column: span 2; }
+        .bento-item:hover { border-color: var(--primary); background: rgba(255,255,255,0.05); }
+        .bento-item i { color: var(--primary); font-size: 1.5rem; margin-bottom: 15px; }
 
-        /* PROJECT GRID */
-        .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; margin-top: 50px; }
+        /* PROJECT CARDS - High End Dashboard feel */
+        .project-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 30px; margin-top: 80px;
+        }
         .project-card {
-            background: var(--glass); border: 1px solid var(--glass-border); border-radius: 24px;
-            overflow: hidden; height: 440px; display: flex; flex-direction: column;
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative; border-radius: 40px; overflow: hidden;
+            aspect-ratio: 4/5; border: 1px solid var(--border);
         }
-        .project-img { 
-            height: 60%; width: 100%; border-bottom: 1px solid var(--glass-border);
-            background-size: cover; background-position: center; background-repeat: no-repeat;
-            image-rendering: high-quality;
-            background-color: #111; 
+        .project-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1); }
+        .project-overlay {
+            position: absolute; bottom: 0; left: 0; width: 100%; height: 40%;
+            background: linear-gradient(to top, var(--bg), transparent);
+            padding: 40px; display: flex; flex-direction: column; justify-content: flex-end;
         }
-        .project-info { height: 40%; padding: 25px; background: rgba(15, 23, 42, 0.4); display: flex; flex-direction: column; justify-content: center; }
-        .project-tag { font-size: 0.65rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; padding: 4px 12px; border-radius: 8px; width: fit-content; }
-        .project-card h3 { font-size: 1.3rem; margin-bottom: 8px; color: #fff; }
-        .project-card p { font-size: 0.85rem; color: #94a3b8; line-height: 1.5; }
-        .project-card:hover { transform: translateY(-15px); border-color: var(--primary); }
+        .project-card:hover img { transform: scale(1.1); }
 
-        /* REVIEWS & PAGINATION */
-        .review-box { background: var(--glass); border: 1px solid var(--glass-border); padding: 35px; border-radius: 25px; margin-bottom: 20px; }
-        input, textarea { width: 100%; padding: 15px; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); color: white; border-radius: 12px; margin-bottom: 15px; }
-        .btn-submit { width: 100%; padding: 18px; background: var(--primary); border: none; border-radius: 12px; font-weight: bold; cursor: pointer; transition: 0.3s; color: #000; }
-        
-        .pagination { display: flex; justify-content: center; gap: 10px; margin-top: 40px; }
-        .page-link { 
-            padding: 10px 20px; border-radius: 10px; text-decoration: none; font-weight: bold;
-            border: 1px solid var(--glass-border); background: var(--glass); color: white; transition: 0.3s;
+        /* REVIEWS */
+        .review-card {
+            background: var(--card-bg); border-radius: 30px; padding: 40px;
+            border-left: 4px solid var(--primary); margin-bottom: 20px;
         }
-        .page-link.active { background: var(--primary); color: #000; border-color: var(--primary); }
-        .page-link:hover:not(.active) { border-color: var(--primary); color: var(--primary); }
 
-        /* Note: Mobile resets to 100% to keep text readable on phones */
-        @media (max-width: 900px) {
-            body { zoom: 1; -moz-transform: scale(1); width: 100%; }
-            .hero { flex-direction: column; text-align: center; }
-            .hero-text h2 { font-size: 3.5rem; }
-            nav ul { display: none; }
+        @media (max-width: 768px) {
+            .bento-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
+            .bento-item { grid-column: span 1 !important; grid-row: span 1 !important; }
+            .hero h2 { font-size: 3rem; }
         }
     </style>
 </head>
 <body>
 
-<div id="cursor-glow"></div>
-<div class="mesh-bg"></div>
+<div class="bg-glow"></div>
 
 <nav>
-    <h1>RENZ LOI.</h1>
+    <h1>RENZ LOI OKIT</h1>
     <ul>
-        <li><a href="#hero">Intro</a></li>
-        <li><a href="#expertise">Expertise</a></li>
-        <li><a href="#projects">Work</a></li>
-        <li><a href="#reviews">Clients</a></li>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#expertise">Services</a></li>
         <li><a href="#contact">Contact</a></li>
     </ul>
 </nav>
 
-<section id="hero" class="hero">
-    <div class="hero-text">
-        <h2>Engineering <span>Scalable</span> Web Systems</h2>
-        <p>I am <strong>Renz Loi Okit</strong>, a Full Stack Developer specializing in high-performance PHP architectures and sophisticated UI/UX design.</p>
-        <div style="margin-top: 40px;">
-            <a href="My_CV.pdf" download class="btn-premium">
-                <i class="fas fa-download"></i> DOWNLOAD RESUME
-            </a>
-        </div>
-    </div>
-    <div class="hero-image">
-        <img src="Renz.jpg" alt="Renz Loi Okit">
-    </div>
+<section class="hero">
+    <div class="badge" style="border: 1px solid var(--primary); color: var(--primary); padding: 5px 15px; border-radius: 20px; display: inline-block; font-size: 0.7rem; font-weight: 800; margin-bottom: 20px; letter-spacing: 2px;">AVAILABLE FOR PROJECTS</div>
+    <h2>Building the <span>Future</span> of Web.</h2>
+    <p>Premium Full-Stack Architecture for modern businesses. I specialize in turning complex logic into seamless digital experiences.</p>
+    <a href="#work" class="btn-main">VIEW MY WORKS <i class="fas fa-arrow-right"></i></a>
 </section>
 
 <section id="expertise">
-    <h2 style="font-size: 3rem; margin-bottom: 10px;">Technical <span>Philosophy</span></h2>
-    <p style="color: #64748b; margin-bottom: 30px;">Architecture over code. I build systems designed for heavy traffic and data scale.</p>
-    <div class="expertise-grid">
-        <div class="skill-card"><i class="fas fa-server"></i><h3>Backend Arch</h3><p>PHP (PDO), MySQL, and secure RESTful API development.</p></div>
-        <div class="skill-card"><i class="fas fa-layer-group"></i><h3>Frontend Logic</h3><p>JavaScript (ES6), Tailwind CSS, and sophisticated animations.</p></div>
-        <div class="skill-card"><i class="fas fa-microchip"></i><h3>System Design</h3><p>Relational database optimization and performance tuning.</p></div>
-        <div class="skill-card"><i class="fas fa-terminal"></i><h3>Workflow</h3><p>Git, Command Line proficiency, and CI/CD pipelines.</p></div>
+    <div style="margin-bottom: 40px;">
+        <h3 style="font-family: 'Plus Jakarta Sans'; font-size: 2.5rem;">Expertise</h3>
+        <p style="color: var(--text-dim);">The intersection of performance and design.</p>
+    </div>
+    <div class="bento-grid">
+        <div class="bento-item">
+            <i class="fas fa-code"></i>
+            <h4>Backend Systems</h4>
+            <p style="font-size: 0.8rem; color: var(--text-dim);">Scalable PHP architectures with PDO security and high-efficiency MySQL indexing.</p>
+        </div>
+        <div class="bento-item">
+            <i class="fas fa-paint-brush"></i>
+            <h4>UI/UX Engineering</h4>
+            <p style="font-size: 0.8rem; color: var(--text-dim);">Sophisticated interfaces built with modern CSS and JavaScript logic.</p>
+        </div>
+        <div class="bento-item">
+            <i class="fas fa-rocket"></i>
+            <h4>Performance</h4>
+            <p style="font-size: 0.8rem; color: var(--text-dim);">Optimization that ensures 90+ Lighthouse scores.</p>
+        </div>
+        <div class="bento-item">
+            <i class="fas fa-shield-halved"></i>
+            <h4>DevOps</h4>
+            <p style="font-size: 0.8rem; color: var(--text-dim);">Secure deployment and CI/CD automation.</p>
+        </div>
     </div>
 </section>
 
-<section id="projects">
-    <h2 style="font-size: 3rem; margin-bottom: 40px;">Selected <span>Works</span></h2>
+<section id="work">
+    <h3 style="font-family: 'Plus Jakarta Sans'; font-size: 2.5rem; text-align: center;">Selected Work</h3>
     <div class="project-grid">
         <div class="project-card">
-            <div class="project-img" style="background-image: url('p1.jpg');"></div>
-            <div class="project-info">
-                <span class="project-tag" style="background: rgba(250,204,21,0.1); color: var(--primary);">Logistics</span>
-                <h3>Enterprise Inventory</h3>
-                <p>Full-stack warehouse management system with real-time tracking.</p>
+            <img src="p1.jpg" alt="Work">
+            <div class="project-overlay">
+                <span style="font-size: 0.6rem; font-weight: 800; color: var(--primary);">FINTECH</span>
+                <h4>Global Asset Manager</h4>
             </div>
         </div>
         <div class="project-card">
-            <div class="project-img" style="background-image: url('p2.jpg');"></div>
-            <div class="project-info">
-                <span class="project-tag" style="background: rgba(56,189,248,0.1); color: var(--accent-blue);">Fintech</span>
-                <h3>Market Analytics</h3>
-                <p>Live data visualization engine for financial and crypto markets.</p>
+            <img src="p2.jpg" alt="Work">
+            <div class="project-overlay">
+                <span style="font-size: 0.6rem; font-weight: 800; color: var(--primary);">E-COMMERCE</span>
+                <h4>Luxury Storefront</h4>
             </div>
         </div>
-        <div class="project-card">
-            <div class="project-img" style="background-image: url('p3.jpg');"></div>
-            <div class="project-info">
-                <span class="project-tag" style="background: rgba(251,113,133,0.1); color: #fb7185);">Commerce</span>
-                <h3>Modern Storefront</h3>
-                <p>High-conversion e-commerce engine with optimized checkout logic.</p>
-            </div>
         </div>
-        <div class="project-card">
-            <div class="project-img" style="background-image: url('p4.jpg');"></div>
-            <div class="project-info">
-                <span class="project-tag" style="background: rgba(167,139,250,0.1); color: #a78bfa);">SaaS</span>
-                <h3>Client Portal</h3>
-                <p>Sophisticated CRM system for secure client data management.</p>
-            </div>
-        </div>
-        <div class="project-card">
-            <div class="project-img" style="background-image: url('p5.jpg');"></div>
-            <div class="project-info">
-                <span class="project-tag" style="background: rgba(34,197,94,0.1); color: #4ade80);">Retail</span>
-                <h3>Retail POS</h3>
-                <p>Point of Sale system featuring offline-first database synchronization.</p>
-            </div>
-        </div>
-        <div class="project-card">
-            <div class="project-img" style="background-image: url('p6.jpg');"></div>
-            <div class="project-info">
-                <span class="project-tag" style="background: rgba(244,114,182,0.1); color: #f472b6);">Estate</span>
-                <h3>Property Finder</h3>
-                <p>Geolocation-based portal for property management and search.</p>
-            </div>
-        </div>
-        <div class="project-card">
-            <div class="project-img" style="background-image: url('p7.jpg');"></div>
-            <div class="project-info">
-                <span class="project-tag" style="background: rgba(45,212,191,0.1); color: #2dd4bf);">Health</span>
-                <h3>Patient EMR</h3>
-                <p>Secure Electronic Medical Records system for healthcare providers.</p>
-            </div>
-        </div>
-        <div class="project-card">
-            <div class="project-img" style="background-image: url('p8.jpg');"></div>
-            <div class="project-info">
-                <span class="project-tag" style="background: rgba(251,146,60,0.1); color: #fb923c);">Edu</span>
-                <h3>LMS Platform</h3>
-                <p>Interactive learning environment with course tracking engines.</p>
-            </div>
-        </div>
-    </div>
 </section>
 
 <section id="reviews">
-    <h2 style="font-size: 3rem; margin-bottom: 40px; text-align:center;">Client <span>Voices</span></h2>
-    <div style="max-width: 800px; margin: 0 auto;">
-        
-        <div class="review-box" style="border-color: var(--primary);">
-            <form action="save_review.php" method="POST">
-                <input type="text" name="name" placeholder="Full Name" required>
-                <input type="text" name="company" placeholder="Business Name" required>
-                <textarea name="review" rows="3" placeholder="Share your project experience..." required></textarea>
-                <button type="submit" class="btn-submit">POST REVIEW</button>
-            </form>
-        </div>
-
-        <?php foreach ($reviews as $row): ?>
-            <div class="review-box">
-                <h4 style="color:var(--primary);"><?php echo htmlspecialchars($row['name']); ?></h4>
-                <p style="font-size:0.75rem; color:#64748b; margin-bottom:10px;"><?php echo htmlspecialchars($row['company']); ?></p>
-                <p style="color:#cbd5e1; font-style: italic;">"<?php echo htmlspecialchars($row['review']); ?>"</p>
+    <h3 style="font-family: 'Plus Jakarta Sans'; font-size: 2.5rem; margin-bottom: 50px;">Trusted By</h3>
+    <?php foreach ($reviews as $row): ?>
+        <div class="review-card">
+            <p style="font-size: 1.2rem; color: #fff; margin-bottom: 15px;">"<?php echo htmlspecialchars($row['review']); ?>"</p>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div style="width: 40px; height: 40px; background: var(--primary); border-radius: 50%; display: grid; place-items: center; color: #000; font-weight: 800;">
+                    <?php echo substr($row['name'], 0, 1); ?>
+                </div>
+                <div>
+                    <h5 style="font-size: 0.9rem;"><?php echo htmlspecialchars($row['name']); ?></h5>
+                    <p style="font-size: 0.7rem; color: var(--text-dim);"><?php echo htmlspecialchars($row['company']); ?></p>
+                </div>
             </div>
-        <?php endforeach; ?>
-
-        <?php if ($total_pages > 1): ?>
-        <div class="pagination">
-            <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                <a href="?page=<?php echo $i; ?>#reviews" 
-                   class="page-link <?php echo ($i == $page) ? 'active' : ''; ?>">
-                   <?php echo $i; ?>
-                </a>
-            <?php endfor; ?>
         </div>
-        <?php endif; ?>
-
-    </div>
+    <?php endforeach; ?>
 </section>
 
-<section id="contact" style="text-align: center;">
-    <h2 style="font-size: 3.5rem; margin-bottom: 20px;">Let's <span>Connect.</span></h2>
-    <div style="background: var(--glass); padding: 50px; border-radius: 40px; border: 1px solid var(--glass-border); max-width: 600px; margin: 0 auto;">
-        <h3 style="color:#fff; font-size: 1.5rem; margin-bottom: 30px;">renzloiokit.dev@email.com</h3>
-        <div style="display: flex; justify-content: center; gap: 30px; font-size: 30px;">
-            <a href="https://github.com/Raezaga" style="color:white;"><i class="fab fa-github"></i></a>
-            <a href="https://www.linkedin.com/in/renz-loi-okit-13397b393/" style="color:white;"><i class="fab fa-linkedin"></i></a>
-        </div>
+<footer style="padding: 100px 5%; border-top: 1px solid var(--border); text-align: center;">
+    <h2 style="font-size: 3rem; margin-bottom: 30px;">Let's Build Something <br>Great Together.</h2>
+    <p style="color: var(--text-dim); margin-bottom: 40px;">Currently accepting new projects for 2026.</p>
+    <a href="mailto:renzloiokit.dev@email.com" class="btn-main">HIRE ME NOW</a>
+    <div style="margin-top: 60px; font-size: 0.7rem; color: var(--text-dim);">
+        &copy; <?php echo date("Y"); ?> RENZ LOI OKIT. ALL RIGHTS RESERVED.
     </div>
-</section>
-
-<footer style="text-align: center; padding: 50px; color: #475569; font-size: 0.8rem; border-top: 1px solid var(--glass-border);">
-    &copy; <?php echo date("Y"); ?> RENZ LOI OKIT. ALL RIGHTS RESERVED.
 </footer>
-
-<script>
-    const glow = document.getElementById('cursor-glow');
-    document.addEventListener('mousemove', (e) => {
-        glow.style.left = e.clientX + 'px';
-        glow.style.top = e.clientY + 'px';
-    });
-</script>
 
 </body>
 </html>
