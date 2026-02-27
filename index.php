@@ -48,11 +48,11 @@ try {
             color: #e2e8f0; 
             overflow-x: hidden;
             
-            /* Scaling Logic */
-            zoom: 0.8;                     /* Chrome, Safari, Edge */
-            -moz-transform: scale(0.8);    /* Firefox */
-            -moz-transform-origin: top center;
-            width: 130%;                   /* Compensation (1 / 0.8 = 1.25) */
+            /* The "80% Zoom" magic */
+            zoom: 0.8; /* Chrome, Edge, Safari */
+            -moz-transform: scale(0.8); /* Firefox */
+            -moz-transform-origin: top center; /* Anchor scaling to the top */
+            width: 125%; /* Compensates for the scale reduction (1 / 0.8 = 1.25) */
         }
 
         h1, h2, h3 { font-family: 'Space Grotesk', sans-serif; }
@@ -145,8 +145,8 @@ try {
         .page-link.active { background: var(--primary); color: #000; border-color: var(--primary); }
         .page-link:hover:not(.active) { border-color: var(--primary); color: var(--primary); }
 
+        /* Note: Mobile resets to 100% to keep text readable on phones */
         @media (max-width: 900px) {
-            /* Reset zoom on mobile so content doesn't become too small */
             body { zoom: 1; -moz-transform: scale(1); width: 100%; }
             .hero { flex-direction: column; text-align: center; }
             .hero-text h2 { font-size: 3.5rem; }
@@ -326,4 +326,3 @@ try {
 
 </body>
 </html>
-
