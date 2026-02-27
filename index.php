@@ -52,7 +52,7 @@ try {
             zoom: 0.8;                     /* Chrome, Safari, Edge */
             -moz-transform: scale(0.8);    /* Firefox */
             -moz-transform-origin: top center;
-            width: 125%;                   /* Compensation (1 / 0.8 = 1.25) */
+            width: 130%;                   /* Compensation (1 / 0.8 = 1.25) */
         }
 
         h1, h2, h3 { font-family: 'Space Grotesk', sans-serif; }
@@ -326,3 +326,4 @@ try {
 
 </body>
 </html>
+
