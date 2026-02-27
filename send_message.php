@@ -1,48 +1,26 @@
 <?php
-// Prevent any accidental output before the redirect
-ob_start();
-
+// Debugging version
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
-    // Modern way to sanitize (FILTER_SANITIZE_STRING is replaced by htmlspecialchars)
-    // We use the ?? operator to provide an empty string if the key is missing
-    $name    = htmlspecialchars(trim($_POST['contact_name'] ?? ''), ENT_QUOTES, 'UTF-8');
-    $email   = filter_var(trim($_POST['contact_email'] ?? ''), FILTER_SANITIZE_EMAIL);
-    $subject = htmlspecialchars(trim($_POST['subject'] ?? ''), ENT_QUOTES, 'UTF-8');
-    $message = htmlspecialchars(trim($_POST['message'] ?? ''), ENT_QUOTES, 'UTF-8');
+    // Collect data
+    $name    = $_POST['contact_name'] ?? null;
+    $email   = $_POST['contact_email'] ?? null;
+    $subject = $_POST['subject'] ?? null;
+    $message = $_POST['message'] ?? null;
 
-    // 2. Validation
-    if (empty($name) || empty($message) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        header("Location: index.php?status=error#contact");
-        exit;
-    }
+    // Validation logic check
+    if (empty($name)) { die("Error: Name field is empty or name attribute is wrong."); }
+    if (empty($message)) { die("Error: Message field is empty or name attribute is wrong."); }
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) { die("Error: Email is invalid or empty. Received: " . htmlspecialchars($email)); }
 
-    // 3. Email Settings
-    $to = "renzloiokit.dev@email.com"; // YOUR EMAIL HERE
-    $email_subject = "Portfolio Inquiry: " . ($subject ?: "General Inquiry");
+    // If it gets here, the data is fine. Let's try to send.
+    $to = "renzloiokit.dev@email.com"; // Your email
+    $headers = "From: $to\r\nReply-To: $email";
     
-    $body = "--- New Message from Portfolio ---\n\n";
-    $body .= "Name: $name\n";
-    $body .= "Email: $email\n";
-    $body .= "Subject: $subject\n\n";
-    $body .= "Message:\n$message\n\n";
-    $body .= "----------------------------------";
-
-    $headers = "From: $to\r\n"; // Using $to as 'From' to improve deliverability
-    $headers .= "Reply-To: $email\r\n";
-    $headers .= "X-Mailer: PHP/" . phpversion();
-
-    // 4. Send and Redirect
-    if (mail($to, $email_subject, $body, $headers)) {
+    if (mail($to, "Test: $subject", $message, $headers)) {
         header("Location: index.php?status=success#contact");
     } else {
-        header("Location: index.php?status=error#contact");
+        die("Error: The server's mail() function failed. If you are on XAMPP/Localhost, this is normal.");
     }
-    exit;
-} else {
-    header("Location: index.php");
-    exit;
 }
-
-ob_end_flush();
 ?>
