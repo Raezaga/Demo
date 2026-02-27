@@ -1,26 +1,47 @@
 <?php
-// Debugging version
+include "config.php"; // Uses your existing DB connection
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
-    // Collect data
-    $name    = $_POST['contact_name'] ?? null;
-    $email   = $_POST['contact_email'] ?? null;
-    $subject = $_POST['subject'] ?? null;
-    $message = $_POST['message'] ?? null;
+    // 1. Collect and Clean Data
+    $name    = htmlspecialchars(trim($_POST['contact_name'] ?? ''), ENT_QUOTES, 'UTF-8');
+    $email   = filter_var(trim($_POST['contact_email'] ?? ''), FILTER_SANITIZE_EMAIL);
+    $subject = htmlspecialchars(trim($_POST['subject'] ?? ''), ENT_QUOTES, 'UTF-8');
+    $message = htmlspecialchars(trim($_POST['message'] ?? ''), ENT_QUOTES, 'UTF-8');
 
-    // Validation logic check
-    if (empty($name)) { die("Error: Name field is empty or name attribute is wrong."); }
-    if (empty($message)) { die("Error: Message field is empty or name attribute is wrong."); }
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) { die("Error: Email is invalid or empty. Received: " . htmlspecialchars($email)); }
-
-    // If it gets here, the data is fine. Let's try to send.
-    $to = "renzloiokit.dev@email.com"; // Your email
-    $headers = "From: $to\r\nReply-To: $email";
-    
-    if (mail($to, "Test: $subject", $message, $headers)) {
-        header("Location: index.php?status=success#contact");
-    } else {
-        die("Error: The server's mail() function failed. If you are on XAMPP/Localhost, this is normal.");
+    // 2. Validation
+    if (empty($name) || empty($message) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        header("Location: index.php?status=error#contact");
+        exit;
     }
+
+    try {
+        // 3. Prepare SQL
+        $sql = "INSERT INTO contact_messages (name, email, subject, message) 
+                VALUES (:name, :email, :subject, :message)";
+        
+        $stmt = $pdo->prepare($sql);
+        
+        // 4. Execute
+        $stmt->execute([
+            ':name'    => $name,
+            ':email'   => $email,
+            ':subject' => $subject,
+            ':message' => $message
+        ]);
+
+        // 5. Success!
+        header("Location: index.php?status=success#contact");
+        exit;
+
+    } catch (PDOException $e) {
+        // If DB fails, send error status
+        header("Location: index.php?status=error#contact");
+        exit;
+    }
+
+} else {
+    header("Location: index.php");
+    exit;
 }
 ?>
