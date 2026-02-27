@@ -41,7 +41,20 @@ try {
         /* RESET & BASE */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         html { scroll-behavior: smooth; }
-        body { background: var(--bg-dark); color: #e2e8f0; overflow-x: hidden; }
+        
+        /* 80% ZOOM INTEGRATION */
+        body { 
+            background: var(--bg-dark); 
+            color: #e2e8f0; 
+            overflow-x: hidden;
+            
+            /* The "80% Zoom" magic */
+            zoom: 0.8; /* Chrome, Edge, Safari */
+            -moz-transform: scale(0.8); /* Firefox */
+            -moz-transform-origin: top center; /* Anchor scaling to the top */
+            width: 125%; /* Compensates for the scale reduction (1 / 0.8 = 1.25) */
+        }
+
         h1, h2, h3 { font-family: 'Space Grotesk', sans-serif; }
 
         /* BACKGROUND EFFECTS */
@@ -100,7 +113,7 @@ try {
         .skill-card p { font-size: 0.85rem; color: #94a3b8; line-height: 1.6; }
         .skill-card:hover { border-color: var(--primary); transform: translateY(-10px); background: rgba(250, 204, 21, 0.05); }
 
-        /* PROJECT GRID - IMPROVED IMAGE RENDERING */
+        /* PROJECT GRID */
         .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; margin-top: 50px; }
         .project-card {
             background: var(--glass); border: 1px solid var(--glass-border); border-radius: 24px;
@@ -110,7 +123,7 @@ try {
         .project-img { 
             height: 60%; width: 100%; border-bottom: 1px solid var(--glass-border);
             background-size: cover; background-position: center; background-repeat: no-repeat;
-            image-rendering: high-quality; /* Fixes "low quality" look on some browsers */
+            image-rendering: high-quality;
             background-color: #111; 
         }
         .project-info { height: 40%; padding: 25px; background: rgba(15, 23, 42, 0.4); display: flex; flex-direction: column; justify-content: center; }
@@ -132,7 +145,9 @@ try {
         .page-link.active { background: var(--primary); color: #000; border-color: var(--primary); }
         .page-link:hover:not(.active) { border-color: var(--primary); color: var(--primary); }
 
+        /* Note: Mobile resets to 100% to keep text readable on phones */
         @media (max-width: 900px) {
+            body { zoom: 1; -moz-transform: scale(1); width: 100%; }
             .hero { flex-direction: column; text-align: center; }
             .hero-text h2 { font-size: 3.5rem; }
             nav ul { display: none; }
