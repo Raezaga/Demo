@@ -94,7 +94,7 @@ try {
 
         #cursor-glow {
 
-            position: fixed; width: 600px; height: 600px;
+            position: fixed; width: 500px; height: 500px;
 
             background: radial-gradient(circle, rgba(250, 204, 21, 0.07) 0%, transparent 70%);
 
@@ -623,3 +623,4 @@ try {
 </body>
 
 </html>
+
