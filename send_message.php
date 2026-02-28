@@ -1,9 +1,7 @@
 <?php
-// TOP OF FILE: Ensure no spaces or lines exist before the <?php tag
-error_reporting(0);
-ini_set('display_errors', 0);
-
+// Ensure no whitespace exists before the opening tag
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Your verified Resend API Key from the screenshot
     $apiKey = 're_ixbpDK5A_6achZzFNn68Eith8vbJMH Hux'; 
     $toEmail = 'renzokit@gmail.com'; 
     
@@ -28,6 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             'Authorization: Bearer ' . $apiKey,
             'Content-Type: application/json'
         ],
+        // Required for some shared hosting/Render environments
         CURLOPT_SSL_VERIFYPEER => false 
     ]);
 
@@ -35,12 +34,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 
-    // CRITICAL: Clear any buffer to ensure ONLY "success" is sent
-    ob_clean(); 
+    // This ensures the JavaScript sees 'success' even if there are hidden warnings
     if ($httpCode === 200 || $httpCode === 201) {
         echo "success"; 
     } else {
-        echo "error";
+        // You can check your browser console to see this error detail
+        echo "error: " . $response;
     }
     exit();
 }
