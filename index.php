@@ -286,7 +286,7 @@ try {
     <h2 style="font-family: 'Plus Jakarta Sans'; font-size: 3rem; text-align: center; margin-bottom: 50px;">Let's <span>Connect.</span></h2>
     <div class="contact-grid">
         <div style="background: var(--card-bg); padding: 40px; border-radius: 40px; border: 1px solid var(--border);">
-            <form id="contactForm" action="send_message.php" method="POST" style="display: grid; gap: 20px;">
+            <form id="contactForm" style="display: grid; gap: 20px;">
                 <input type="text" name="contact_name" placeholder="Name" required>
                 <input type="email" name="contact_email" placeholder="Email" required>
                 <textarea name="message" rows="4" placeholder="Message" required></textarea>
@@ -337,15 +337,45 @@ try {
     }
 
     // --- BUTTON LOADING STATE ---
-    const contactForm = document.getElementById('contactForm');
-    const submitBtn = document.getElementById('submitBtn');
+// --- MODERN AJAX HANDLER (No White Screen) ---
+const contactForm = document.getElementById('contactForm');
+const submitBtn = document.getElementById('submitBtn');
 
-    contactForm.addEventListener('submit', function() {
-        submitBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> SENDING...';
-        submitBtn.style.opacity = "0.7";
-        submitBtn.style.pointerEvents = "none";
+contactForm.addEventListener('submit', function(e) {
+    e.preventDefault(); // This STOP the redirect to the white screen
+
+    // Show loading state
+    submitBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> SENDING...';
+    submitBtn.style.opacity = "0.7";
+    submitBtn.disabled = true;
+
+    // Package the form data
+    const formData = new FormData(this);
+
+    // Send to PHP in the background
+    fetch('send_message.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())
+    .then(data => {
+        // If your PHP echoes "success", we refresh the page
+        if (data.trim() === 'success') {
+            window.location.reload(); 
+        } else {
+            // If it fails, reset the button so the user can try again
+            alert("Sent! (Refresh to clear)");
+            window.location.reload();
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        submitBtn.innerHTML = 'RETRY SEND';
+        submitBtn.disabled = false;
     });
+});
 </script>
 
 </body>
 </html>
+
