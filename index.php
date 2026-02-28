@@ -672,24 +672,6 @@ try {
 
     }
 
-
-
-    // --- BUTTON LOADING STATE ---
-
-    const contactForm = document.getElementById('contactForm');
-
-    const submitBtn = document.getElementById('submitBtn');
-
-
-
-    contactForm.addEventListener('submit', function() {
-
-        submitBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> SENDING...';
-
-        submitBtn.style.opacity = "0.7";
-
-        submitBtn.style.pointerEvents = "none";
-
     });
 
 </script>
@@ -699,3 +681,4 @@ try {
 </body>
 
 </html>
+
