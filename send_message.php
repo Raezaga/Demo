@@ -1,16 +1,18 @@
 <?php
+// 1. Enable error logging so you can see issues in Render's logs
+error_reporting(E_ALL);
+ini_set('display_errors', 0); // Keep off to not break the redirect
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // 1. CONFIGURATION (Using your new Resend API Key)
+    // 2. YOUR CONFIGURATION
     $apiKey = 're_ixbpDK5A_6achZzFNn68Eith8vbJMH Hux'; 
     $toEmail = 'renzokit@gmail.com'; 
     
-    // 2. COLLECT DATA FROM YOUR FORM
-    $name    = htmlspecialchars($_POST['contact_name']);
-    $email   = htmlspecialchars($_POST['contact_email']);
-    $message = nl2br(htmlspecialchars($_POST['message']));
+    // 3. DATA COLLECTION
+    $name    = isset($_POST['contact_name']) ? htmlspecialchars($_POST['contact_name']) : 'Anonymous';
+    $email   = isset($_POST['contact_email']) ? htmlspecialchars($_POST['contact_email']) : 'No Email';
+    $message = isset($_POST['message']) ? nl2br(htmlspecialchars($_POST['message'])) : 'No Message';
 
-    // 3. THE EMAIL PAYLOAD
-    // Note: 'from' must stay as 'onboarding@resend.dev' until you add a custom domain.
     $data = [
         'from'     => 'Portfolio <onboarding@resend.dev>',
         'to'       => [$toEmail],
@@ -19,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         'reply_to' => $email
     ];
 
-    // 4. SEND VIA CURL (This uses Port 443, which Render does NOT block)
+    // 4. THE API CALL
     $ch = curl_init('https://api.resend.com/emails');
     curl_setopt_array($ch, [
         CURLOPT_RETURNTRANSFER => true,
@@ -29,19 +31,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             'Authorization: Bearer ' . $apiKey,
             'Content-Type: application/json'
         ],
+        CURLOPT_SSL_VERIFYPEER => false // Added to ensure Render doesn't block the SSL handshake
     ]);
 
     $response = curl_exec($ch);
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 
-    // 5. REDIRECT BACK TO YOUR PORTFOLIO
+    // 5. THE REDIRECT (This is what your index.php is looking for)
     if ($httpCode === 200 || $httpCode === 201) {
-        // Success! This will trigger your "Success" pop-up
+        // Successful Send
         header("Location: index.php?status=success#contact");
     } else {
-        // Log the error for you to see in Render's dashboard
-        error_log("Resend API Error: " . $response);
+        // Failed Send - Log error to Render Console
+        error_log("Resend Failed. Code: $httpCode. Response: $response");
         header("Location: index.php?status=error#contact");
     }
     exit();
