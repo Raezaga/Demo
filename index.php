@@ -312,12 +312,14 @@ try {
 </footer>
 
 <script>
+    // --- CURSOR GLOW ---
     const glow = document.getElementById('cursor-glow');
     document.addEventListener('mousemove', (e) => {
         glow.style.left = e.clientX + 'px';
         glow.style.top = e.clientY + 'px';
     });
 
+    // --- COPY EMAIL ---
     function copyEmail() {
         navigator.clipboard.writeText("renzloiokit.dev@email.com");
         const msg = document.getElementById('copyMsg');
@@ -326,26 +328,59 @@ try {
         setTimeout(() => { msg.style.opacity = "0"; }, 2000);
     }
 
-    // --- INTEGRATED STATUS HANDLER ---
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('status') === 'success') {
-        alert("✨ Success! Your message has been sent to Renz.");
-        window.history.replaceState({}, document.title, window.location.pathname);
-    } else if (urlParams.get('status') === 'error') {
-        alert("❌ Error: Message delivery failed. Please check your connection.");
-        window.history.replaceState({}, document.title, window.location.pathname);
-    }
-
-    // --- BUTTON LOADING STATE ---
+    // --- MODERN AJAX CONTACT FORM ---
     const contactForm = document.getElementById('contactForm');
     const submitBtn = document.getElementById('submitBtn');
 
-    contactForm.addEventListener('submit', function() {
+    contactForm.addEventListener('submit', function(e) {
+        e.preventDefault(); // This stops the page from refreshing
+
+        const originalText = submitBtn.innerHTML;
+        const formData = new FormData(this);
+
+        // 1. Show Loading State
         submitBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> SENDING...';
         submitBtn.style.opacity = "0.7";
         submitBtn.style.pointerEvents = "none";
+
+        // 2. Send data to PHP without leaving the page
+        fetch('send_message.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+            if (data.trim() === 'success') {
+                // 3. SUCCESS DESIGN: Change button to Green check
+                submitBtn.innerHTML = '<i class="fas fa-check"></i> MESSAGE SENT!';
+                submitBtn.style.background = '#28a745'; // Green
+                submitBtn.style.color = '#fff';
+                submitBtn.style.opacity = "1";
+                
+                contactForm.reset(); // Clear the form
+
+                // Revert button back to normal after 5 seconds
+                setTimeout(() => {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.style.background = ''; // Reverts to CSS default
+                    submitBtn.style.color = '';
+                    submitBtn.style.pointerEvents = "auto";
+                }, 5000);
+            } else {
+                // ERROR DESIGN
+                submitBtn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> ERROR';
+                submitBtn.style.background = '#dc3545'; // Red
+                submitBtn.style.pointerEvents = "auto";
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            submitBtn.innerHTML = 'CONNECTION ERROR';
+            submitBtn.style.pointerEvents = "auto";
+        });
     });
 </script>
 
 </body>
 </html>
+
