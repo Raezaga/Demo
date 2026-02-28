@@ -1,7 +1,7 @@
 <?php
 include "config.php";
 
-// 1. Logic Fully Restored: Pagination & Fetching
+// 1. Pagination & Fetching Logic
 $limit = 5; 
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 if ($page < 1) $page = 1;
@@ -12,7 +12,6 @@ try {
     $total_reviews = $total_stmt->fetchColumn();
     $total_pages = ceil($total_reviews / $limit);
 
-    // Fetching the actual review data
     $stmt = $pdo->prepare("SELECT * FROM reviews ORDER BY created_at DESC LIMIT :limit OFFSET :offset");
     $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
     $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
@@ -40,7 +39,6 @@ try {
             --text-dim: #94a3b8;
         }
 
-        /* RESET & BASE */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body { 
@@ -51,7 +49,6 @@ try {
             overflow-x: hidden;
         }
 
-        /* PREMIUM BACKGROUND MESH */
         .mesh-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: 
@@ -67,7 +64,6 @@ try {
             transform: translate(-50%, -50%); transition: 0.15s ease-out;
         }
 
-        /* NAVIGATION */
         nav {
             position: fixed; top: 25px; left: 50%; transform: translateX(-50%);
             width: 90%; max-width: 1000px; padding: 12px 30px;
@@ -82,7 +78,6 @@ try {
 
         section { max-width: 1250px; margin: 0 auto; padding: 140px 6% 80px; position: relative; z-index: 2; }
 
-        /* HERO */
         .hero { display: flex; align-items: center; gap: 40px; min-height: 90vh; }
         .hero-text h2 { 
             font-family: 'Plus Jakarta Sans'; font-size: clamp(2.5rem, 6vw, 5rem); 
@@ -102,7 +97,6 @@ try {
             object-fit: cover; border: 1px solid var(--border); 
         }
 
-        /* BENTO EXPERTISE */
         .expertise-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
         .skill-card { background: var(--card-bg); border: 1px solid var(--border); padding: 40px; border-radius: 35px; transition: 0.4s; }
         .skill-card:nth-child(1) { grid-column: span 2; grid-row: span 2; }
@@ -110,7 +104,6 @@ try {
         .skill-card i { font-size: 1.8rem; color: var(--primary); margin-bottom: 25px; display: block; }
         .skill-card h3 { font-family: 'Plus Jakarta Sans'; font-size: 1.5rem; margin-bottom: 12px; }
 
-        /* PROJECTS */
         .project-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; margin-top: 50px; }
         .project-card {
             background: var(--card-bg); border: 1px solid var(--border); border-radius: 35px;
@@ -120,17 +113,13 @@ try {
         .project-info { padding: 30px; }
         .project-tag { font-size: 0.6rem; font-weight: 800; color: var(--primary); margin-bottom: 10px; display: block; }
 
-        /* REVIEWS SECTION */
         .reviews-container { max-width: 900px; margin: 0 auto; }
         .review-box { 
             background: var(--card-bg); border: 1px solid var(--border); 
             padding: 35px; border-radius: 30px; margin-bottom: 25px; 
             position: relative; transition: 0.3s;
         }
-        .review-box:hover { border-color: rgba(250, 204, 21, 0.3); transform: scale(1.01); }
         
-        .review-quote { position: absolute; top: 20px; right: 30px; font-size: 3rem; color: rgba(255,255,255,0.05); font-family: serif; }
-
         input, textarea { 
             width: 100%; padding: 18px; background: rgba(255,255,255,0.03); 
             border: 1px solid var(--border); color: white; border-radius: 15px; margin-bottom: 15px; 
@@ -150,7 +139,6 @@ try {
         }
         .page-link.active { background: var(--primary); color: #000; border-color: var(--primary); font-weight: 800; }
 
-        /* CONTACT GRID */
         .contact-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 40px; }
 
         @media (max-width: 900px) {
@@ -181,7 +169,7 @@ try {
     <div class="hero-text">
         <span style="color: var(--primary); font-weight: 800; font-size: 0.7rem; letter-spacing: 3px; margin-bottom: 20px; display: block;">FULL STACK ENGINEER</span>
         <h2>Engineering <span>Scalable</span> Web Systems</h2>
-        <p style="color: var(--text-dim); margin-bottom: 40px; max-width: 550px;">I specialize in high-performance PHP architectures and sophisticated UI/UX design for data-heavy applications.</p>
+        <p style="color: var(--text-dim); margin-bottom: 40px; max-width: 550px;">I specialize in high-performance PHP architectures and sophisticated UI/UX design.</p>
         <div style="display: flex; gap: 20px;">
             <a href="My_CV.pdf" download class="btn-premium"><i class="fas fa-file-invoice"></i> DOWNLOAD CV</a>
         </div>
@@ -194,39 +182,16 @@ try {
 <section id="expertise">
     <h2 style="font-family: 'Plus Jakarta Sans'; font-size: 2.5rem; margin-bottom: 40px;">Capabilities</h2>
     <div class="expertise-grid">
-        <div class="skill-card"><i class="fas fa-server"></i><h3>Backend Arch</h3><p>Secure PHP (PDO) logic with optimized MySQL relational schemas and RESTful API structures.</p></div>
-        <div class="skill-card"><i class="fas fa-layer-group"></i><h3>Frontend Logic</h3><p>ES6 JavaScript and Tailwind-optimized interfaces for seamless user flow.</p></div>
-        <div class="skill-card"><i class="fas fa-microchip"></i><h3>System Design</h3><p>Performance tuning and database normalization for enterprise-grade scale.</p></div>
-        <div class="skill-card"><i class="fas fa-terminal"></i><h3>Workflow</h3><p>Modern CI/CD, Git version control, and Unix-based server management.</p></div>
-    </div>
-</section>
-
-<section id="projects">
-    <h2 style="font-family: 'Plus Jakarta Sans'; font-size: 2.5rem; margin-bottom: 40px;">Selected <span>Work</span></h2>
-    <div class="project-grid">
-        <?php 
-        $project_list = [
-            ['tag' => 'Logistics', 'title' => 'Enterprise Inventory', 'desc' => 'Warehouse management system.', 'img' => 'p1.jpg'],
-            ['tag' => 'Fintech', 'title' => 'Market Analytics', 'desc' => 'Live data visualization engine.', 'img' => 'p2.jpg'],
-            ['tag' => 'Commerce', 'title' => 'Modern Storefront', 'desc' => 'High-conversion e-commerce.', 'img' => 'p3.jpg'],
-        ];
-        foreach($project_list as $p): ?>
-        <div class="project-card">
-            <div class="project-img" style="background-image: url('<?php echo $p['img']; ?>');"></div>
-            <div class="project-info">
-                <span class="project-tag"><?php echo $p['tag']; ?></span>
-                <h3><?php echo $p['title']; ?></h3>
-                <p style="font-size: 0.8rem; color: var(--text-dim);"><?php echo $p['desc']; ?></p>
-            </div>
-        </div>
-        <?php endforeach; ?>
+        <div class="skill-card"><i class="fas fa-server"></i><h3>Backend Arch</h3><p>Secure PHP (PDO) logic with optimized MySQL relational schemas.</p></div>
+        <div class="skill-card"><i class="fas fa-layer-group"></i><h3>Frontend Logic</h3><p>ES6 JavaScript and Tailwind-optimized interfaces.</p></div>
+        <div class="skill-card"><i class="fas fa-microchip"></i><h3>System Design</h3><p>Performance tuning and database normalization.</p></div>
+        <div class="skill-card"><i class="fas fa-terminal"></i><h3>Workflow</h3><p>Modern CI/CD, Git version control, and Unix management.</p></div>
     </div>
 </section>
 
 <section id="reviews">
     <div style="text-align: center; margin-bottom: 60px;">
         <h2 style="font-family: 'Plus Jakarta Sans'; font-size: 2.8rem;">Client <span>Voices</span></h2>
-        <p style="color: var(--text-dim);">Feedback from recent engineering collaborations.</p>
     </div>
 
     <div class="reviews-container">
@@ -243,42 +208,14 @@ try {
         </div>
 
         <div id="reviews-list">
-            <?php if (empty($reviews)): ?>
-                <p style="text-align: center; color: var(--text-dim);">No reviews yet. Be the first to leave one!</p>
-            <?php else: ?>
-                <?php foreach ($reviews as $row): ?>
-                    <div class="review-box">
-                        <div class="review-quote">"</div>
-                        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
-                            <div style="width: 50px; height: 50px; background: linear-gradient(45deg, var(--primary), #fbbf24); border-radius: 50%; display: grid; place-items: center; color: #000; font-weight: 800; font-size: 1.2rem;">
-                                <?php echo strtoupper(substr($row['name'], 0, 1)); ?>
-                            </div>
-                            <div>
-                                <h4 style="font-family: 'Plus Jakarta Sans'; font-size: 1.1rem; color: #fff;">
-                                    <?php echo htmlspecialchars($row['name']); ?>
-                                </h4>
-                                <p style="font-size: 0.75rem; color: var(--primary); text-transform: uppercase; letter-spacing: 1px;">
-                                    <?php echo htmlspecialchars($row['company']); ?>
-                                </p>
-                            </div>
-                        </div>
-                        <p style="color: #cbd5e1; font-style: italic; line-height: 1.7; font-size: 1rem; position: relative; z-index: 1;">
-                            "<?php echo htmlspecialchars($row['review']); ?>"
-                        </p>
-                    </div>
-                <?php endforeach; ?>
-            <?php endif; ?>
+            <?php foreach ($reviews as $row): ?>
+                <div class="review-box">
+                    <h4 style="color: #fff;"><?php echo htmlspecialchars($row['name']); ?></h4>
+                    <p style="color: var(--primary); font-size: 0.75rem;"><?php echo htmlspecialchars($row['company']); ?></p>
+                    <p style="color: #cbd5e1; font-style: italic;">"<?php echo htmlspecialchars($row['review']); ?>"</p>
+                </div>
+            <?php endforeach; ?>
         </div>
-
-        <?php if ($total_pages > 1): ?>
-        <div class="pagination">
-            <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                <a href="?page=<?php echo $i; ?>#reviews" class="page-link <?php echo ($i == $page) ? 'active' : ''; ?>">
-                    <?php echo $i; ?>
-                </a>
-            <?php endfor; ?>
-        </div>
-        <?php endif; ?>
     </div>
 </section>
 
@@ -286,7 +223,7 @@ try {
     <h2 style="font-family: 'Plus Jakarta Sans'; font-size: 3rem; text-align: center; margin-bottom: 50px;">Let's <span>Connect.</span></h2>
     <div class="contact-grid">
         <div style="background: var(--card-bg); padding: 40px; border-radius: 40px; border: 1px solid var(--border);">
-            <form id="contactForm" style="display: grid; gap: 20px;">
+            <form id="contactForm">
                 <input type="text" name="contact_name" placeholder="Name" required>
                 <input type="email" name="contact_email" placeholder="Email" required>
                 <textarea name="message" rows="4" placeholder="Message" required></textarea>
@@ -296,30 +233,24 @@ try {
         <div style="display: flex; flex-direction: column; gap: 20px;">
             <div style="background: var(--card-bg); border: 1px solid var(--border); padding: 30px; border-radius: 30px;">
                 <p style="font-size: 0.7rem; color: var(--text-dim); margin-bottom: 5px;">DIRECT EMAIL</p>
-                <h4 style="cursor: pointer; color: #fff;" onclick="copyEmail()" id="emailText">renzloiokit.dev@email.com</h4>
+                <h4 style="cursor: pointer; color: #fff;" onclick="copyEmail()">renzloiokit.dev@email.com</h4>
                 <p id="copyMsg" style="font-size: 0.6rem; color: var(--primary); opacity: 0;">Click to copy</p>
-            </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                <a href="https://github.com/Raezaga" target="_blank" style="background: var(--card-bg); border: 1px solid var(--border); padding: 25px; border-radius: 25px; text-align: center; color: white; text-decoration: none;"><i class="fab fa-github"></i></a>
-                <a href="https://www.linkedin.com/in/renz-loi-okit-13397b393/" target="_blank" style="background: var(--card-bg); border: 1px solid var(--border); padding: 25px; border-radius: 25px; text-align: center; color: white; text-decoration: none;"><i class="fab fa-linkedin"></i></a>
             </div>
         </div>
     </div>
 </section>
 
 <footer style="text-align: center; padding: 60px; color: var(--text-dim); font-size: 0.75rem; border-top: 1px solid var(--border);">
-    &copy; <?php echo date("Y"); ?> RENZ LOI OKIT. ALL RIGHTS RESERVED.
+    &copy; <?php echo date("Y"); ?> RENZ LOI OKIT.
 </footer>
 
 <script>
-    // --- CURSOR GLOW ---
     const glow = document.getElementById('cursor-glow');
     document.addEventListener('mousemove', (e) => {
         glow.style.left = e.clientX + 'px';
         glow.style.top = e.clientY + 'px';
     });
 
-    // --- COPY EMAIL ---
     function copyEmail() {
         navigator.clipboard.writeText("renzloiokit.dev@email.com");
         const msg = document.getElementById('copyMsg');
@@ -328,53 +259,45 @@ try {
         setTimeout(() => { msg.style.opacity = "0"; }, 2000);
     }
 
-    // --- MODERN AJAX CONTACT FORM ---
+    // --- UPDATED AJAX CONTACT FORM ---
     const contactForm = document.getElementById('contactForm');
     const submitBtn = document.getElementById('submitBtn');
 
     contactForm.addEventListener('submit', function(e) {
-        e.preventDefault(); // Stop page from refreshing
+        e.preventDefault();
 
         const originalText = submitBtn.innerHTML;
         const formData = new FormData(this);
 
-        // 1. Show Loading State
         submitBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> SENDING...';
         submitBtn.style.opacity = "0.7";
         submitBtn.style.pointerEvents = "none";
 
-        // 2. Background Fetch
         fetch('send_message.php', {
             method: 'POST',
             body: formData
         })
         .then(response => response.text())
         .then(data => {
-            const result = data.trim();
-            if (result === 'success') {
-                // 3. SUCCESS DESIGN
+            console.log("Response:", data);
+            if (data.trim() === 'success') {
                 submitBtn.innerHTML = '<i class="fas fa-check"></i> MESSAGE SENT!';
-                submitBtn.style.background = '#28a745'; // Green
+                submitBtn.style.background = '#28a745';
                 submitBtn.style.color = '#fff';
                 submitBtn.style.opacity = "1";
-                
                 contactForm.reset();
-
                 setTimeout(() => {
                     submitBtn.innerHTML = originalText;
-                    submitBtn.style.background = ''; 
-                    submitBtn.style.color = '';
+                    submitBtn.style.background = '';
                     submitBtn.style.pointerEvents = "auto";
-                }, 5000);
+                }, 4000);
             } else {
-                // ERROR DESIGN
                 submitBtn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> ERROR';
-                submitBtn.style.background = '#dc3545'; // Red
+                submitBtn.style.background = '#dc3545';
                 submitBtn.style.pointerEvents = "auto";
             }
         })
         .catch(error => {
-            console.error('Error:', error);
             submitBtn.innerHTML = 'CONNECTION ERROR';
             submitBtn.style.pointerEvents = "auto";
         });
