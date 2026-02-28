@@ -3,13 +3,13 @@
 ob_start(); 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // FIXED: Space removed from the key string
+    // FIXED: The key string is now one solid block
     $apiKey = 're_ixbpDK5A_6achZzFNn68Eith8vbJMHhux'; 
     $toEmail = 'renzokit@gmail.com'; 
     
-    $name    = htmlspecialchars($_POST['contact_name']);
-    $email   = htmlspecialchars($_POST['contact_email']);
-    $message = nl2br(htmlspecialchars($_POST['message']));
+    $name    = htmlspecialchars($_POST['contact_name'] ?? 'Visitor');
+    $email   = htmlspecialchars($_POST['contact_email'] ?? 'No Email');
+    $message = nl2br(htmlspecialchars($_POST['message'] ?? 'No Message'));
 
     $data = [
         'from'     => 'Portfolio <onboarding@resend.dev>',
@@ -35,14 +35,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 
-    // Clear the buffer to ensure only our status word is sent
+    // Wipe any accidental spaces from the buffer
     ob_clean(); 
 
     if ($httpCode === 200 || $httpCode === 201) {
         echo "success"; 
     } else {
-        // Logically, we should know why it failed
-        echo "error_code_" . $httpCode;
+        echo "error";
     }
     exit();
 }
