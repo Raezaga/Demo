@@ -1,14 +1,12 @@
 <?php
-// Prevent PHP from outputting errors that might break the JS response
-error_reporting(0);
-ini_set('display_errors', 0);
+// CRITICAL: Ensure there is NO space or line before the <?php tag
+ob_start(); 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // 1. CONFIGURATION
-    $apiKey = 're_ixbpDK5A_6achZzFNn68Eith8vbJMH Hux'; 
+    // FIXED: Space removed from the key string
+    $apiKey = 're_ixbpDK5A_6achZzFNn68Eith8vbJMHhux'; 
     $toEmail = 'renzokit@gmail.com'; 
     
-    // 2. DATA COLLECTION
     $name    = htmlspecialchars($_POST['contact_name']);
     $email   = htmlspecialchars($_POST['contact_email']);
     $message = nl2br(htmlspecialchars($_POST['message']));
@@ -21,7 +19,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         'reply_to' => $email
     ];
 
-    // 3. THE API CALL
     $ch = curl_init('https://api.resend.com/emails');
     curl_setopt_array($ch, [
         CURLOPT_RETURNTRANSFER => true,
@@ -38,12 +35,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 
-    // 4. THE JAVASCRIPT-FRIENDLY RESPONSE
-    // Instead of header(), we just echo the result
+    // Clear the buffer to ensure only our status word is sent
+    ob_clean(); 
+
     if ($httpCode === 200 || $httpCode === 201) {
         echo "success"; 
     } else {
-        echo "error";
+        // Logically, we should know why it failed
+        echo "error_code_" . $httpCode;
     }
     exit();
 }
