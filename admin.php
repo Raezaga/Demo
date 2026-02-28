@@ -2,7 +2,7 @@
 session_start();
 include "config.php";
 
-$admin_pass = 'YOUR_PASSWORD_HERE'; // KEEP THIS SECURE
+$admin_pass = '337051'; // KEEP THIS SECURE
 
 if (isset($_POST['login'])) {
     if ($_POST['password'] === $admin_pass) {
@@ -117,3 +117,4 @@ $live = $liveStmt->fetchAll();
 
 </body>
 </html>
+
