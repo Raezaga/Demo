@@ -312,12 +312,14 @@ try {
 </footer>
 
 <script>
+    // 1. Cursor Glow Effect
     const glow = document.getElementById('cursor-glow');
     document.addEventListener('mousemove', (e) => {
         glow.style.left = e.clientX + 'px';
         glow.style.top = e.clientY + 'px';
     });
 
+    // 2. Copy Email Logic
     function copyEmail() {
         navigator.clipboard.writeText("renzloiokit.dev@email.com");
         const msg = document.getElementById('copyMsg');
@@ -326,26 +328,47 @@ try {
         setTimeout(() => { msg.style.opacity = "0"; }, 2000);
     }
 
-    // --- INTEGRATED STATUS HANDLER ---
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('status') === 'success') {
-        alert("✨ Success! Your message has been sent to Renz.");
-        window.history.replaceState({}, document.title, window.location.pathname);
-    } else if (urlParams.get('status') === 'error') {
-        alert("❌ Error: Message delivery failed. Please check your connection.");
-        window.history.replaceState({}, document.title, window.location.pathname);
-    }
-
-    // --- BUTTON LOADING STATE ---
+    // 3. --- INTEGRATED AJAX SEND & REFRESH ---
     const contactForm = document.getElementById('contactForm');
     const submitBtn = document.getElementById('submitBtn');
 
-    contactForm.addEventListener('submit', function() {
+    contactForm.addEventListener('submit', function(e) {
+        e.preventDefault(); // Stop the "White Page" from happening
+        
+        // UI Feedback
         submitBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> SENDING...';
         submitBtn.style.opacity = "0.7";
         submitBtn.style.pointerEvents = "none";
+
+        const formData = new FormData(this);
+
+        fetch('send_message.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+            // If the server says success, we simply refresh. No popups.
+            if (data.trim() === 'success') {
+                window.location.href = window.location.pathname + "#contact";
+                window.location.reload(); 
+            } else {
+                // If it fails, we let the user try again
+                console.error("Server Error:", data);
+                submitBtn.innerHTML = 'RETRY SEND';
+                submitBtn.style.opacity = "1";
+                submitBtn.style.pointerEvents = "auto";
+            }
+        })
+        .catch(err => {
+            console.error("Network Error:", err);
+            submitBtn.innerHTML = 'NETWORK ERROR';
+            submitBtn.style.opacity = "1";
+            submitBtn.style.pointerEvents = "auto";
+        });
     });
 </script>
 
 </body>
 </html>
+
