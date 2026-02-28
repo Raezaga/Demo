@@ -1,10 +1,14 @@
 <?php
-// Ensure no whitespace exists before the opening tag
+// Prevent PHP from outputting errors that might break the JS response
+error_reporting(0);
+ini_set('display_errors', 0);
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Your verified Resend API Key from the screenshot
+    // 1. CONFIGURATION
     $apiKey = 're_ixbpDK5A_6achZzFNn68Eith8vbJMH Hux'; 
     $toEmail = 'renzokit@gmail.com'; 
     
+    // 2. DATA COLLECTION
     $name    = htmlspecialchars($_POST['contact_name']);
     $email   = htmlspecialchars($_POST['contact_email']);
     $message = nl2br(htmlspecialchars($_POST['message']));
@@ -17,6 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         'reply_to' => $email
     ];
 
+    // 3. THE API CALL
     $ch = curl_init('https://api.resend.com/emails');
     curl_setopt_array($ch, [
         CURLOPT_RETURNTRANSFER => true,
@@ -26,7 +31,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             'Authorization: Bearer ' . $apiKey,
             'Content-Type: application/json'
         ],
-        // Required for some shared hosting/Render environments
         CURLOPT_SSL_VERIFYPEER => false 
     ]);
 
@@ -34,12 +38,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 
-    // This ensures the JavaScript sees 'success' even if there are hidden warnings
+    // 4. THE JAVASCRIPT-FRIENDLY RESPONSE
+    // Instead of header(), we just echo the result
     if ($httpCode === 200 || $httpCode === 201) {
         echo "success"; 
     } else {
-        // You can check your browser console to see this error detail
-        echo "error: " . $response;
+        echo "error";
     }
     exit();
 }
