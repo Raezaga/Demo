@@ -1,49 +1,48 @@
 <?php
-// 1. Enable Error Reporting to see the crash
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-
-// 2. Absolute Path Check
-$basePath = __DIR__ . '/PHPMailer/';
-
-if (!file_exists($basePath . 'Exception.php')) {
-    die("Error: PHP cannot find PHPMailer/Exception.php at " . $basePath);
-}
-
-require $basePath . 'Exception.php';
-require $basePath . 'PHPMailer.php';
-require $basePath . 'SMTP.php';
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $mail = new PHPMailer(true);
+    // 1. CONFIGURATION (Using your new Resend API Key)
+    $apiKey = 're_ixbpDK5A_6achZzFNn68Eith8vbJMH Hux'; 
+    $toEmail = 'renzokit@gmail.com'; 
+    
+    // 2. COLLECT DATA FROM YOUR FORM
+    $name    = htmlspecialchars($_POST['contact_name']);
+    $email   = htmlspecialchars($_POST['contact_email']);
+    $message = nl2br(htmlspecialchars($_POST['message']));
 
-    try {
-        $mail->isSMTP();
-        $mail->Host       = 'smtp.gmail.com';
-        $mail->SMTPAuth   = true;
-        $mail->Username   = 'renzokit@gmail.com'; 
-        $mail->Password   = 'wvyjortggzdidxqa'; 
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; 
-        $mail->Port       = 465;                                    
+    // 3. THE EMAIL PAYLOAD
+    // Note: 'from' must stay as 'onboarding@resend.dev' until you add a custom domain.
+    $data = [
+        'from'     => 'Portfolio <onboarding@resend.dev>',
+        'to'       => [$toEmail],
+        'subject'  => 'New Message from ' . $name,
+        'html'     => "<strong>From:</strong> $name ($email)<br><br><strong>Message:</strong><br>$message",
+        'reply_to' => $email
+    ];
 
-        $mail->setFrom('renzokit@gmail.com', 'Portfolio System');
-        $mail->addAddress('renzokit@gmail.com'); 
+    // 4. SEND VIA CURL (This uses Port 443, which Render does NOT block)
+    $ch = curl_init('https://api.resend.com/emails');
+    curl_setopt_array($ch, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_POST           => true,
+        CURLOPT_POSTFIELDS     => json_encode($data),
+        CURLOPT_HTTPHEADER     => [
+            'Authorization: Bearer ' . $apiKey,
+            'Content-Type: application/json'
+        ],
+    ]);
 
-        $mail->isHTML(true);
-        $mail->Subject = "New Message from " . $_POST['contact_name'];
-        $mail->Body    = "Name: " . $_POST['contact_name'] . "<br>Email: " . $_POST['contact_email'] . "<br>Message: " . $_POST['message'];
+    $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
 
-        $mail->send();
+    // 5. REDIRECT BACK TO YOUR PORTFOLIO
+    if ($httpCode === 200 || $httpCode === 201) {
+        // Success! This will trigger your "Success" pop-up
         header("Location: index.php?status=success#contact");
-        exit();
-        
-    } catch (Exception $e) {
-        // If SMTP fails, show the error instead of redirecting
-        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-        exit();
+    } else {
+        // Log the error for you to see in Render's dashboard
+        error_log("Resend API Error: " . $response);
+        header("Location: index.php?status=error#contact");
     }
+    exit();
 }
