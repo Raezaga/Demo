@@ -97,9 +97,22 @@ try {
         }
         .btn-premium:hover { transform: translateY(-5px); background: var(--primary); }
 
-        .hero-image img { 
-            width: 100%; max-width: 380px; aspect-ratio: 1; border-radius: 40px; 
-            object-fit: cover; border: 1px solid var(--border); 
+        /* UPDATED HERO IMAGE STYLE */
+    .hero-image img { 
+    width: 320px; /* Kept consistent width */
+    height: 320px; /* Added height to ensure a 1:1 ratio */
+    border-radius: 50%; /* This makes it a perfect circle */
+    object-fit: cover; /* Prevents stretching */
+    border: 4px solid var(--primary); /* Thick primary color outline */
+    padding: 10px; /* Optional: Creates a "gap" between image and outline */
+    background: rgba(250, 204, 21, 0.05); /* Optional: Subtle inner glow */
+    transition: 0.5s ease-in-out;
+    box-shadow: 0 0 30px rgba(250, 204, 21, 0.15); /* Adds a premium glow */
+       }
+
+    .hero-image img:hover {
+    transform: scale(1.05) rotate(2deg);
+    border-color: #fff; /* Outline turns white on hover */
         }
 
         /* BENTO EXPERTISE */
@@ -379,6 +392,7 @@ contactForm.addEventListener('submit', function(e) {
 
 </body>
 </html>
+
 
 
 
