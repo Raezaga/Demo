@@ -1,14 +1,12 @@
 <?php
-// Prevent PHP from outputting errors that might break the JS response
+// Silent mode: No browser errors to interfere with our JS "success" word
 error_reporting(0);
 ini_set('display_errors', 0);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // 1. CONFIGURATION
-    $apiKey = 're_ixbpDK5A_6achZzFNn68Eith8vbJMHHux'; 
+    $apiKey = 're_ixbpDK5A_6achZzFNn68Eith8vbJMH Hux'; 
     $toEmail = 'renzokit@gmail.com'; 
     
-    // 2. DATA COLLECTION
     $name    = htmlspecialchars($_POST['contact_name']);
     $email   = htmlspecialchars($_POST['contact_email']);
     $message = nl2br(htmlspecialchars($_POST['message']));
@@ -16,12 +14,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $data = [
         'from'     => 'Portfolio <onboarding@resend.dev>',
         'to'       => [$toEmail],
-        'subject'  => 'New Message from ' . $name,
+        'subject'  => 'Portfolio Message from ' . $name,
         'html'     => "<strong>From:</strong> $name ($email)<br><br><strong>Message:</strong><br>$message",
         'reply_to' => $email
     ];
 
-    // 3. THE API CALL
     $ch = curl_init('https://api.resend.com/emails');
     curl_setopt_array($ch, [
         CURLOPT_RETURNTRANSFER => true,
@@ -38,8 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 
-    // 4. THE JAVASCRIPT-FRIENDLY RESPONSE
-    // Instead of header(), we just echo the result
+    // Only output the raw word 'success' so JS can read it easily
     if ($httpCode === 200 || $httpCode === 201) {
         echo "success"; 
     } else {
