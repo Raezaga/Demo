@@ -1,7 +1,7 @@
 <?php
 include "config.php";
 
-// 1. Pagination & Fetching Logic
+// 1. Pagination & Review Fetching Logic
 $limit = 5; 
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 if ($page < 1) $page = 1;
@@ -17,7 +17,10 @@ try {
     $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
     $stmt->execute();
     $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (Exception $e) { $reviews = []; $total_pages = 0; }
+} catch (Exception $e) { 
+    $reviews = []; 
+    $total_pages = 0; 
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -39,6 +42,7 @@ try {
             --text-dim: #94a3b8;
         }
 
+        /* RESET & BASE */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body { 
@@ -49,6 +53,7 @@ try {
             overflow-x: hidden;
         }
 
+        /* PREMIUM BACKGROUND */
         .mesh-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: 
@@ -64,6 +69,7 @@ try {
             transform: translate(-50%, -50%); transition: 0.15s ease-out;
         }
 
+        /* NAVIGATION */
         nav {
             position: fixed; top: 25px; left: 50%; transform: translateX(-50%);
             width: 90%; max-width: 1000px; padding: 12px 30px;
@@ -78,6 +84,7 @@ try {
 
         section { max-width: 1250px; margin: 0 auto; padding: 140px 6% 80px; position: relative; z-index: 2; }
 
+        /* HERO */
         .hero { display: flex; align-items: center; gap: 40px; min-height: 90vh; }
         .hero-text h2 { 
             font-family: 'Plus Jakarta Sans'; font-size: clamp(2.5rem, 6vw, 5rem); 
@@ -97,6 +104,7 @@ try {
             object-fit: cover; border: 1px solid var(--border); 
         }
 
+        /* EXPERTISE */
         .expertise-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
         .skill-card { background: var(--card-bg); border: 1px solid var(--border); padding: 40px; border-radius: 35px; transition: 0.4s; }
         .skill-card:nth-child(1) { grid-column: span 2; grid-row: span 2; }
@@ -104,9 +112,19 @@ try {
         .skill-card i { font-size: 1.8rem; color: var(--primary); margin-bottom: 25px; display: block; }
         .skill-card h3 { font-family: 'Plus Jakarta Sans'; font-size: 1.5rem; margin-bottom: 12px; }
 
-        /* CONTACT SPECIFIC STYLES */
+        /* REVIEWS */
+        .reviews-container { max-width: 900px; margin: 0 auto; }
+        .review-box { 
+            background: var(--card-bg); border: 1px solid var(--border); 
+            padding: 35px; border-radius: 30px; margin-bottom: 25px; position: relative;
+        }
+        .pagination { display: flex; justify-content: center; gap: 10px; margin-top: 30px; }
+        .page-link { padding: 10px 15px; border: 1px solid var(--border); color: white; text-decoration: none; border-radius: 10px; }
+        .page-link.active { background: var(--primary); color: #000; font-weight: 800; }
+
+        /* CONTACT FORM */
         .contact-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 40px; }
-        .input-group { display: flex; flex-direction: column; gap: 8px; }
+        .input-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
         .input-label { font-size: 0.7rem; color: var(--primary); font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
         
         input, textarea { 
@@ -128,13 +146,6 @@ try {
         }
         .social-link:hover { border-color: var(--primary); transform: translateY(-5px); background: rgba(255,255,255,0.05); }
 
-        /* REVIEWS */
-        .reviews-container { max-width: 900px; margin: 0 auto; }
-        .review-box { 
-            background: var(--card-bg); border: 1px solid var(--border); 
-            padding: 35px; border-radius: 30px; margin-bottom: 25px; transition: 0.3s;
-        }
-
         @media (max-width: 900px) {
             .hero { flex-direction: column; text-align: center; }
             .expertise-grid, .contact-grid { grid-template-columns: 1fr; }
@@ -153,7 +164,6 @@ try {
     <ul>
         <li><a href="#hero">Intro</a></li>
         <li><a href="#expertise">Services</a></li>
-        <li><a href="#projects">Work</a></li>
         <li><a href="#reviews">Clients</a></li>
         <li><a href="#contact">Contact</a></li>
     </ul>
@@ -163,7 +173,7 @@ try {
     <div class="hero-text">
         <span style="color: var(--primary); font-weight: 800; font-size: 0.7rem; letter-spacing: 3px; margin-bottom: 20px; display: block;">FULL STACK ENGINEER</span>
         <h2>Engineering <span>Scalable</span> Web Systems</h2>
-        <p style="color: var(--text-dim); margin-bottom: 40px; max-width: 550px;">I specialize in high-performance PHP architectures and sophisticated UI/UX design.</p>
+        <p style="color: var(--text-dim); margin-bottom: 40px; max-width: 550px;">Specializing in high-performance PHP architectures and sophisticated UI/UX design.</p>
         <a href="My_CV.pdf" download class="btn-premium"><i class="fas fa-file-invoice"></i> DOWNLOAD CV</a>
     </div>
     <div class="hero-image">
@@ -188,42 +198,53 @@ try {
 
     <div class="reviews-container">
         <div class="review-box" style="border-color: var(--primary); background: rgba(250, 204, 21, 0.02);">
-            <h4 style="margin-bottom: 20px; font-family: 'Plus Jakarta Sans'; color: var(--primary);">Post a Review</h4>
+            <h4 style="margin-bottom: 20px; font-family: 'Plus Jakarta Sans'; color: var(--primary);">Leave a Review</h4>
             <form action="save_review.php" method="POST">
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                     <input type="text" name="name" placeholder="Full Name" required>
-                    <input type="text" name="company" placeholder="Company/Business" required>
+                    <input type="text" name="company" placeholder="Company" required>
                 </div>
-                <textarea name="review" rows="3" placeholder="How was the project experience?" required style="margin-top:15px;"></textarea>
+                <textarea name="review" rows="3" placeholder="Project experience..." required style="margin-top:15px;"></textarea>
                 <button type="submit" class="btn-submit" style="margin-top:10px;">SUBMIT REVIEW</button>
             </form>
         </div>
 
         <div id="reviews-list">
-            <?php foreach ($reviews as $row): ?>
-                <div class="review-box">
-                    <h4 style="color: #fff;"><?php echo htmlspecialchars($row['name']); ?></h4>
-                    <p style="color: var(--primary); font-size: 0.75rem; text-transform: uppercase;"><?php echo htmlspecialchars($row['company']); ?></p>
-                    <p style="color: #cbd5e1; font-style: italic; margin-top: 10px;">"<?php echo htmlspecialchars($row['review']); ?>"</p>
-                </div>
-            <?php endforeach; ?>
+            <?php if (empty($reviews)): ?>
+                <p style="text-align: center; color: var(--text-dim);">No reviews yet.</p>
+            <?php else: ?>
+                <?php foreach ($reviews as $row): ?>
+                    <div class="review-box">
+                        <h4 style="color: #fff;"><?php echo htmlspecialchars($row['name']); ?></h4>
+                        <p style="color: var(--primary); font-size: 0.75rem; text-transform: uppercase;"><?php echo htmlspecialchars($row['company']); ?></p>
+                        <p style="color: #cbd5e1; font-style: italic; margin-top: 10px;">"<?php echo htmlspecialchars($row['review']); ?>"</p>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </div>
+
+        <?php if ($total_pages > 1): ?>
+            <div class="pagination">
+                <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                    <a href="?page=<?php echo $i; ?>#reviews" class="page-link <?php echo ($i == $page) ? 'active' : ''; ?>"><?php echo $i; ?></a>
+                <?php endfor; ?>
+            </div>
+        <?php endif; ?>
     </div>
 </section>
 
 <section id="contact">
     <div style="text-align: center; margin-bottom: 60px;">
         <h2 style="font-family: 'Plus Jakarta Sans'; font-size: 3rem;">Let's <span>Connect.</span></h2>
-        <p style="color: var(--text-dim);">Ready to elevate your digital presence?</p>
     </div>
 
     <div class="contact-grid">
         <div style="background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%); padding: 40px; border-radius: 40px; border: 1px solid var(--border);">
-            <form id="contactForm" style="display: grid; gap: 25px;">
+            <form id="contactForm" style="display: grid; gap: 5px;">
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                     <div class="input-group">
                         <label class="input-label">Name</label>
-                        <input type="text" name="contact_name" placeholder="Your Name" required>
+                        <input type="text" name="contact_name" placeholder="Name" required>
                     </div>
                     <div class="input-group">
                         <label class="input-label">Email</label>
@@ -232,7 +253,7 @@ try {
                 </div>
                 <div class="input-group">
                     <label class="input-label">Message</label>
-                    <textarea name="message" rows="5" placeholder="Project details..." required></textarea>
+                    <textarea name="message" rows="5" placeholder="Your message..." required></textarea>
                 </div>
                 <button type="submit" id="submitBtn" class="btn-submit">
                     <span id="btnText">SEND MESSAGE</span>
@@ -242,43 +263,40 @@ try {
 
         <div style="display: flex; flex-direction: column; gap: 25px;">
             <div style="background: var(--card-bg); border: 1px solid var(--border); padding: 35px; border-radius: 35px;">
-                <p class="input-label" style="margin-bottom: 10px;">Direct Email</p>
-                <h4 style="cursor: pointer; color: #fff; font-size: 1.1rem;" onclick="copyEmail()">renzloiokit.dev@email.com</h4>
+                <p class="input-label" style="margin-bottom: 10px;">Email Address</p>
+                <h4 style="cursor: pointer; color: #fff;" onclick="copyEmail()">renzloiokit.dev@email.com</h4>
                 <p id="copyMsg" style="font-size: 0.6rem; color: var(--primary); opacity: 0; margin-top: 8px;">Click to copy</p>
             </div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                <a href="https://github.com/Raezaga" target="_blank" class="social-link">
-                    <i class="fab fa-github"></i>
-                    <span style="font-size: 0.7rem; font-weight: 800;">GITHUB</span>
-                </a>
-                <a href="https://www.linkedin.com/in/renz-loi-okit-13397b393/" target="_blank" class="social-link">
-                    <i class="fab fa-linkedin"></i>
-                    <span style="font-size: 0.7rem; font-weight: 800;">LINKEDIN</span>
-                </a>
+                <a href="https://github.com/Raezaga" target="_blank" class="social-link"><i class="fab fa-github"></i><span>GITHUB</span></a>
+                <a href="https://www.linkedin.com/in/renz-loi-okit-13397b393/" target="_blank" class="social-link"><i class="fab fa-linkedin"></i><span>LINKEDIN</span></a>
             </div>
         </div>
     </div>
 </section>
 
 <footer style="text-align: center; padding: 60px; color: var(--text-dim); font-size: 0.75rem; border-top: 1px solid var(--border);">
-    &copy; <?php echo date("Y"); ?> RENZ LOI OKIT.
+    &copy; <?php echo date("Y"); ?> RENZ LOI OKIT. ALL RIGHTS RESERVED.
 </footer>
 
 <script>
+    // Cursor Glow
     const glow = document.getElementById('cursor-glow');
     document.addEventListener('mousemove', (e) => {
         glow.style.left = e.clientX + 'px';
         glow.style.top = e.clientY + 'px';
     });
 
+    // Copy Email
     function copyEmail() {
         navigator.clipboard.writeText("renzloiokit.dev@email.com");
         const msg = document.getElementById('copyMsg');
         msg.style.opacity = "1";
-        msg.innerText = "COPIED TO CLIPBOARD!";
+        msg.innerText = "COPIED!";
         setTimeout(() => { msg.style.opacity = "0"; }, 2000);
     }
 
+    // --- AJAX Form Submission Logic ---
     const contactForm = document.getElementById('contactForm');
     const submitBtn = document.getElementById('submitBtn');
     const btnText = document.getElementById('btnText');
@@ -300,12 +318,12 @@ try {
         .then(data => {
             if (data.trim() === 'success') {
                 submitBtn.style.background = '#22c55e';
-                btnText.innerHTML = '<i class="fas fa-check"></i> MESSAGE SENT';
+                btnText.innerHTML = '<i class="fas fa-check"></i> SENT';
                 contactForm.reset();
             } else {
                 submitBtn.style.background = '#ef4444';
-                btnText.innerHTML = '<i class="fas fa-times"></i> ERROR OCCURRED';
-                console.log("Server Response:", data);
+                btnText.innerHTML = '<i class="fas fa-times"></i> ERROR';
+                console.error("Server:", data);
             }
             
             setTimeout(() => {
@@ -316,7 +334,7 @@ try {
             }, 4000);
         })
         .catch(() => {
-            btnText.innerHTML = 'CONNECTION FAILED';
+            btnText.innerHTML = 'FAILED';
             submitBtn.style.background = '#ef4444';
         });
     });
