@@ -120,7 +120,7 @@ try {
         .project-info { padding: 30px; }
         .project-tag { font-size: 0.6rem; font-weight: 800; color: var(--primary); margin-bottom: 10px; display: block; }
 
-        /* REVIEWS SECTION - RESTORED & ENHANCED */
+        /* REVIEWS SECTION */
         .reviews-container { max-width: 900px; margin: 0 auto; }
         .review-box { 
             background: var(--card-bg); border: 1px solid var(--border); 
@@ -286,7 +286,7 @@ try {
     <h2 style="font-family: 'Plus Jakarta Sans'; font-size: 3rem; text-align: center; margin-bottom: 50px;">Let's <span>Connect.</span></h2>
     <div class="contact-grid">
         <div style="background: var(--card-bg); padding: 40px; border-radius: 40px; border: 1px solid var(--border);">
-            <form id="contactForm" action="send_message.php" method="POST" style="display: grid; gap: 20px;">
+            <form id="contactForm" style="display: grid; gap: 20px;">
                 <input type="text" name="contact_name" placeholder="Name" required>
                 <input type="email" name="contact_email" placeholder="Email" required>
                 <textarea name="message" rows="4" placeholder="Message" required></textarea>
@@ -333,7 +333,7 @@ try {
     const submitBtn = document.getElementById('submitBtn');
 
     contactForm.addEventListener('submit', function(e) {
-        e.preventDefault(); // This stops the page from refreshing
+        e.preventDefault(); // Stop page from refreshing
 
         const originalText = submitBtn.innerHTML;
         const formData = new FormData(this);
@@ -343,26 +343,26 @@ try {
         submitBtn.style.opacity = "0.7";
         submitBtn.style.pointerEvents = "none";
 
-        // 2. Send data to PHP without leaving the page
+        // 2. Background Fetch
         fetch('send_message.php', {
             method: 'POST',
             body: formData
         })
         .then(response => response.text())
         .then(data => {
-            if (data.trim() === 'success') {
-                // 3. SUCCESS DESIGN: Change button to Green check
+            const result = data.trim();
+            if (result === 'success') {
+                // 3. SUCCESS DESIGN
                 submitBtn.innerHTML = '<i class="fas fa-check"></i> MESSAGE SENT!';
                 submitBtn.style.background = '#28a745'; // Green
                 submitBtn.style.color = '#fff';
                 submitBtn.style.opacity = "1";
                 
-                contactForm.reset(); // Clear the form
+                contactForm.reset();
 
-                // Revert button back to normal after 5 seconds
                 setTimeout(() => {
                     submitBtn.innerHTML = originalText;
-                    submitBtn.style.background = ''; // Reverts to CSS default
+                    submitBtn.style.background = ''; 
                     submitBtn.style.color = '';
                     submitBtn.style.pointerEvents = "auto";
                 }, 5000);
@@ -383,4 +383,3 @@ try {
 
 </body>
 </html>
-
