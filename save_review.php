@@ -7,20 +7,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $review = htmlspecialchars($_POST['review']);
 
     try {
-        // 1. Database Insert
+        // 1. SAVE TO DATABASE (Status defaults to 'pending' automatically)
         $stmt = $pdo->prepare("INSERT INTO reviews (name, company, review) VALUES (?, ?, ?)");
         $stmt->execute([$name, $company, $review]);
 
-        // 2. Notification Logic
-        $apiKey = 're_ixbpDK5A_6achZzFNn68Eith8vbJMHhux'; 
-        
+        // 2. SEND NOTIFICATION TO YOUR EMAIL
+        $apiKey = 're_ixbpDK5A_6achZzFNn68Eith8vbJMHhux'; // Your Resend Key
+        $toEmail = 'renzokit@gmail.com'; 
+
         $data = [
-            'from'    => 'Portfolio <onboarding@resend.dev>', // MUST be this for free tier
-            'to'      => ['renzokit@gmail.com'], 
-            'subject' => '🚨 New Review: ' . $name,
-            'html'    => "<strong>$name</strong> from <strong>$company</strong> just left a review.<br><br>Content: $review"
+            'from'    => 'Admin <onboarding@resend.dev>',
+            'to'      => [$toEmail],
+            'subject' => 'New Review Pending Approval: ' . $name,
+            'html'    => "
+                <h3>New Feedback Received</h3>
+                <p><strong>Client:</strong> $name ($company)</p>
+                <p><strong>Message:</strong> $review</p>
+                <hr>
+                <a href='https://yourdomain.com/admin.php' style='padding:10px; background:#facc15; color:black; text-decoration:none; font-weight:bold;'>Go to Admin Dashboard to Approve</a>
+            "
         ];
 
+        // API Call
         $ch = curl_init('https://api.resend.com/emails');
         curl_setopt_array($ch, [
             CURLOPT_RETURNTRANSFER => true,
@@ -30,19 +38,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 'Authorization: Bearer ' . $apiKey,
                 'Content-Type: application/json'
             ],
-            // This bypasses SSL issues on some local servers
             CURLOPT_SSL_VERIFYPEER => false 
         ]);
-
         curl_exec($ch);
         curl_close($ch);
 
-        // Redirect back to index
-        header("Location: index.php?status=success#reviews");
+        // 3. REDIRECT BACK
+        header("Location: index.php?status=review_submitted#reviews");
         exit();
 
     } catch (Exception $e) {
-        error_log($e->getMessage());
-        header("Location: index.php?status=error#reviews");
+        die("Error: " . $e->getMessage());
     }
 }
