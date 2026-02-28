@@ -1,17 +1,17 @@
 <?php
-// Prevent PHP from outputting errors that might break the JS response
+// Silence any PHP errors that might break the JS response
 error_reporting(0);
 ini_set('display_errors', 0);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // 1. CONFIGURATION
-    $apiKey = 're_ixbpDK5A_6achZzFNn68Eith8vbJMHHux'; 
+    $apiKey = 're_ixbpDK5A_6achZzFNn68Eith8vbJMHhux'; 
     $toEmail = 'renzokit@gmail.com'; 
     
     // 2. DATA COLLECTION
-    $name    = htmlspecialchars($_POST['contact_name']);
-    $email   = htmlspecialchars($_POST['contact_email']);
-    $message = nl2br(htmlspecialchars($_POST['message']));
+    $name    = htmlspecialchars($_POST['contact_name'] ?? 'Visitor');
+    $email   = htmlspecialchars($_POST['contact_email'] ?? 'No Email');
+    $message = nl2br(htmlspecialchars($_POST['message'] ?? 'No Message'));
 
     $data = [
         'from'     => 'Portfolio <onboarding@resend.dev>',
@@ -38,8 +38,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 
-    // 4. THE JAVASCRIPT-FRIENDLY RESPONSE
-    // Instead of header(), we just echo the result
+    // 4. CLEAN RESPONSE
+    // We only echo 'success' so the JS can trigger the refresh
     if ($httpCode === 200 || $httpCode === 201) {
         echo "success"; 
     } else {
