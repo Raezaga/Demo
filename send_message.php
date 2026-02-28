@@ -2,10 +2,10 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-// Ensure these paths match your PHPMailer folder name on Render
-require 'PHPMailer-7.0.2/src/Exception.php';
-require 'PHPMailer-7.0.2/src/PHPMailer.php';
-require 'PHPMailer-7.0.2/src/SMTP.php';
+// Based on your GitHub screenshot, the files are directly in 'PHPMailer/'
+require 'PHPMailer/Exception.php';
+require 'PHPMailer/PHPMailer.php';
+require 'PHPMailer/SMTP.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $mail = new PHPMailer(true);
@@ -15,15 +15,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mail->isSMTP();
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
-        $mail->Username   = 'renzloiokit.dev@gmail.com'; // Your sender email
-        $mail->Password   = 'wvyj ortg gzdi dxqa';      // Your new App Password
+        $mail->Username   = 'renzloiokit.dev@gmail.com'; 
+        $mail->Password   = 'wvyj ortg gzdi dxqa'; // Your verified App Password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
 
         // Email Identity
         $mail->setFrom('renzloiokit.dev@gmail.com', 'Portfolio Contact');
         
-        // RECEIVER EMAIL (Updated as per your request)
+        // Target Recipient
         $mail->addAddress('renzokit@gmail.com'); 
 
         // Email Content
@@ -36,12 +36,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $mail->send();
         
-        // Redirect back to index with success message
+        // Success redirect
         header("Location: index.php?status=success#contact");
         exit();
         
     } catch (Exception $e) {
-        // If it fails, we go back with an error status
+        // Error redirect
         header("Location: index.php?status=error#contact");
         exit();
     }
