@@ -1,5 +1,5 @@
 <?php
-// Silent mode: No browser errors to interfere with our JS "success" word
+// TOP OF FILE: Ensure no spaces or lines exist before the <?php tag
 error_reporting(0);
 ini_set('display_errors', 0);
 
@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $data = [
         'from'     => 'Portfolio <onboarding@resend.dev>',
         'to'       => [$toEmail],
-        'subject'  => 'Portfolio Message from ' . $name,
+        'subject'  => 'New Message from ' . $name,
         'html'     => "<strong>From:</strong> $name ($email)<br><br><strong>Message:</strong><br>$message",
         'reply_to' => $email
     ];
@@ -35,7 +35,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 
-    // Only output the raw word 'success' so JS can read it easily
+    // CRITICAL: Clear any buffer to ensure ONLY "success" is sent
+    ob_clean(); 
     if ($httpCode === 200 || $httpCode === 201) {
         echo "success"; 
     } else {
