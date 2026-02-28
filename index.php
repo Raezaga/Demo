@@ -13,7 +13,7 @@ try {
     $total_pages = ceil($total_reviews / $limit);
 
     // Fetching the actual review data
-    $stmt = $pdo->prepare("SELECT * FROM reviews ORDER BY created_at DESC LIMIT :limit OFFSET :offset");
+    $stmt = $pdo->prepare("SELECT * FROM reviews WHERE status = 'approved' ORDER BY created_at DESC LIMIT :limit OFFSET :offset");
     $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
     $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
     $stmt->execute();
@@ -379,5 +379,6 @@ contactForm.addEventListener('submit', function(e) {
 
 </body>
 </html>
+
 
 
