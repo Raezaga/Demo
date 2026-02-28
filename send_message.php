@@ -1,48 +1,49 @@
 <?php
+// 1. Enable Error Reporting to see the crash
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-// Ensure paths are correct based on your GitHub folder named 'PHPMailer'
-require 'PHPMailer/Exception.php';
-require 'PHPMailer/PHPMailer.php';
-require 'PHPMailer/SMTP.php';
+// 2. Absolute Path Check
+$basePath = __DIR__ . '/PHPMailer/';
+
+if (!file_exists($basePath . 'Exception.php')) {
+    die("Error: PHP cannot find PHPMailer/Exception.php at " . $basePath);
+}
+
+require $basePath . 'Exception.php';
+require $basePath . 'PHPMailer.php';
+require $basePath . 'SMTP.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $mail = new PHPMailer(true);
 
     try {
-        // --- HIGH SECURITY SMTP SETTINGS ---
         $mail->isSMTP();
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
         $mail->Username   = 'renzokit@gmail.com'; 
-        $mail->Password   = 'wvyjortggzdidxqa'; // Your verified App Password
-        
-        // SWITCHING TO SSL/PORT 465 (More stable for Render)
+        $mail->Password   = 'wvyjortggzdidxqa'; 
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; 
         $mail->Port       = 465;                                    
 
-        // Email Identity
-        $mail->setFrom('renzokit@gmail.com', 'Portfolio Contact');
+        $mail->setFrom('renzokit@gmail.com', 'Portfolio System');
         $mail->addAddress('renzokit@gmail.com'); 
-        $mail->addReplyTo($_POST['contact_email'], $_POST['contact_name']);
 
-        // Content
         $mail->isHTML(true);
-        $mail->Subject = "New Inquiry from " . htmlspecialchars($_POST['contact_name']);
-        $mail->Body    = "<h3>New Portfolio Message</h3>
-                          <p><b>Name:</b> " . htmlspecialchars($_POST['contact_name']) . "</p>
-                          <p><b>Email:</b> " . htmlspecialchars($_POST['contact_email']) . "</p>
-                          <p><b>Message:</b><br>" . nl2br(htmlspecialchars($_POST['message'])) . "</p>";
+        $mail->Subject = "New Message from " . $_POST['contact_name'];
+        $mail->Body    = "Name: " . $_POST['contact_name'] . "<br>Email: " . $_POST['contact_email'] . "<br>Message: " . $_POST['message'];
 
         $mail->send();
         header("Location: index.php?status=success#contact");
         exit();
         
     } catch (Exception $e) {
-        // This will help you see the EXACT error in your Render logs
-        error_log("PHPMailer Error: " . $mail->ErrorInfo);
-        header("Location: index.php?status=error#contact");
+        // If SMTP fails, show the error instead of redirecting
+        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
         exit();
     }
 }
