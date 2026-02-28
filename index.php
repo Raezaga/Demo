@@ -174,6 +174,7 @@ try {
         <li><a href="#projects">Work</a></li>
         <li><a href="#reviews">Clients</a></li>
         <li><a href="#contact">Contact</a></li>
+        <li><a href="admin.php">Admin</a></li>
     </ul>
 </nav>
 
@@ -378,4 +379,5 @@ contactForm.addEventListener('submit', function(e) {
 
 </body>
 </html>
+
 
